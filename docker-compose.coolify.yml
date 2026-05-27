@@ -1,0 +1,30 @@
+# Coolify Deployment Configuration
+# Use this file when deploying to Coolify (coolify.io)
+#
+# Steps:
+# 1. Push your code to a Git repository
+# 2. In Coolify, create a new resource and select "Docker Compose"
+# 3. Point to this file or the main docker-compose.yml
+# 4. Coolify will auto-detect the configuration and deploy
+
+version: '3.8'
+
+services:
+  pdf-toolkit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pdf-toolkit
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    labels:
+      - "coolify.managed=true"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
