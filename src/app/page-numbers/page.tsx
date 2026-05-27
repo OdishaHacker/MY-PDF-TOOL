@@ -1,8 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const PageNumbers = dynamic(() => import('../../components/pdf-tools/PageNumbers'), { ssr: false });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/PageNumbersPdf'), { ssr: false });
 
-export default function PageNumbersPage() {
-  return <PageNumbers />;
+export default function Page() {
+  const router = useRouter();
+  return <ToolComponent onBack={() => router.push('/')} />;
 }

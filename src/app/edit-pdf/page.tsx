@@ -1,8 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const EditPdf = dynamic(() => import('../../components/pdf-tools/EditPdf'), { ssr: false });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/EditPdf'), { ssr: false });
 
-export default function EditPdfPage() {
-  return <EditPdf />;
+export default function Page() {
+  const router = useRouter();
+  return <ToolComponent onBack={() => router.push('/')} />;
 }

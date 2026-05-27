@@ -1,8 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const UnlockPdf = dynamic(() => import('../../components/pdf-tools/UnlockPdf'), { ssr: false });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/UnlockPdf'), { ssr: false });
 
-export default function UnlockPdfPage() {
-  return <UnlockPdf />;
+export default function Page() {
+  const router = useRouter();
+  return <ToolComponent onBack={() => router.push('/')} />;
 }

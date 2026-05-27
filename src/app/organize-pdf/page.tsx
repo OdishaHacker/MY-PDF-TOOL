@@ -1,8 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const OrganizePdf = dynamic(() => import('../../components/pdf-tools/OrganizePdf'), { ssr: false });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/OrganizePdf'), { ssr: false });
 
-export default function OrganizePdfPage() {
-  return <OrganizePdf />;
+export default function Page() {
+  const router = useRouter();
+  return <ToolComponent onBack={() => router.push('/')} />;
 }

@@ -1,8 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const RedactPdf = dynamic(() => import('../../components/pdf-tools/RedactPdf'), { ssr: false });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/RedactPdf'), { ssr: false });
 
-export default function RedactPdfPage() {
-  return <RedactPdf />;
+export default function Page() {
+  const router = useRouter();
+  return <ToolComponent onBack={() => router.push('/')} />;
 }

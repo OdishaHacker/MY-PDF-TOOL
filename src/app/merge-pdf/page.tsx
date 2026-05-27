@@ -1,8 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const MergePdf = dynamic(() => import('../../components/pdf-tools/MergePdf'), { ssr: false });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/MergePdf'), { ssr: false });
 
-export default function MergePdfPage() {
-  return <MergePdf />;
+export default function Page() {
+  const router = useRouter();
+  return <ToolComponent onBack={() => router.push('/')} />;
 }

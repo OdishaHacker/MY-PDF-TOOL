@@ -193,3 +193,12 @@
 .dark .glass {
   background: oklch(0.15 0.01 30 / 70%);
 }
+
+/* Hide scrollbar utility */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

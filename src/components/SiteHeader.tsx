@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import {
   Menu,
-  ChevronDown,
   ChevronRight,
   Sun,
   Moon,
@@ -17,6 +17,7 @@ import {
   Shield,
   FileText,
   LayoutGrid,
+  X,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -115,86 +116,6 @@ const categories: Category[] = [
   },
 ];
 
-// ─── Desktop Nav Dropdown ────────────────────────────────────────────────────
-
-function NavDropdown({
-  category,
-  isOpen,
-  onToggle,
-  onClose,
-}: {
-  category: Category;
-  isOpen: boolean;
-  onToggle: () => void;
-  onClose: () => void;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const Icon = category.icon;
-
-  const handleClickOutside = useCallback(
-    (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        onClose();
-      }
-    },
-    [onClose]
-  );
-
-  useEffect(() => {
-    if (isOpen) document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isOpen, handleClickOutside]);
-
-  return (
-    <div ref={ref} className="relative">
-      <button
-        onClick={onToggle}
-        onMouseEnter={onToggle}
-        className={cn(
-          'flex items-center gap-1.5 px-3 py-2 rounded-md text-[13px] font-medium transition-colors duration-150',
-          isOpen
-            ? 'bg-accent text-accent-foreground'
-            : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
-        )}
-      >
-        <Icon className="size-3.5" />
-        <span>{category.name}</span>
-        <ChevronDown
-          className={cn(
-            'size-3 transition-transform duration-150',
-            isOpen && 'rotate-180'
-          )}
-        />
-      </button>
-
-      {isOpen && (
-        <div
-          className="absolute top-full left-0 mt-1 w-56 rounded-lg border bg-popover p-1 shadow-lg z-50"
-          onMouseLeave={onClose}
-        >
-          <div className="px-2.5 py-1.5 mb-0.5">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-              {category.name}
-            </span>
-          </div>
-          <Separator className="mb-1" />
-          {category.tools.map((tool) => (
-            <Link
-              key={tool.href}
-              href={tool.href}
-              onClick={onClose}
-              className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground transition-colors duration-100"
-            >
-              <FileText className="size-3.5 text-muted-foreground" />
-              {tool.name}
-            </Link>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
 // ─── Theme Toggle ────────────────────────────────────────────────────────────
 
 function ThemeToggle() {
@@ -231,19 +152,32 @@ function ThemeToggle() {
 // ─── Main Header ─────────────────────────────────────────────────────────────
 
 export default function SiteHeader() {
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const pathname = usePathname();
 
-  const handleCloseDropdown = useCallback(
-    () => setOpenDropdown(null),
-    []
-  );
+  // Auto-select category based on current route
+  useEffect(() => {
+    const matchingCategory = categories.find((cat) =>
+      cat.tools.some((tool) => pathname === tool.href)
+    );
+    if (matchingCategory) {
+      setActiveCategory(matchingCategory.slug);
+    }
+  }, [pathname]);
+
+  const toggleCategory = (slug: string) => {
+    setActiveCategory((prev) => (prev === slug ? null : slug));
+  };
+
+  const activeCategoryData = categories.find((c) => c.slug === activeCategory);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b backdrop-blur-md bg-background/80 supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-14 items-center justify-between">
+        {/* ── Main Row ── */}
+        <div className="flex h-14 items-center justify-between gap-4">
           {/* ── Logo / Brand ── */}
           <Link href="/" className="flex items-center gap-2.5 shrink-0">
             <span className="inline-flex items-center justify-center size-8 rounded-md bg-gradient-to-br from-rose-500 to-orange-500 text-white text-[11px] font-bold tracking-tight leading-none select-none">
@@ -255,25 +189,31 @@ export default function SiteHeader() {
             </span>
           </Link>
 
-          {/* ── Desktop Navigation ── */}
-          <nav className="hidden lg:flex items-center gap-0.5">
-            {categories.map((cat) => (
-              <NavDropdown
-                key={cat.slug}
-                category={cat}
-                isOpen={openDropdown === cat.slug}
-                onToggle={() =>
-                  setOpenDropdown(
-                    openDropdown === cat.slug ? null : cat.slug
-                  )
-                }
-                onClose={handleCloseDropdown}
-              />
-            ))}
+          {/* ── Desktop Navigation: Category Tabs ── */}
+          <nav className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
+            {categories.map((cat) => {
+              const Icon = cat.icon;
+              const isActive = activeCategory === cat.slug;
+              return (
+                <button
+                  key={cat.slug}
+                  onClick={() => toggleCategory(cat.slug)}
+                  className={cn(
+                    'flex items-center gap-1.5 px-3 py-2 rounded-md text-[13px] font-medium transition-colors duration-150 whitespace-nowrap',
+                    isActive
+                      ? 'bg-accent text-accent-foreground'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+                  )}
+                >
+                  <Icon className="size-3.5" />
+                  <span>{cat.name}</span>
+                </button>
+              );
+            })}
           </nav>
 
           {/* ── Desktop Right Actions ── */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-1 shrink-0">
             <Link href="/">
               <Button
                 variant="ghost"
@@ -393,6 +333,39 @@ export default function SiteHeader() {
             </Sheet>
           </div>
         </div>
+
+        {/* ── Desktop Sub-Row: Tools for Active Category ── */}
+        {activeCategoryData && (
+          <div className="hidden lg:flex items-center gap-1 pb-2 -mt-1 overflow-x-auto scrollbar-none">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mr-2 shrink-0 pl-1">
+              {activeCategoryData.name}
+            </span>
+            <Separator orientation="vertical" className="h-4 mr-1 shrink-0" />
+            {activeCategoryData.tools.map((tool) => (
+              <Link
+                key={tool.href}
+                href={tool.href}
+                onClick={() => setActiveCategory(null)}
+                className={cn(
+                  'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12.5px] font-medium whitespace-nowrap transition-colors duration-150 shrink-0',
+                  pathname === tool.href
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-accent/60'
+                )}
+              >
+                <FileText className="size-3" />
+                {tool.name}
+              </Link>
+            ))}
+            <button
+              onClick={() => setActiveCategory(null)}
+              className="inline-flex items-center justify-center size-6 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent/60 transition-colors shrink-0 ml-1"
+              aria-label="Close category tools"
+            >
+              <X className="size-3.5" />
+            </button>
+          </div>
+        )}
       </div>
     </header>
   );

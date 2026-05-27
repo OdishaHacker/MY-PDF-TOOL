@@ -1,8 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const PdfToWord = dynamic(() => import('../../components/pdf-tools/PdfToWord'), { ssr: false });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/PdfToWord'), { ssr: false });
 
-export default function PdfToWordPage() {
-  return <PdfToWord />;
+export default function Page() {
+  const router = useRouter();
+  return <ToolComponent onBack={() => router.push('/')} />;
 }

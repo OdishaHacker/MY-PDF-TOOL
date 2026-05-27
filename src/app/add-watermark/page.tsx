@@ -1,8 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const AddWatermark = dynamic(() => import('../../components/pdf-tools/AddWatermark'), { ssr: false });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/WatermarkPdf'), { ssr: false });
 
-export default function AddWatermarkPage() {
-  return <AddWatermark />;
+export default function Page() {
+  const router = useRouter();
+  return <ToolComponent onBack={() => router.push('/')} />;
 }

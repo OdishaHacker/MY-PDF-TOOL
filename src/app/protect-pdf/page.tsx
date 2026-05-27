@@ -1,8 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const ProtectPdf = dynamic(() => import('../../components/pdf-tools/ProtectPdf'), { ssr: false });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/ProtectPdf'), { ssr: false });
 
-export default function ProtectPdfPage() {
-  return <ProtectPdf />;
+export default function Page() {
+  const router = useRouter();
+  return <ToolComponent onBack={() => router.push('/')} />;
 }

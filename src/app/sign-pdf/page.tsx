@@ -1,8 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const SignPdf = dynamic(() => import('../../components/pdf-tools/SignPdf'), { ssr: false });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/SignPdf'), { ssr: false });
 
-export default function SignPdfPage() {
-  return <SignPdf />;
+export default function Page() {
+  const router = useRouter();
+  return <ToolComponent onBack={() => router.push('/')} />;
 }

@@ -1,8 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const RotatePdf = dynamic(() => import('../../components/pdf-tools/RotatePdf'), { ssr: false });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/RotatePdf'), { ssr: false });
 
-export default function RotatePdfPage() {
-  return <RotatePdf />;
+export default function Page() {
+  const router = useRouter();
+  return <ToolComponent onBack={() => router.push('/')} />;
 }

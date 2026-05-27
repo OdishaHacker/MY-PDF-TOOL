@@ -1,8 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const CropPdf = dynamic(() => import('../../components/pdf-tools/CropPdf'), { ssr: false });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/CropPdf'), { ssr: false });
 
-export default function CropPdfPage() {
-  return <CropPdf />;
+export default function Page() {
+  const router = useRouter();
+  return <ToolComponent onBack={() => router.push('/')} />;
 }

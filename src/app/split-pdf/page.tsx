@@ -1,8 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const SplitPdf = dynamic(() => import('../../components/pdf-tools/SplitPdf'), { ssr: false });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/SplitPdf'), { ssr: false });
 
-export default function SplitPdfPage() {
-  return <SplitPdf />;
+export default function Page() {
+  const router = useRouter();
+  return <ToolComponent onBack={() => router.push('/')} />;
 }

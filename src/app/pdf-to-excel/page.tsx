@@ -1,8 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const PdfToExcel = dynamic(() => import('../../components/pdf-tools/PdfToExcel'), { ssr: false });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/PdfToExcel'), { ssr: false });
 
-export default function PdfToExcelPage() {
-  return <PdfToExcel />;
+export default function Page() {
+  const router = useRouter();
+  return <ToolComponent onBack={() => router.push('/')} />;
 }

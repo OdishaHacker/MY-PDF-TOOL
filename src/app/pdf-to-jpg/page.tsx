@@ -1,8 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const PdfToJpg = dynamic(() => import('../../components/pdf-tools/PdfToJpg'), { ssr: false });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/PdfToJpg'), { ssr: false });
 
-export default function PdfToJpgPage() {
-  return <PdfToJpg />;
+export default function Page() {
+  const router = useRouter();
+  return <ToolComponent onBack={() => router.push('/')} />;
 }

@@ -1,8 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const PdfToPowerpoint = dynamic(() => import('../../components/pdf-tools/PdfToPowerpoint'), { ssr: false });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/PdfToPpt'), { ssr: false });
 
-export default function PdfToPowerpointPage() {
-  return <PdfToPowerpoint />;
+export default function Page() {
+  const router = useRouter();
+  return <ToolComponent onBack={() => router.push('/')} />;
 }

@@ -1,8 +1,10 @@
 'use client';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 
-const PdfToText = dynamic(() => import('../../components/pdf-tools/PdfToText'), { ssr: false });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/PdfToText'), { ssr: false });
 
-export default function PdfToTextPage() {
-  return <PdfToText />;
+export default function Page() {
+  const router = useRouter();
+  return <ToolComponent onBack={() => router.push('/')} />;
 }
