@@ -12,13 +12,13 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
-
-RUN npm install -g serve
-
-COPY --from=builder /app/out ./out
-
-EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-CMD ["serve", "-s", "out", "-l", "3000"]
+# Copy the static build output and our custom server
+COPY --from=builder /app/out ./out
+COPY --from=builder /app/server.js ./server.js
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]
