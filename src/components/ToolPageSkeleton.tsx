@@ -5,20 +5,19 @@ import { Skeleton } from '@/components/ui/skeleton'
 export default function ToolPageSkeleton() {
   return (
     <div className="mx-auto max-w-3xl">
-      {/* Back button + Title area */}
-      <div className="pt-4 mb-8">
+      {/* Back button skeleton - alone on its own row */}
+      <div className="pt-4 mb-6">
+        <Skeleton className="h-9 w-20 rounded-xl" />
+      </div>
+
+      {/* Tool name + logo skeleton - below back button */}
+      <div className="mb-8">
         <div className="flex items-center gap-3">
-          {/* Back button skeleton */}
-          <Skeleton className="h-9 w-20 rounded-xl" />
-          {/* Icon skeleton */}
-          <Skeleton className="h-9 w-9 rounded-lg" />
-          {/* Title skeleton */}
-          <Skeleton className="h-8 w-48" />
-        </div>
-        {/* Description skeleton */}
-        <div className="mt-2 ml-[52px] space-y-1.5">
-          <Skeleton className="h-4 w-72" />
-          <Skeleton className="h-4 w-48" />
+          <Skeleton className="h-10 w-10 rounded-xl" />
+          <div className="space-y-2">
+            <Skeleton className="h-8 w-48" />
+            <Skeleton className="h-4 w-72" />
+          </div>
         </div>
       </div>
 

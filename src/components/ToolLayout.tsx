@@ -280,24 +280,30 @@ export default function ToolLayout({
       transition={{ duration: 0.3 }}
       className="mx-auto max-w-3xl"
     >
-      {/* Back + Header */}
-      <div className="pt-4 mb-8">
+      {/* Back Button - Alone on its own row */}
+      <div className="pt-4 mb-6">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onBack}
+          className="shrink-0 rounded-xl hover:bg-primary/10"
+        >
+          <ArrowLeft className="h-4 w-4 mr-1" />
+          Back
+        </Button>
+      </div>
+
+      {/* Tool Name + Logo - Below back button */}
+      <div className="mb-8">
         <div className="flex items-center gap-3">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onBack}
-            className="shrink-0 rounded-xl hover:bg-primary/10"
-          >
-            <ArrowLeft className="h-4 w-4 mr-1" />
-            Back
-          </Button>
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[#EE6C4D]/15 to-[#D04526]/10 text-[#EE6C4D] shadow-sm">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#EE6C4D]/15 to-[#D04526]/10 text-[#EE6C4D] shadow-sm">
             {icon}
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{title}</h1>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{title}</h1>
+            <p className="text-sm text-muted-foreground mt-0.5">{description}</p>
+          </div>
         </div>
-        <p className="text-sm text-muted-foreground mt-2 ml-[52px]">{description}</p>
       </div>
 
       {/* Tool Content */}
