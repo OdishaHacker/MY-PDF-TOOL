@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import {
   Menu,
-  ChevronRight,
+  ChevronDown,
   Sun,
   Moon,
   Layers,
@@ -17,7 +17,7 @@ import {
   Shield,
   FileText,
   LayoutGrid,
-  X,
+  Search,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -28,8 +28,15 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -116,6 +123,15 @@ const categories: Category[] = [
   },
 ];
 
+// ─── All tools flat list for search ──────────────────────────────────────────
+
+const allTools = categories.flatMap((cat) =>
+  cat.tools.map((tool) => ({
+    ...tool,
+    category: cat.name,
+  }))
+);
+
 // ─── Theme Toggle ────────────────────────────────────────────────────────────
 
 function ThemeToggle() {
@@ -149,35 +165,191 @@ function ThemeToggle() {
   );
 }
 
+// ─── Search with Dropdown ────────────────────────────────────────────────────
+
+function SearchDropdown() {
+  const [query, setQuery] = useState('');
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const filtered = useMemo(() => {
+    if (!query.trim()) return [];
+    const q = query.toLowerCase();
+    return allTools.filter(
+      (tool) =>
+        tool.name.toLowerCase().includes(q) ||
+        tool.category.toLowerCase().includes(q)
+    );
+  }, [query]);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative">
+      <div className="relative">
+        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground pointer-events-none" />
+        <Input
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setOpen(true);
+          }}
+          onFocus={() => {
+            if (query.trim()) setOpen(true);
+          }}
+          placeholder="Search tools..."
+          className="h-8 w-[180px] pl-8 pr-3 text-[13px] rounded-md"
+        />
+      </div>
+      {open && filtered.length > 0 && (
+        <div className="absolute top-full left-0 right-0 mt-1 z-50 bg-popover text-popover-foreground border rounded-md shadow-md overflow-hidden">
+          <div className="max-h-64 overflow-y-auto p-1">
+            {filtered.map((tool) => (
+              <Link
+                key={tool.href}
+                href={tool.href}
+                onClick={() => {
+                  setOpen(false);
+                  setQuery('');
+                }}
+                className="flex items-center gap-2 rounded-sm px-2 py-1.5 text-[13px] hover:bg-accent hover:text-accent-foreground transition-colors"
+              >
+                <FileText className="size-3.5 text-muted-foreground shrink-0" />
+                <span className="truncate">{tool.name}</span>
+                <span className="ml-auto text-[11px] text-muted-foreground shrink-0">
+                  {tool.category}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Mobile Sidebar ──────────────────────────────────────────────────────────
+
+function MobileSidebar({
+  mobileOpen,
+  setMobileOpen,
+}: {
+  mobileOpen: boolean;
+  setMobileOpen: (open: boolean) => void;
+}) {
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+
+  return (
+    <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+      <SheetTrigger asChild>
+        <Button variant="ghost" size="icon" className="size-9" aria-label="Open menu">
+          <Menu className="size-5" />
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="left" className="w-[300px] p-0">
+        <SheetHeader className="border-b px-4 py-4">
+          <SheetTitle className="flex items-center gap-2.5">
+            <span className="inline-flex items-center justify-center size-7 rounded-md bg-gradient-to-br from-rose-500 to-orange-500 text-white text-[10px] font-bold tracking-tight leading-none select-none">
+              PDF
+            </span>
+            <span className="text-base font-semibold tracking-tight">
+              mypdf<span className="text-muted-foreground font-normal">tools</span>
+              <span className="text-muted-foreground/60 text-xs font-normal">.in</span>
+            </span>
+          </SheetTitle>
+        </SheetHeader>
+        <ScrollArea className="h-[calc(100vh-80px)]">
+          <div className="py-2">
+            {/* Quick Links */}
+            <div className="px-3 py-1">
+              <Link
+                href="/"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-2.5 rounded-md px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent transition-colors"
+              >
+                <LayoutGrid className="size-4 text-muted-foreground" />
+                All Tools
+              </Link>
+              <Link
+                href="/blog"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-2.5 rounded-md px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent transition-colors"
+              >
+                <FileText className="size-4 text-muted-foreground" />
+                Blog
+              </Link>
+            </div>
+
+            <Separator className="my-2" />
+
+            {/* Categories */}
+            {categories.map((cat) => {
+              const Icon = cat.icon;
+              const isExpanded = mobileExpanded === cat.slug;
+
+              return (
+                <div key={cat.slug} className="px-3">
+                  <button
+                    onClick={() =>
+                      setMobileExpanded(isExpanded ? null : cat.slug)
+                    }
+                    className="flex items-center justify-between w-full rounded-md px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent transition-colors"
+                  >
+                    <span className="flex items-center gap-2.5">
+                      <Icon className="size-4 text-muted-foreground" />
+                      {cat.name}
+                    </span>
+                    <ChevronDown
+                      className={cn(
+                        'size-4 text-muted-foreground transition-transform duration-150',
+                        isExpanded && 'rotate-180'
+                      )}
+                    />
+                  </button>
+
+                  {isExpanded && (
+                    <div className="ml-6 pl-3 border-l border-border py-0.5 mb-1">
+                      {cat.tools.map((tool) => (
+                        <Link
+                          key={tool.href}
+                          href={tool.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+                        >
+                          <FileText className="size-3.5" />
+                          {tool.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </ScrollArea>
+      </SheetContent>
+    </Sheet>
+  );
+}
+
 // ─── Main Header ─────────────────────────────────────────────────────────────
 
 export default function SiteHeader() {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const pathname = usePathname();
-
-  // Auto-select category based on current route
-  useEffect(() => {
-    const matchingCategory = categories.find((cat) =>
-      cat.tools.some((tool) => pathname === tool.href)
-    );
-    if (matchingCategory) {
-      setActiveCategory(matchingCategory.slug);
-    }
-  }, [pathname]);
-
-  const toggleCategory = (slug: string) => {
-    setActiveCategory((prev) => (prev === slug ? null : slug));
-  };
-
-  const activeCategoryData = categories.find((c) => c.slug === activeCategory);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b backdrop-blur-md bg-background/80 supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* ── Main Row ── */}
-        <div className="flex h-14 items-center justify-between gap-4">
+        <div className="flex h-14 items-center justify-between gap-2">
           {/* ── Logo / Brand ── */}
           <Link href="/" className="flex items-center gap-2.5 shrink-0">
             <span className="inline-flex items-center justify-center size-8 rounded-md bg-gradient-to-br from-rose-500 to-orange-500 text-white text-[11px] font-bold tracking-tight leading-none select-none">
@@ -189,25 +361,44 @@ export default function SiteHeader() {
             </span>
           </Link>
 
-          {/* ── Desktop Navigation: Category Tabs ── */}
+          {/* ── Desktop Navigation: Category Dropdowns ── */}
           <nav className="hidden lg:flex items-center gap-0.5 flex-1 justify-center">
             {categories.map((cat) => {
               const Icon = cat.icon;
-              const isActive = activeCategory === cat.slug;
+              const isActive = cat.tools.some((tool) => pathname === tool.href);
               return (
-                <button
-                  key={cat.slug}
-                  onClick={() => toggleCategory(cat.slug)}
-                  className={cn(
-                    'flex items-center gap-1.5 px-3 py-2 rounded-md text-[13px] font-medium transition-colors duration-150 whitespace-nowrap',
-                    isActive
-                      ? 'bg-accent text-accent-foreground'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
-                  )}
-                >
-                  <Icon className="size-3.5" />
-                  <span>{cat.name}</span>
-                </button>
+                <DropdownMenu key={cat.slug}>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      className={cn(
+                        'flex items-center gap-1 px-2.5 py-1.5 rounded-md text-[13px] font-medium transition-colors duration-150 whitespace-nowrap',
+                        isActive
+                          ? 'bg-accent text-accent-foreground'
+                          : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+                      )}
+                    >
+                      <Icon className="size-3.5" />
+                      <span>{cat.name}</span>
+                      <ChevronDown className="size-3 opacity-60" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="center" className="w-48">
+                    {cat.tools.map((tool) => (
+                      <DropdownMenuItem key={tool.href} asChild>
+                        <Link
+                          href={tool.href}
+                          className={cn(
+                            'flex items-center gap-2 cursor-pointer',
+                            pathname === tool.href && 'bg-accent'
+                          )}
+                        >
+                          <FileText className="size-3.5 text-muted-foreground" />
+                          {tool.name}
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
               );
             })}
           </nav>
@@ -234,138 +425,16 @@ export default function SiteHeader() {
               </Button>
             </Link>
             <Separator orientation="vertical" className="mx-1 h-5" />
+            <SearchDropdown />
             <ThemeToggle />
           </div>
 
           {/* ── Mobile Actions ── */}
           <div className="flex items-center gap-1 lg:hidden">
             <ThemeToggle />
-            <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="size-9" aria-label="Open menu">
-                  <Menu className="size-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-[300px] p-0">
-                <SheetHeader className="border-b px-4 py-4">
-                  <SheetTitle className="flex items-center gap-2.5">
-                    <span className="inline-flex items-center justify-center size-7 rounded-md bg-gradient-to-br from-rose-500 to-orange-500 text-white text-[10px] font-bold tracking-tight leading-none select-none">
-                      PDF
-                    </span>
-                    <span className="text-base font-semibold tracking-tight">
-                      mypdf<span className="text-muted-foreground font-normal">tools</span>
-                      <span className="text-muted-foreground/60 text-xs font-normal">.in</span>
-                    </span>
-                  </SheetTitle>
-                </SheetHeader>
-                <ScrollArea className="h-[calc(100vh-80px)]">
-                  <div className="py-2">
-                    {/* Quick Links */}
-                    <div className="px-3 py-1">
-                      <Link
-                        href="/"
-                        onClick={() => setMobileOpen(false)}
-                        className="flex items-center gap-2.5 rounded-md px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent transition-colors"
-                      >
-                        <LayoutGrid className="size-4 text-muted-foreground" />
-                        All Tools
-                      </Link>
-                      <Link
-                        href="/blog"
-                        onClick={() => setMobileOpen(false)}
-                        className="flex items-center gap-2.5 rounded-md px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent transition-colors"
-                      >
-                        <FileText className="size-4 text-muted-foreground" />
-                        Blog
-                      </Link>
-                    </div>
-
-                    <Separator className="my-2" />
-
-                    {/* Categories */}
-                    {categories.map((cat) => {
-                      const Icon = cat.icon;
-                      const isExpanded = mobileExpanded === cat.slug;
-
-                      return (
-                        <div key={cat.slug} className="px-3">
-                          <button
-                            onClick={() =>
-                              setMobileExpanded(
-                                isExpanded ? null : cat.slug
-                              )
-                            }
-                            className="flex items-center justify-between w-full rounded-md px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent transition-colors"
-                          >
-                            <span className="flex items-center gap-2.5">
-                              <Icon className="size-4 text-muted-foreground" />
-                              {cat.name}
-                            </span>
-                            <ChevronRight
-                              className={cn(
-                                'size-4 text-muted-foreground transition-transform duration-150',
-                                isExpanded && 'rotate-90'
-                              )}
-                            />
-                          </button>
-
-                          {isExpanded && (
-                            <div className="ml-6 pl-3 border-l border-border py-0.5 mb-1">
-                              {cat.tools.map((tool) => (
-                                <Link
-                                  key={tool.href}
-                                  href={tool.href}
-                                  onClick={() => setMobileOpen(false)}
-                                  className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
-                                >
-                                  <FileText className="size-3.5" />
-                                  {tool.name}
-                                </Link>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </ScrollArea>
-              </SheetContent>
-            </Sheet>
+            <MobileSidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
           </div>
         </div>
-
-        {/* ── Desktop Sub-Row: Tools for Active Category ── */}
-        {activeCategoryData && (
-          <div className="hidden lg:flex items-center gap-1 pb-2 -mt-1 overflow-x-auto scrollbar-none">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mr-2 shrink-0 pl-1">
-              {activeCategoryData.name}
-            </span>
-            <Separator orientation="vertical" className="h-4 mr-1 shrink-0" />
-            {activeCategoryData.tools.map((tool) => (
-              <Link
-                key={tool.href}
-                href={tool.href}
-                onClick={() => setActiveCategory(null)}
-                className={cn(
-                  'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12.5px] font-medium whitespace-nowrap transition-colors duration-150 shrink-0',
-                  pathname === tool.href
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-accent/60'
-                )}
-              >
-                <FileText className="size-3" />
-                {tool.name}
-              </Link>
-            ))}
-            <button
-              onClick={() => setActiveCategory(null)}
-              className="inline-flex items-center justify-center size-6 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent/60 transition-colors shrink-0 ml-1"
-              aria-label="Close category tools"
-            >
-              <X className="size-3.5" />
-            </button>
-          </div>
-        )}
       </div>
     </header>
   );

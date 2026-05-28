@@ -108,7 +108,7 @@ export default function SiteFooter() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-5">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
             <p className="text-xs text-muted-foreground">
-              &copy; 2024 mypdftools. All rights reserved.
+              &copy; {new Date().getFullYear()} mypdftools. All rights reserved.
             </p>
             <nav aria-label="Legal links" className="flex items-center gap-4">
               <Link

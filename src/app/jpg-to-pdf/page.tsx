@@ -1,8 +1,9 @@
 'use client';
 import dynamic from 'next/dynamic';
+import ToolPageSkeleton from '@/components/ToolPageSkeleton';
 import { useRouter } from 'next/navigation';
 
-const ToolComponent = dynamic(() => import('../../components/pdf-tools/JpgToPdf'), { ssr: false });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/JpgToPdf'), { ssr: false, loading: () => <ToolPageSkeleton /> });
 
 export default function Page() {
   const router = useRouter();

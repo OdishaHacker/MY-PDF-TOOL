@@ -281,25 +281,23 @@ export default function ToolLayout({
       className="mx-auto max-w-3xl"
     >
       {/* Back + Header */}
-      <div className="flex items-start gap-3 mb-8">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onBack}
-          className="mt-1 shrink-0 rounded-xl hover:bg-primary/10"
-        >
-          <ArrowLeft className="h-4 w-4 mr-1" />
-          Back
-        </Button>
-        <div className="flex-1">
-          <div className="flex items-center gap-3 mb-1">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-[#EE6C4D]/15 to-[#D04526]/10 text-[#EE6C4D] shadow-sm">
-              {icon}
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{title}</h1>
+      <div className="pt-4 mb-8">
+        <div className="flex items-center gap-3">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onBack}
+            className="shrink-0 rounded-xl hover:bg-primary/10"
+          >
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            Back
+          </Button>
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-[#EE6C4D]/15 to-[#D04526]/10 text-[#EE6C4D] shadow-sm">
+            {icon}
           </div>
-          <p className="text-sm text-muted-foreground mt-1">{description}</p>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">{title}</h1>
         </div>
+        <p className="text-sm text-muted-foreground mt-2 ml-[52px]">{description}</p>
       </div>
 
       {/* Tool Content */}
