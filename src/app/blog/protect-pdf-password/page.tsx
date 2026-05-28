@@ -27,7 +27,7 @@ export default function ProtectPdfPassword() {
               How to Password Protect Your PDF Files for Free
             </h1>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>November 22, 2024</span>
+              <span>May 14, 2026</span>
               <span>·</span>
               <span>5 min read</span>
               <span>·</span>

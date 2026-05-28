@@ -27,7 +27,7 @@ export default function PdfToWordConversion() {
               Convert PDF to Word Documents: The Easiest Methods Explained
             </h1>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>November 28, 2024</span>
+              <span>May 11, 2026</span>
               <span>·</span>
               <span>6 min read</span>
               <span>·</span>

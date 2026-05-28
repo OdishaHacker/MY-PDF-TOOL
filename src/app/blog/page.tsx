@@ -53,10 +53,10 @@ interface BlogPost {
 const blogPosts: BlogPost[] = [
   {
     slug: "merge-pdf-guide",
-    title: "How to Merge PDF Files Like a Pro: Complete Guide 2024",
+    title: "How to Merge PDF Files Like a Pro: Complete Guide 2026",
     description:
       "Learn the easiest ways to combine multiple PDF files into one seamless document. Step-by-step instructions, pro tips, and common mistakes to avoid.",
-    date: "December 15, 2024",
+    date: "May 2, 2026",
     readTime: "6 min read",
     icon: Merge,
     color: "#EE6C4D",
@@ -67,7 +67,7 @@ const blogPosts: BlogPost[] = [
     title: "Split PDF Files Instantly: Tips and Tricks You Need to Know",
     description:
       "Discover how to split large PDFs into smaller files with precision. From extracting single pages to custom ranges — everything covered.",
-    date: "December 10, 2024",
+    date: "May 5, 2026",
     readTime: "5 min read",
     icon: Scissors,
     color: "#F4A261",
@@ -78,7 +78,7 @@ const blogPosts: BlogPost[] = [
     title: "Reduce PDF File Size Without Losing Quality: Expert Guide",
     description:
       "Master the art of PDF compression. Learn how to shrink file sizes while keeping crisp text and sharp images intact.",
-    date: "December 5, 2024",
+    date: "May 8, 2026",
     readTime: "7 min read",
     icon: FileDown,
     color: "#8FBC5D",
@@ -89,7 +89,7 @@ const blogPosts: BlogPost[] = [
     title: "Convert PDF to Word Documents: The Easiest Methods Explained",
     description:
       "Transform static PDFs into editable Word documents in seconds. Compare methods and find the one that works best for your needs.",
-    date: "November 28, 2024",
+    date: "May 11, 2026",
     readTime: "6 min read",
     icon: FileOutput,
     color: "#295795",
@@ -100,7 +100,7 @@ const blogPosts: BlogPost[] = [
     title: "How to Password Protect Your PDF Files for Free",
     description:
       "Keep sensitive documents safe with PDF password protection. A complete walkthrough on encrypting and securing your files.",
-    date: "November 22, 2024",
+    date: "May 14, 2026",
     readTime: "5 min read",
     icon: Lock,
     color: "#F39C12",
@@ -111,7 +111,7 @@ const blogPosts: BlogPost[] = [
     title: "Convert JPG Images to PDF in Seconds: Step-by-Step Tutorial",
     description:
       "Turn your photos and scans into organized PDF documents. Perfect for receipts, portfolios, and multi-page image collections.",
-    date: "November 18, 2024",
+    date: "May 16, 2026",
     readTime: "5 min read",
     icon: ImageIcon,
     color: "#5F83C6",
@@ -122,7 +122,7 @@ const blogPosts: BlogPost[] = [
     title: "Electronic Signatures: How to Sign PDF Documents Online",
     description:
       "Go paperless with e-signatures. Learn how to sign PDFs digitally — legally binding, fast, and completely free.",
-    date: "November 12, 2024",
+    date: "May 19, 2026",
     readTime: "6 min read",
     icon: PenTool,
     color: "#E67E22",
@@ -133,7 +133,7 @@ const blogPosts: BlogPost[] = [
     title: "Add Watermarks to PDF: Protect Your Documents Easily",
     description:
       "Brand your PDFs and deter unauthorized use with custom watermarks. Text or image-based — we show you exactly how.",
-    date: "November 6, 2024",
+    date: "May 22, 2026",
     readTime: "5 min read",
     icon: Droplets,
     color: "#5DADE2",
@@ -141,10 +141,10 @@ const blogPosts: BlogPost[] = [
   },
   {
     slug: "pdf-security-tips",
-    title: "PDF Security Best Practices: Keep Your Documents Safe in 2024",
+    title: "PDF Security Best Practices: Keep Your Documents Safe in 2026",
     description:
       "From password protection to redaction — a comprehensive security checklist to safeguard your most sensitive PDF documents.",
-    date: "October 30, 2024",
+    date: "May 25, 2026",
     readTime: "7 min read",
     icon: Shield,
     color: "#2A9D8F",
@@ -152,10 +152,10 @@ const blogPosts: BlogPost[] = [
   },
   {
     slug: "free-pdf-tools-online",
-    title: "Top Free Online PDF Tools You Should Know About in 2024",
+    title: "Top Free Online PDF Tools You Should Know About in 2026",
     description:
       "A curated roundup of the best free PDF tools on the web. Merge, split, convert, compress — all without spending a dime.",
-    date: "October 24, 2024",
+    date: "May 27, 2026",
     readTime: "8 min read",
     icon: Sparkles,
     color: "#7B68EE",

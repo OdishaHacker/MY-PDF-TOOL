@@ -27,7 +27,7 @@ export default function WatermarkPdfGuide() {
               Add Watermarks to PDF: Protect Your Documents Easily
             </h1>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>November 6, 2024</span>
+              <span>May 22, 2026</span>
               <span>·</span>
               <span>5 min read</span>
               <span>·</span>

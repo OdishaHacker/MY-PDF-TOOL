@@ -4,7 +4,7 @@ import { ArrowLeft, PenTool, CheckCircle, AlertTriangle, Lightbulb, ListOrdered,
 
 export const metadata: Metadata = {
   title: "Electronic Signatures: How to Sign PDF Documents Online — mypdftools Blog",
-  description: "Go paperless with e-signatures. Learn how to sign PDFs digitally — legally binding, fast, and completely free. Complete guide for 2024.",
+  description: "Go paperless with e-signatures. Learn how to sign PDFs digitally — legally binding, fast, and completely free. Complete guide for 2026.",
   keywords: ["sign PDF online", "electronic signature", "e-signature", "digital signature PDF", "sign documents online", "PDF signature", "esign", "mypdftools"],
 };
 
@@ -27,7 +27,7 @@ export default function SignPdfElectronically() {
               Electronic Signatures: How to Sign PDF Documents Online
             </h1>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>November 12, 2024</span>
+              <span>May 19, 2026</span>
               <span>·</span>
               <span>6 min read</span>
               <span>·</span>

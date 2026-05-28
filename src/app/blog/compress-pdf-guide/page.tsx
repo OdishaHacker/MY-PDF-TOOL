@@ -27,7 +27,7 @@ export default function CompressPdfGuide() {
               Reduce PDF File Size Without Losing Quality: Expert Guide
             </h1>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>December 5, 2024</span>
+              <span>May 8, 2026</span>
               <span>·</span>
               <span>7 min read</span>
               <span>·</span>

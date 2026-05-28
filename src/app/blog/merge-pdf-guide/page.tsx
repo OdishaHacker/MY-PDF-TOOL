@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { ArrowLeft, Merge, CheckCircle, AlertTriangle, Lightbulb, ListOrdered, BookOpen } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "How to Merge PDF Files Like a Pro: Complete Guide 2024 — mypdftools Blog",
+  title: "How to Merge PDF Files Like a Pro: Complete Guide 2026 — mypdftools Blog",
   description: "Learn how to merge multiple PDF files into one seamless document. Step-by-step instructions, pro tips, and common mistakes to avoid when combining PDFs.",
   keywords: ["merge PDF", "combine PDF files", "join PDF", "merge multiple PDFs", "PDF merger", "combine documents", "PDF tools", "mypdftools"],
 };
@@ -26,10 +26,10 @@ export default function MergePdfGuide() {
               Organize
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-4">
-              How to Merge PDF Files Like a Pro: Complete Guide 2024
+              How to Merge PDF Files Like a Pro: Complete Guide 2026
             </h1>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>December 15, 2024</span>
+              <span>May 2, 2026</span>
               <span>·</span>
               <span>6 min read</span>
               <span>·</span>

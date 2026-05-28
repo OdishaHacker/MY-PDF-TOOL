@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import { ArrowLeft, Shield, CheckCircle, AlertTriangle, Lightbulb, BookOpen } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "PDF Security Best Practices: Keep Your Documents Safe in 2024 — mypdftools Blog",
-  description: "From password protection to redaction — a comprehensive security checklist to safeguard your most sensitive PDF documents. Expert guide for 2024.",
+  title: "PDF Security Best Practices: Keep Your Documents Safe in 2026 — mypdftools Blog",
+  description: "From password protection to redaction — a comprehensive security checklist to safeguard your most sensitive PDF documents. Expert guide for 2026.",
   keywords: ["PDF security", "secure PDF", "PDF protection", "PDF encryption", "PDF redaction", "document security", "PDF best practices", "mypdftools"],
 };
 
@@ -24,10 +24,10 @@ export default function PdfSecurityTips() {
               Security
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-4">
-              PDF Security Best Practices: Keep Your Documents Safe in 2024
+              PDF Security Best Practices: Keep Your Documents Safe in 2026
             </h1>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>October 30, 2024</span>
+              <span>May 25, 2026</span>
               <span>·</span>
               <span>7 min read</span>
               <span>·</span>

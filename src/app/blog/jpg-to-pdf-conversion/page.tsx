@@ -27,7 +27,7 @@ export default function JpgToPdfConversion() {
               Convert JPG Images to PDF in Seconds: Step-by-Step Tutorial
             </h1>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>November 18, 2024</span>
+              <span>May 16, 2026</span>
               <span>·</span>
               <span>5 min read</span>
               <span>·</span>

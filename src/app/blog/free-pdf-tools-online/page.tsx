@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { ArrowLeft, Sparkles, CheckCircle, Zap, Shield, Globe, Star } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Top Free Online PDF Tools You Should Know About in 2024 — mypdftools Blog",
-  description: "A curated roundup of the best free PDF tools on the web. Merge, split, convert, compress — all without spending a dime. Complete 2024 guide.",
-  keywords: ["free PDF tools", "online PDF tools", "PDF editor free", "best PDF tools 2024", "free PDF converter", "PDF tools online", "mypdftools"],
+  title: "Top Free Online PDF Tools You Should Know About in 2026 — mypdftools Blog",
+  description: "A curated roundup of the best free PDF tools on the web. Merge, split, convert, compress — all without spending a dime. Complete 2026 guide.",
+  keywords: ["free PDF tools", "online PDF tools", "PDF editor free", "best PDF tools 2026", "free PDF converter", "PDF tools online", "mypdftools"],
 };
 
 export default function FreePdfToolsOnline() {
@@ -24,10 +24,10 @@ export default function FreePdfToolsOnline() {
               Resources
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-4">
-              Top Free Online PDF Tools You Should Know About in 2024
+              Top Free Online PDF Tools You Should Know About in 2026
             </h1>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>October 24, 2024</span>
+              <span>May 27, 2026</span>
               <span>·</span>
               <span>8 min read</span>
               <span>·</span>
