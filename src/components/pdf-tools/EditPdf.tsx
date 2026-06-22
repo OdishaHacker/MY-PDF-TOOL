@@ -1202,7 +1202,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                 <Label className="text-xs">Stroke Width: {shapeWidth}px</Label>
                 <Slider value={[shapeWidth]} onValueChange={([v]) => setShapeWidth(v)} min={1} max={10} step={1} />
               </div>
-              <p className="text-[10px] text-muted-foreground">Click and drag on the canvas to draw.</p>
+              <p className="text-[10px] text-muted-foreground mt-1">Click and drag on the canvas to draw.</p>
             </div>
           )}
 
