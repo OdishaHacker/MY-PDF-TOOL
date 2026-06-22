@@ -8,7 +8,7 @@ import {
   Pencil, MousePointer2, Type, ImagePlus, Pen, Trash2,
   Download, ChevronLeft, ChevronRight, ZoomIn, ZoomOut,
   Loader2, ArrowLeft, RotateCcw, Square, Minus, Copy,
-  Undo2, Redo2, BringToFront, SendToBack,
+  Undo2, Redo2, BringToFront, SendToBack, Edit3,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -27,21 +27,21 @@ import ToolLayout from '@/components/ToolLayout'
 
 interface BaseElement {
   id: string
-  x: number        // PDF points from left
-  y: number        // PDF points from top
-  width: number    // PDF points
-  height: number   // PDF points
-  page: number     // 1-indexed
-  rotation?: number // degrees
+  x: number
+  y: number
+  width: number
+  height: number
+  page: number
+  rotation?: number
   zIndex?: number
 }
 
 interface TextElement extends BaseElement {
   type: 'text'
   content: string
-  fontSize: number  // PDF points
+  fontSize: number
   fontFamily: string
-  color: string    // hex
+  color: string
   bold?: boolean
   italic?: boolean
   align?: 'left' | 'center' | 'right'
@@ -49,7 +49,7 @@ interface TextElement extends BaseElement {
 
 interface ImageElement extends BaseElement {
   type: 'image'
-  src: string      // data URL
+  src: string
 }
 
 interface ShapeElement extends BaseElement {
@@ -57,11 +57,30 @@ interface ShapeElement extends BaseElement {
   shape: 'rect' | 'line'
   strokeColor: string
   strokeWidth: number
-  fillColor: string | null  // null = transparent
+  fillColor: string | null
+}
+
+// Existing PDF text item (editable)
+interface PdfTextItem {
+  id: string
+  page: number
+  str: string
+  originalStr: string
+  // PDF coordinate space (unscaled)
+  x: number
+  y: number        // from top
+  width: number
+  height: number
+  fontSize: number
+  fontName: string
+  pdfFontKey: StandardFonts
+  color: string
+  transform: number[]
+  edited: boolean
 }
 
 type EditorElement = TextElement | ImageElement | ShapeElement
-type ToolType = 'select' | 'text' | 'image' | 'draw' | 'delete' | 'rect' | 'line'
+type ToolType = 'select' | 'text' | 'image' | 'draw' | 'delete' | 'rect' | 'line' | 'edit'
 
 // ============================================================
 // Constants & Helpers
@@ -90,6 +109,29 @@ async function dataUrlToBuffer(url: string): Promise<ArrayBuffer> {
   return r.arrayBuffer()
 }
 
+// Map PDF font name (from pdfjs) to pdf-lib StandardFont
+function detectPdfFont(fontName: string): { key: StandardFonts; bold: boolean; italic: boolean } {
+  const name = (fontName || '').toLowerCase()
+  const isBold = name.includes('bold')
+  const isItalic = name.includes('italic') || name.includes('oblique')
+
+  if (name.includes('courier') || name.includes('mono')) {
+    if (isBold) return { key: StandardFonts.CourierBold, bold: true, italic: false }
+    return { key: StandardFonts.Courier, bold: false, italic: false }
+  }
+  if (name.includes('times') || name.includes('serif') || name.includes('roman')) {
+    if (isBold && isItalic) return { key: StandardFonts.TimesRomanBoldItalic, bold: true, italic: true }
+    if (isBold) return { key: StandardFonts.TimesRomanBold, bold: true, italic: false }
+    if (isItalic) return { key: StandardFonts.TimesRomanItalic, bold: false, italic: true }
+    return { key: StandardFonts.TimesRoman, bold: false, italic: false }
+  }
+  // Default: Helvetica
+  if (isBold && isItalic) return { key: StandardFonts.HelveticaBoldOblique, bold: true, italic: true }
+  if (isBold) return { key: StandardFonts.HelveticaBold, bold: true, italic: false }
+  if (isItalic) return { key: StandardFonts.HelveticaOblique, bold: false, italic: true }
+  return { key: StandardFonts.Helvetica, bold: false, italic: false }
+}
+
 function mapPdfFont(fontFamily: string, bold?: boolean): StandardFonts {
   if (bold || fontFamily === '__helvetica_bold__') return StandardFonts.HelveticaBold
   if (fontFamily.includes('Courier') || fontFamily.includes('monospace')) return StandardFonts.Courier
@@ -111,7 +153,6 @@ function readFileAsDataUrl(file: File): Promise<string> {
   })
 }
 
-// Wrap text to fit width using canvas measureText
 function wrapText(
   text: string,
   maxWidth: number,
@@ -126,13 +167,9 @@ function wrapText(
   const paragraphs = text.split('\n')
 
   for (const para of paragraphs) {
-    if (!para) {
-      lines.push('')
-      continue
-    }
+    if (!para) { lines.push(''); continue }
     const words = para.split(' ')
     let currentLine = ''
-
     for (const word of words) {
       const testLine = currentLine ? `${currentLine} ${word}` : word
       const metrics = ctx.measureText(testLine)
@@ -169,6 +206,11 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
   const [selId, setSelId] = useState<string | null>(null)
   const [tool, setTool] = useState<ToolType>('select')
   const [editingTextId, setEditingTextId] = useState<string | null>(null)
+
+  // ---- PDF Existing Text (editable) ----
+  const [pdfTextItems, setPdfTextItems] = useState<PdfTextItem[]>([])
+  const [editingPdfTextId, setEditingPdfTextId] = useState<string | null>(null)
+  const pdfTextEditedRef = useRef<Map<string, string>>(new Map()) // id -> new text
 
   // ---- History (Undo/Redo) ----
   const historyRef = useRef<EditorElement[][]>([])
@@ -208,10 +250,13 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const imgInputRef = useRef<HTMLInputElement>(null)
   const textInputRef = useRef<HTMLTextAreaElement>(null)
+  const pdfTextInputRef = useRef<HTMLTextAreaElement>(null)
 
   // Derived
   const selEl = elements.find(e => e.id === selId) ?? null
   const pageEls = elements.filter(e => e.page === page).sort((a, b) => (a.zIndex ?? 0) - (b.zIndex ?? 0))
+  const pageTextItems = pdfTextItems.filter(t => t.page === page)
+  const editingPdfItem = pdfTextItems.find(t => t.id === editingPdfTextId) ?? null
 
   // ============================================================
   // History Management
@@ -221,11 +266,8 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
     const hist = historyRef.current
     hist.splice(historyIndexRef.current + 1)
     hist.push(JSON.parse(JSON.stringify(newElements)))
-    if (hist.length > 50) {
-      hist.shift()
-    } else {
-      historyIndexRef.current = hist.length - 1
-    }
+    if (hist.length > 50) hist.shift()
+    else historyIndexRef.current = hist.length - 1
     setHistoryVersion(v => v + 1)
   }, [])
 
@@ -249,9 +291,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
   const snapshotTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const scheduleSnapshot = useCallback((newElements: EditorElement[]) => {
     if (snapshotTimerRef.current) clearTimeout(snapshotTimerRef.current)
-    snapshotTimerRef.current = setTimeout(() => {
-      pushHistory(newElements)
-    }, 400)
+    snapshotTimerRef.current = setTimeout(() => pushHistory(newElements), 400)
   }, [pushHistory])
 
   // ============================================================
@@ -277,6 +317,51 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
         drawDataRef.current.clear()
         historyRef.current = [[]]
         historyIndexRef.current = 0
+        pdfTextEditedRef.current.clear()
+        setEditingPdfTextId(null)
+
+        // Extract text content from ALL pages
+        const allTextItems: PdfTextItem[] = []
+        for (let p = 1; p <= pdf.numPages; p++) {
+          const pg = await pdf.getPage(p)
+          const baseViewport = pg.getViewport({ scale: 1.0 })
+          const pageHeight = baseViewport.height
+          const textContent = await pg.getTextContent()
+
+          for (const item of textContent.items as any[]) {
+            if (!item.str || !item.str.trim()) continue
+            if (!item.transform) continue
+
+            const tx = item.transform
+            // tx = [scaleX, skewY, skewX, scaleY, translateX, translateY]
+            // In PDF, Y is from bottom. Convert to top-based.
+            const fontSize = Math.sqrt(tx[0] * tx[0] + tx[1] * tx[1]) || 12
+            const x = tx[4]
+            const yFromBottom = tx[5]
+            const y = pageHeight - yFromBottom - fontSize // from top
+
+            const fontInfo = detectPdfFont(item.fontName || '')
+            const width = item.width || 0
+
+            allTextItems.push({
+              id: uid(),
+              page: p,
+              str: item.str,
+              originalStr: item.str,
+              x,
+              y,
+              width,
+              height: fontSize * 1.2,
+              fontSize,
+              fontName: item.fontName || 'Helvetica',
+              pdfFontKey: fontInfo.key,
+              color: '#000000',
+              transform: tx,
+              edited: false,
+            })
+          }
+        }
+        if (!cancelled) setPdfTextItems(allTextItems)
       } catch (err) {
         console.error(err)
         toast.error('Failed to load PDF')
@@ -515,7 +600,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
   }, [scheduleSnapshot])
 
   // ============================================================
-  // Shape Drawing (Rectangle, Line)
+  // Shape Drawing
   // ============================================================
 
   const onShapeStart = useCallback((clientX: number, clientY: number) => {
@@ -626,9 +711,10 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
       onShapeStart(e.clientX, e.clientY)
     } else if (tool === 'draw') {
       onDrawStart(e.clientX, e.clientY)
-    } else if (tool === 'select') {
+    } else if (tool === 'select' || tool === 'edit') {
       setSelId(null)
       setEditingTextId(null)
+      setEditingPdfTextId(null)
     }
   }, [tool, addText, onShapeStart, onDrawStart])
 
@@ -688,21 +774,23 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       const tag = (document.activeElement?.tagName ?? '')
-      const isEditing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || editingTextId !== null
+      const isEditing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || editingTextId !== null || editingPdfTextId !== null
       if (isEditing) return
 
       if ((e.key === 'Delete' || e.key === 'Backspace') && selId) { e.preventDefault(); delEl(selId) }
-      if (e.key === 'Escape') { setSelId(null); setEditingTextId(null) }
+      if (e.key === 'Escape') {
+        setSelId(null); setEditingTextId(null); setEditingPdfTextId(null)
+      }
       if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) { e.preventDefault(); undo() }
       if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) { e.preventDefault(); redo() }
       if ((e.ctrlKey || e.metaKey) && e.key === 'd' && selId) { e.preventDefault(); duplicateEl(selId) }
     }
     window.addEventListener('keydown', down)
     return () => window.removeEventListener('keydown', down)
-  }, [selId, delEl, undo, redo, duplicateEl, editingTextId])
+  }, [selId, delEl, undo, redo, duplicateEl, editingTextId, editingPdfTextId])
 
   // ============================================================
-  // Inline Text Editing
+  // Inline Text Editing (overlay elements)
   // ============================================================
 
   const startTextEdit = useCallback((id: string) => {
@@ -717,11 +805,37 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
   }, [])
 
   const finishTextEdit = useCallback(() => {
-    if (editingTextId) {
-      scheduleSnapshot(elements)
-    }
+    if (editingTextId) scheduleSnapshot(elements)
     setEditingTextId(null)
   }, [editingTextId, elements, scheduleSnapshot])
+
+  // ============================================================
+  // PDF Existing Text Editing
+  // ============================================================
+
+  const startPdfTextEdit = useCallback((id: string) => {
+    setEditingPdfTextId(id)
+    setSelId(null)
+    setTimeout(() => {
+      if (pdfTextInputRef.current) {
+        pdfTextInputRef.current.focus()
+        pdfTextInputRef.current.select()
+      }
+    }, 50)
+  }, [])
+
+  const finishPdfTextEdit = useCallback((id: string, newText: string) => {
+    setPdfTextItems(prev => prev.map(t => {
+      if (t.id !== id) return t
+      return { ...t, str: newText, edited: newText !== t.originalStr }
+    }))
+    if (newText.trim() !== '') {
+      pdfTextEditedRef.current.set(id, newText)
+    } else {
+      pdfTextEditedRef.current.delete(id)
+    }
+    setEditingPdfTextId(null)
+  }, [])
 
   // ============================================================
   // Navigation helpers
@@ -732,6 +846,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
     setPage(n)
     setSelId(null)
     setEditingTextId(null)
+    setEditingPdfTextId(null)
   }, [saveDrawing])
 
   const changeZoom = useCallback((d: number) => {
@@ -776,6 +891,42 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
         const { width: pw, height: ph } = pg.getSize()
         const pn = i + 1
 
+        // 1. Handle edited existing PDF text — white-out original, draw new
+        const pageItems = pdfTextItems.filter(t => t.page === pn)
+        for (const item of pageItems) {
+          const currentText = pdfTextEditedRef.current.get(item.id) ?? item.originalStr
+          if (currentText === item.originalStr) continue // unchanged
+
+          const font = await getFont(item.pdfFontKey)
+          const fs = item.fontSize
+
+          // White-out original text region (with padding)
+          const whiteoutX = item.x - 1
+          const whiteoutY = ph - item.y - fs - 2
+          const whiteoutW = Math.max(item.width + 4, font.widthOfTextAtSize(currentText || ' ', fs) + 4)
+          const whiteoutH = fs * 1.3
+
+          pg.drawRectangle({
+            x: whiteoutX,
+            y: whiteoutY,
+            width: whiteoutW,
+            height: whiteoutH,
+            color: rgb(1, 1, 1),
+          })
+
+          // Draw new text (only if not empty)
+          if (currentText.trim()) {
+            pg.drawText(currentText, {
+              x: item.x,
+              y: ph - item.y - fs * 0.85,
+              size: fs,
+              font,
+              color: rgb(0, 0, 0),
+            })
+          }
+        }
+
+        // 2. Drawings (freehand)
         const drawUrl = drawDataRef.current.get(pn)
         if (drawUrl) {
           try {
@@ -785,6 +936,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
           } catch (err) { console.warn('draw embed fail p' + pn, err) }
         }
 
+        // 3. Overlay elements (added text, images, shapes)
         const els = elements.filter(e => e.page === pn).sort((a, b) => (a.zIndex ?? 0) - (b.zIndex ?? 0))
         for (const el of els) {
           if (el.type === 'text') {
@@ -857,7 +1009,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
     } finally {
       setExporting(false)
     }
-  }, [pdfBuffer, elements, saveDrawing])
+  }, [pdfBuffer, elements, pdfTextItems, saveDrawing])
 
   // ============================================================
   // Reset
@@ -867,6 +1019,8 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
     setPdfFile(null); setPdfBuffer(null); setElements([]); setSelId(null)
     setPages(0); setPage(1); drawDataRef.current.clear()
     historyRef.current = []; historyIndexRef.current = -1
+    setPdfTextItems([]); setEditingPdfTextId(null)
+    pdfTextEditedRef.current.clear()
   }, [])
 
   // ============================================================
@@ -877,7 +1031,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
     return (
       <ToolLayout
         title="Edit PDF"
-        description="Full canvas-based PDF editor — add text, images, shapes, draw freehand, and more."
+        description="Full canvas-based PDF editor — edit existing text, add text, images, shapes, draw freehand, and more."
         icon={<Pencil className="h-5 w-5" />}
         onBack={onBack}
       >
@@ -887,7 +1041,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
           files={pdfFile ? [pdfFile] : []}
           onFilesChange={f => setPdfFile(f[0] ?? null)}
           label="Drop a PDF file here"
-          description="Select a PDF to edit with the full canvas editor"
+          description="Select a PDF to edit — existing text becomes fully editable"
         />
 
         <div className="rounded-xl border bg-muted/30 p-5 space-y-3">
@@ -896,7 +1050,8 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
             <span className="text-sm font-semibold">Editor Features</span>
           </div>
           <ul className="text-xs text-muted-foreground space-y-1.5 ml-6 list-disc">
-            <li>Add <strong>text</strong> with custom font, size, color, and alignment</li>
+            <li><strong>Edit existing PDF text</strong> — click any text in the PDF to modify it (fonts auto-detected)</li>
+            <li>Add <strong>new text</strong> with custom font, size, color, and alignment</li>
             <li>Add <strong>images</strong> and position them anywhere on the page</li>
             <li>Draw <strong>shapes</strong> — rectangles and lines</li>
             <li>Freehand <strong>drawing</strong> with adjustable pen color and size</li>
@@ -920,6 +1075,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
 
   const TOOLS: { t: ToolType; icon: React.ElementType; label: string }[] = [
     { t: 'select', icon: MousePointer2, label: 'Select / Move (V)' },
+    { t: 'edit', icon: Edit3, label: 'Edit PDF Text (E)' },
     { t: 'text', icon: Type, label: 'Add Text (T)' },
     { t: 'image', icon: ImagePlus, label: 'Add Image (I)' },
     { t: 'rect', icon: Square, label: 'Rectangle (R)' },
@@ -927,6 +1083,8 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
     { t: 'draw', icon: Pen, label: 'Free Draw (D)' },
     { t: 'delete', icon: Trash2, label: 'Delete (X)' },
   ]
+
+  const editedCount = pdfTextEditedRef.current.size
 
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] min-h-[520px]">
@@ -941,6 +1099,11 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
             <Pencil className="h-3.5 w-3.5" />
           </div>
           <span className="font-semibold text-sm hidden sm:inline">Edit PDF</span>
+          {editedCount > 0 && (
+            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#EE6C4D]/15 text-[#EE6C4D] font-medium">
+              {editedCount} edited
+            </span>
+          )}
         </div>
 
         <div className="flex items-center gap-0.5 shrink-0">
@@ -1001,7 +1164,8 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
               onClick={() => {
                 setTool(t)
                 if (t === 'image') imgInputRef.current?.click()
-                if (t !== 'select') setSelId(null)
+                if (t !== 'select' && t !== 'edit') setSelId(null)
+                if (t !== 'edit') setEditingPdfTextId(null)
               }}
               title={label}
             >
@@ -1027,13 +1191,18 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
               className="relative shadow-xl bg-white shrink-0"
               style={{
                 width: cw, height: ch,
-                cursor: tool === 'text' ? 'text' : (tool === 'draw' || tool === 'rect' || tool === 'line') ? 'crosshair' : 'default',
+                cursor: tool === 'text' ? 'text'
+                  : (tool === 'draw' || tool === 'rect' || tool === 'line') ? 'crosshair'
+                  : tool === 'edit' ? 'text'
+                  : 'default',
                 touchAction: 'none',
               }}
               onPointerDown={onBgPointerDown}
             >
+              {/* PDF page canvas */}
               <canvas ref={pdfCanvasRef} className="absolute inset-0 pointer-events-none" style={{ width: cw, height: ch }} />
 
+              {/* Drawing canvas */}
               <canvas
                 ref={drawCanvasRef}
                 className="absolute inset-0 z-10"
@@ -1043,6 +1212,74 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                 }}
               />
 
+              {/* PDF Existing Text Layer (editable) */}
+              <div
+                className="absolute inset-0 z-15 pointer-events-none"
+                style={{ width: cw, height: ch }}
+              >
+                {pageTextItems.map(item => {
+                  const isEditing = item.id === editingPdfTextId
+                  const displayText = pdfTextEditedRef.current.get(item.id) ?? item.originalStr
+                  const isEdited = displayText !== item.originalStr
+                  const isActiveTool = tool === 'edit' || tool === 'select'
+
+                  return (
+                    <div
+                      key={item.id}
+                      className={`absolute ${isActiveTool ? 'pointer-events-auto' : ''} ${
+                        isActiveTool ? 'cursor-text hover:bg-[#EE6C4D]/10 hover:outline hover:outline-1 hover:outline-[#EE6C4D]/40' : ''
+                      } ${isEdited ? 'bg-[#EE6C4D]/5 outline outline-1 outline-[#EE6C4D]/30' : ''}`}
+                      style={{
+                        left: item.x * scale,
+                        top: item.y * scale,
+                        minWidth: item.width * scale,
+                        minHeight: item.height * scale,
+                        fontSize: item.fontSize * scale,
+                        fontFamily: displayFont(item.fontName),
+                        color: item.color,
+                        lineHeight: 1.2,
+                        whiteSpace: 'pre',
+                      }}
+                      onClick={(e) => {
+                        if (!isActiveTool) return
+                        e.stopPropagation()
+                        if (tool === 'edit' || tool === 'select') {
+                          startPdfTextEdit(item.id)
+                        }
+                      }}
+                    >
+                      {isEditing ? (
+                        <textarea
+                          ref={pdfTextInputRef}
+                          defaultValue={displayText}
+                          onBlur={(e) => finishPdfTextEdit(item.id, e.target.value)}
+                          onPointerDown={e => e.stopPropagation()}
+                          onKeyDown={e => {
+                            e.stopPropagation()
+                            if (e.key === 'Escape' || (e.key === 'Enter' && !e.shiftKey)) {
+                              e.preventDefault()
+                              finishPdfTextEdit(item.id, (e.target as HTMLTextAreaElement).value)
+                            }
+                          }}
+                          className="w-full h-full min-w-[60px] min-h-[20px] p-0 m-0 border-0 outline-none resize-none bg-[#EE6C4D]/10 ring-2 ring-[#EE6C4D] rounded-sm"
+                          style={{
+                            fontSize: item.fontSize * scale,
+                            fontFamily: displayFont(item.fontName),
+                            color: item.color,
+                            lineHeight: 1.2,
+                          }}
+                        />
+                      ) : (
+                        <span className="inline-block">
+                          {displayText || '\u00A0'}
+                        </span>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+
+              {/* Overlay elements (added text, images, shapes) */}
               {pageEls.map(el => {
                 const sel = el.id === selId
                 const isEditing = el.id === editingTextId
@@ -1179,6 +1416,74 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
         <div className="w-56 border-l bg-background p-3 overflow-y-auto shrink-0 hidden md:block">
           <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Properties</h3>
 
+          {(tool === 'edit' || tool === 'select') && !selEl && !editingPdfItem && (
+            <div className="rounded-lg border border-[#EE6C4D]/30 bg-[#EE6C4D]/5 p-3 mb-3">
+              <div className="flex items-center gap-2 mb-1.5">
+                <Edit3 className="h-3.5 w-3.5 text-[#EE6C4D]" />
+                <span className="text-xs font-semibold">Edit PDF Text</span>
+              </div>
+              <p className="text-[10px] text-muted-foreground leading-relaxed">
+                Click on any text in the PDF to edit it directly. The original font will be auto-detected and preserved.
+              </p>
+              {editedCount > 0 && (
+                <p className="text-[10px] text-[#EE6C4D] mt-2 font-medium">
+                  ✓ {editedCount} text item{editedCount > 1 ? 's' : ''} edited on this PDF
+                </p>
+              )}
+            </div>
+          )}
+
+          {editingPdfItem && (
+            <div className="space-y-3">
+              <div className="rounded-lg border border-[#EE6C4D]/40 bg-[#EE6C4D]/5 p-2">
+                <div className="flex items-center gap-1.5 mb-1">
+                  <Edit3 className="h-3 w-3 text-[#EE6C4D]" />
+                  <span className="text-[10px] font-semibold text-[#EE6C4D]">EDITING PDF TEXT</span>
+                </div>
+                <p className="text-[10px] text-muted-foreground">
+                  Font: <span className="font-mono">{editingPdfItem.fontName}</span>
+                </p>
+                <p className="text-[10px] text-muted-foreground">
+                  Size: {editingPdfItem.fontSize.toFixed(1)}pt
+                </p>
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs">Text</Label>
+                <Textarea
+                  value={pdfTextEditedRef.current.get(editingPdfItem.id) ?? editingPdfItem.originalStr}
+                  onChange={e => {
+                    pdfTextEditedRef.current.set(editingPdfItem.id, e.target.value)
+                    setPdfTextItems(prev => prev.map(t =>
+                      t.id === editingPdfItem.id
+                        ? { ...t, str: e.target.value, edited: e.target.value !== t.originalStr }
+                        : t
+                    ))
+                  }}
+                  className="min-h-[80px] text-xs"
+                  rows={4}
+                />
+                <p className="text-[10px] text-muted-foreground">
+                  Tip: You can also click directly on the text in the PDF to edit inline.
+                </p>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-7 text-xs w-full"
+                onClick={() => {
+                  pdfTextEditedRef.current.delete(editingPdfItem.id)
+                  setPdfTextItems(prev => prev.map(t =>
+                    t.id === editingPdfItem.id ? { ...t, str: t.originalStr, edited: false } : t
+                  ))
+                  setEditingPdfTextId(null)
+                  toast.success('Text reverted to original')
+                }}
+              >
+                Revert to Original
+              </Button>
+            </div>
+          )}
+
           {tool === 'draw' && (
             <div className="space-y-3">
               <div className="space-y-1">
@@ -1202,7 +1507,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                 <Label className="text-xs">Stroke Width: {shapeWidth}px</Label>
                 <Slider value={[shapeWidth]} onValueChange={([v]) => setShapeWidth(v)} min={1} max={10} step={1} />
               </div>
-              <p className="text-[10px] text-muted-foreground mt-1">Click and drag on the canvas to draw.</p>
+              <p className="text-[10px] text-muted-foreground">Click and drag on the canvas to draw.</p>
             </div>
           )}
 
@@ -1350,11 +1655,12 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
             </div>
           )}
 
-          {!selEl && tool === 'select' && (
+          {!selEl && !editingPdfItem && tool === 'select' && (
             <div className="text-xs text-muted-foreground space-y-2">
               <p className="font-medium text-foreground">How to use</p>
               <ul className="space-y-1 list-disc list-inside">
-                <li><strong>Select</strong> — click &amp; drag to move</li>
+                <li><strong>Edit PDF Text</strong> — click any existing text</li>
+                <li><strong>Select</strong> — click &amp; drag to move added items</li>
                 <li><strong>Add Text</strong> — click canvas to place</li>
                 <li><strong>Add Image</strong> — upload &amp; place</li>
                 <li><strong>Rectangle/Line</strong> — click &amp; drag</li>
@@ -1367,8 +1673,8 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                 <p><kbd className="px-1 py-0.5 bg-muted rounded text-[10px]">Ctrl+Y</kbd> Redo</p>
                 <p><kbd className="px-1 py-0.5 bg-muted rounded text-[10px]">Ctrl+D</kbd> Duplicate</p>
                 <p><kbd className="px-1 py-0.5 bg-muted rounded text-[10px]">Del</kbd> Delete element</p>
+                <p><kbd className="px-1 py-0.5 bg-muted rounded text-[10px]">Esc</kbd> Deselect</p>
                 <p><kbd className="px-1 py-0.5 bg-muted rounded text-[10px]">Shift+Drag</kbd> Proportional resize</p>
-                <p><kbd className="px-1 py-0.5 bg-muted rounded text-[10px]">Dbl-Click</kbd> Edit text inline</p>
               </div>
             </div>
           )}
