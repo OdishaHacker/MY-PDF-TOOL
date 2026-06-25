@@ -1,6 +1,6 @@
 ﻿import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, Crop, CheckCircle, AlertTriangle, Lightbulb, ListOrdered, BookOpen, ShieldCheck, Zap } from "lucide-react";
+import { ArrowLeft, Crop, CheckCircle, AlertTriangle, Lightbulb, ListOrdered, BookOpen, ShieldCheck, Zap , ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "How to Crop PDF Pages to Remove Margins and White Space — mypdftools Blog",
@@ -169,3 +169,4 @@ export default function BlogPost() {
     </div>
   );
 }
+

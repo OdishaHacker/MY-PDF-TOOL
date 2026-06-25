@@ -1,6 +1,6 @@
 ﻿import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, FileDown, CheckCircle, AlertTriangle, Lightbulb, ListOrdered, BookOpen, ShieldCheck, Zap } from "lucide-react";
+import { ArrowLeft, FileDown, CheckCircle, AlertTriangle, Lightbulb, ListOrdered, BookOpen, ShieldCheck, Zap , ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Reduce PDF File Size Without Losing Quality: Expert Guide — mypdftools Blog",
@@ -169,3 +169,4 @@ export default function BlogPost() {
     </div>
   );
 }
+

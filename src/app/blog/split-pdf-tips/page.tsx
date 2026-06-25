@@ -1,6 +1,6 @@
 ﻿import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, Scissors, CheckCircle, AlertTriangle, Lightbulb, ListOrdered, BookOpen, ShieldCheck, Zap } from "lucide-react";
+import { ArrowLeft, Scissors, CheckCircle, AlertTriangle, Lightbulb, ListOrdered, BookOpen, ShieldCheck, Zap , ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Split PDF Files Instantly: Tips and Tricks You Need to Know — mypdftools Blog",
@@ -169,3 +169,4 @@ export default function BlogPost() {
     </div>
   );
 }
+

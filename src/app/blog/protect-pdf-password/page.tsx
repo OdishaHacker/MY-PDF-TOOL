@@ -1,6 +1,6 @@
 ﻿import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, Lock, CheckCircle, AlertTriangle, Lightbulb, ListOrdered, BookOpen, ShieldCheck, Zap } from "lucide-react";
+import { ArrowLeft, Lock, CheckCircle, AlertTriangle, Lightbulb, ListOrdered, BookOpen, ShieldCheck, Zap , ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "How to Password Protect Your PDF Files for Free — mypdftools Blog",
@@ -169,3 +169,4 @@ export default function BlogPost() {
     </div>
   );
 }
+
