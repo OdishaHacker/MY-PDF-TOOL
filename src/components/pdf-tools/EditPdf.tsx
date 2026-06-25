@@ -1,14 +1,17 @@
-﻿'use client'
+'use client'
 
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'
+import fontkit from '@pdf-lib/fontkit'
 import { saveAs } from 'file-saver'
 import { toast } from 'sonner'
 import {
   Pencil, MousePointer2, Type, ImagePlus, Pen, Trash2,
   Download, ChevronLeft, ChevronRight, ZoomIn, ZoomOut,
   Loader2, ArrowLeft, RotateCcw, Square, Minus, Copy,
-  Undo2, Redo2, BringToFront, SendToBack, Edit3,
+  Undo2, Redo2, BringToFront, SendToBack, Type as TypeIcon,
+  LayoutTemplate, UploadCloud, Bold, Italic, AlignLeft,
+  AlignCenter, AlignRight, Palette
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -17,7 +20,6 @@ import { Separator } from '@/components/ui/separator'
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
 import FileDropzone from '@/components/FileDropzone'
 import ToolLayout from '@/components/ToolLayout'
 
@@ -45,6 +47,8 @@ interface TextElement extends BaseElement {
   bold?: boolean
   italic?: boolean
   align?: 'left' | 'center' | 'right'
+  isOriginal?: boolean
+  pdfFontKey?: StandardFonts
 }
 
 interface ImageElement extends BaseElement {
@@ -60,37 +64,21 @@ interface ShapeElement extends BaseElement {
   fillColor: string | null
 }
 
-// Existing PDF text item (editable)
-interface PdfTextItem {
-  id: string
-  page: number
-  str: string
-  originalStr: string
-  // PDF coordinate space (unscaled)
-  x: number
-  y: number        // from top
-  width: number
-  height: number
-  fontSize: number
-  fontName: string
-  pdfFontKey: StandardFonts
-  color: string
-  transform: number[]
-  edited: boolean
-}
-
 type EditorElement = TextElement | ImageElement | ShapeElement
-type ToolType = 'select' | 'text' | 'image' | 'draw' | 'delete' | 'rect' | 'line' | 'edit'
+type ToolType = 'select' | 'text' | 'image' | 'draw' | 'delete' | 'rect' | 'line'
 
 // ============================================================
 // Constants & Helpers
 // ============================================================
 
-const FONT_OPTIONS = [
-  { label: 'Sans Serif', value: 'Helvetica, Arial, sans-serif', pdf: StandardFonts.Helvetica },
-  { label: 'Sans Serif Bold', value: '__helvetica_bold__', pdf: StandardFonts.HelveticaBold },
-  { label: 'Serif', value: '"Times New Roman", Times, serif', pdf: StandardFonts.TimesRoman },
-  { label: 'Monospace', value: '"Courier New", Courier, monospace', pdf: StandardFonts.Courier },
+const GOOGLE_FONTS = [
+  { label: 'Helvetica (Standard)', value: 'Helvetica', url: null },
+  { label: 'Roboto', value: 'Roboto', url: 'https://raw.githubusercontent.com/googlefonts/roboto/main/src/hinted/Roboto-Regular.ttf' },
+  { label: 'Open Sans', value: 'Open Sans', url: 'https://raw.githubusercontent.com/googlefonts/opensans/main/fonts/ttf/OpenSans-Regular.ttf' },
+  { label: 'Lato', value: 'Lato', url: 'https://raw.githubusercontent.com/googlefonts/lato/main/fonts/ttf/Lato-Regular.ttf' },
+  { label: 'Montserrat', value: 'Montserrat', url: 'https://raw.githubusercontent.com/JulietaUla/Montserrat/master/fonts/ttf/Montserrat-Regular.ttf' },
+  { label: 'Oswald', value: 'Oswald', url: 'https://raw.githubusercontent.com/googlefonts/OswaldFont/master/fonts/ttf/Oswald-Regular.ttf' },
+  { label: 'Playfair Display', value: 'Playfair Display', url: 'https://raw.githubusercontent.com/googlefonts/Playfair/main/fonts/ttf/PlayfairDisplay-Regular.ttf' },
 ]
 
 const MIN_EL = 12
@@ -109,39 +97,11 @@ async function dataUrlToBuffer(url: string): Promise<ArrayBuffer> {
   return r.arrayBuffer()
 }
 
-// Map PDF font name (from pdfjs) to pdf-lib StandardFont
-function detectPdfFont(fontName: string): { key: StandardFonts; bold: boolean; italic: boolean } {
+function detectPdfFont(fontName: string): StandardFonts {
   const name = (fontName || '').toLowerCase()
-  const isBold = name.includes('bold')
-  const isItalic = name.includes('italic') || name.includes('oblique')
-
-  if (name.includes('courier') || name.includes('mono')) {
-    if (isBold) return { key: StandardFonts.CourierBold, bold: true, italic: false }
-    return { key: StandardFonts.Courier, bold: false, italic: false }
-  }
-  if (name.includes('times') || name.includes('serif') || name.includes('roman')) {
-    if (isBold && isItalic) return { key: StandardFonts.TimesRomanBoldItalic, bold: true, italic: true }
-    if (isBold) return { key: StandardFonts.TimesRomanBold, bold: true, italic: false }
-    if (isItalic) return { key: StandardFonts.TimesRomanItalic, bold: false, italic: true }
-    return { key: StandardFonts.TimesRoman, bold: false, italic: false }
-  }
-  // Default: Helvetica
-  if (isBold && isItalic) return { key: StandardFonts.HelveticaBoldOblique, bold: true, italic: true }
-  if (isBold) return { key: StandardFonts.HelveticaBold, bold: true, italic: false }
-  if (isItalic) return { key: StandardFonts.HelveticaOblique, bold: false, italic: true }
-  return { key: StandardFonts.Helvetica, bold: false, italic: false }
-}
-
-function mapPdfFont(fontFamily: string, bold?: boolean): StandardFonts {
-  if (bold || fontFamily === '__helvetica_bold__') return StandardFonts.HelveticaBold
-  if (fontFamily.includes('Courier') || fontFamily.includes('monospace')) return StandardFonts.Courier
-  if (fontFamily.includes('Times') || fontFamily.includes('serif')) return StandardFonts.TimesRoman
+  if (name.includes('courier') || name.includes('mono')) return StandardFonts.Courier
+  if (name.includes('times') || name.includes('serif') || name.includes('roman')) return StandardFonts.TimesRoman
   return StandardFonts.Helvetica
-}
-
-function displayFont(fontFamily: string): string {
-  if (fontFamily === '__helvetica_bold__') return 'Helvetica, Arial, sans-serif'
-  return fontFamily
 }
 
 function readFileAsDataUrl(file: File): Promise<string> {
@@ -162,7 +122,8 @@ function wrapText(
 ): string[] {
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')!
-  ctx.font = `${bold ? 'bold ' : ''}${fontSize}px ${displayFont(fontFamily)}`
+  const fam = fontFamily === 'Helvetica' ? 'sans-serif' : `"${fontFamily}", sans-serif`
+  ctx.font = `${bold ? 'bold ' : ''}${fontSize}px ${fam}`
   const lines: string[] = []
   const paragraphs = text.split('\n')
 
@@ -203,14 +164,12 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
 
   // ---- Editor ----
   const [elements, setElements] = useState<EditorElement[]>([])
+  const [originalMasks, setOriginalMasks] = useState<{page: number, x: number, y: number, w: number, h: number}[]>([])
+  
   const [selId, setSelId] = useState<string | null>(null)
   const [tool, setTool] = useState<ToolType>('select')
   const [editingTextId, setEditingTextId] = useState<string | null>(null)
-
-  // ---- PDF Existing Text (editable) ----
-  const [pdfTextItems, setPdfTextItems] = useState<PdfTextItem[]>([])
-  const [editingPdfTextId, setEditingPdfTextId] = useState<string | null>(null)
-  const pdfTextEditedRef = useRef<Map<string, string>>(new Map()) // id -> new text
+  const [leftTab, setLeftTab] = useState('text')
 
   // ---- History (Undo/Redo) ----
   const historyRef = useRef<EditorElement[][]>([])
@@ -247,16 +206,14 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
   // ---- Refs ----
   const pdfCanvasRef = useRef<HTMLCanvasElement>(null)
   const drawCanvasRef = useRef<HTMLCanvasElement>(null)
+  const maskCanvasRef = useRef<HTMLCanvasElement>(null)
   const wrapRef = useRef<HTMLDivElement>(null)
   const imgInputRef = useRef<HTMLInputElement>(null)
   const textInputRef = useRef<HTMLTextAreaElement>(null)
-  const pdfTextInputRef = useRef<HTMLTextAreaElement>(null)
 
   // Derived
   const selEl = elements.find(e => e.id === selId) ?? null
   const pageEls = elements.filter(e => e.page === page).sort((a, b) => (a.zIndex ?? 0) - (b.zIndex ?? 0))
-  const pageTextItems = pdfTextItems.filter(t => t.page === page)
-  const editingPdfItem = pdfTextItems.find(t => t.id === editingPdfTextId) ?? null
 
   // ============================================================
   // History Management
@@ -312,16 +269,10 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
         if (cancelled) return
         setPages(pdf.numPages)
         setPage(1)
-        setElements([])
-        setSelId(null)
-        drawDataRef.current.clear()
-        historyRef.current = [[]]
-        historyIndexRef.current = 0
-        pdfTextEditedRef.current.clear()
-        setEditingPdfTextId(null)
-
-        // Extract text content from ALL pages
-        const allTextItems: PdfTextItem[] = []
+        
+        // Extract text content from ALL pages into standard TextElements
+        const allElements: EditorElement[] = []
+        const masks = []
         for (let p = 1; p <= pdf.numPages; p++) {
           const pg = await pdf.getPage(p)
           const baseViewport = pg.getViewport({ scale: 1.0 })
@@ -333,35 +284,40 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
             if (!item.transform) continue
 
             const tx = item.transform
-            // tx = [scaleX, skewY, skewX, scaleY, translateX, translateY]
-            // In PDF, Y is from bottom. Convert to top-based.
             const fontSize = Math.sqrt(tx[0] * tx[0] + tx[1] * tx[1]) || 12
             const x = tx[4]
             const yFromBottom = tx[5]
-            const y = pageHeight - yFromBottom - fontSize // from top
+            const y = pageHeight - yFromBottom - fontSize
+            const width = item.width || (fontSize * item.str.length * 0.5)
 
-            const fontInfo = detectPdfFont(item.fontName || '')
-            const width = item.width || 0
-
-            allTextItems.push({
+            allElements.push({
               id: uid(),
+              type: 'text',
               page: p,
-              str: item.str,
-              originalStr: item.str,
-              x,
-              y,
+              content: item.str,
+              x, y,
               width,
               height: fontSize * 1.2,
               fontSize,
-              fontName: item.fontName || 'Helvetica',
-              pdfFontKey: fontInfo.key,
+              fontFamily: 'Helvetica',
+              pdfFontKey: detectPdfFont(item.fontName || ''),
               color: '#000000',
-              transform: tx,
-              edited: false,
-            })
+              zIndex: allElements.length,
+              isOriginal: true,
+            } as TextElement)
+
+            masks.push({ page: p, x, y, w: width, h: fontSize * 1.2 })
           }
         }
-        if (!cancelled) setPdfTextItems(allTextItems)
+        
+        if (!cancelled) {
+          setOriginalMasks(masks)
+          setElements(allElements)
+          setSelId(null)
+          drawDataRef.current.clear()
+          historyRef.current = [JSON.parse(JSON.stringify(allElements))]
+          historyIndexRef.current = 0
+        }
       } catch (err) {
         console.error(err)
         toast.error('Failed to load PDF')
@@ -371,7 +327,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
   }, [pdfFile])
 
   // ============================================================
-  // Render Page
+  // Render Page & Mask
   // ============================================================
 
   useEffect(() => {
@@ -403,6 +359,25 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
 
         if (cancelled) return
 
+        // Render Mask Canvas
+        const mc = maskCanvasRef.current
+        if (mc) {
+          mc.width = vp.width
+          mc.height = vp.height
+          const mctx = mc.getContext('2d')
+          if (mctx) {
+            mctx.clearRect(0, 0, mc.width, mc.height)
+            mctx.fillStyle = '#ffffff' // We draw white rectangles over original text
+            originalMasks
+              .filter(m => m.page === page)
+              .forEach(b => {
+                // Add tiny padding to hide anti-aliasing artifacts of baked font
+                mctx.fillRect((b.x - 1) * scale, (b.y - 1) * scale, (b.w + 2) * scale, (b.h + 2) * scale)
+              })
+          }
+        }
+
+        // Render Drawing Canvas
         const dc = drawCanvasRef.current
         if (dc) {
           dc.width = vp.width
@@ -430,7 +405,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
       cancelled = true
       try { renderTask?.cancel() } catch { /* ignore */ }
     }
-  }, [pdfBuffer, page, scale])
+  }, [pdfBuffer, page, scale, originalMasks])
 
   // ============================================================
   // Drawing
@@ -513,9 +488,9 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
       id: uid(), type: 'text',
       x: cx / scale, y: cy / scale,
       width: 200, height: 30,
-      content: 'Double-click to edit',
-      fontSize: 14,
-      fontFamily: FONT_OPTIONS[0].value,
+      content: 'New Text',
+      fontSize: 16,
+      fontFamily: 'Helvetica',
       color: '#000000',
       page,
       zIndex: elements.length,
@@ -552,7 +527,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
   }, [pageSize, page, elements, scheduleSnapshot])
 
   const updateEl = useCallback((id: string, u: Partial<EditorElement>) => {
-    setElements(prev => prev.map(e => e.id === id ? { ...e, ...u } : e))
+    setElements(prev => prev.map(e => e.id === id ? { ...e, ...u } as EditorElement : e))
   }, [])
 
   const delEl = useCallback((id: string) => {
@@ -573,6 +548,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
       x: el.x + 20,
       y: el.y + 20,
       zIndex: elements.length,
+      isOriginal: false,
     }
     const newEls = [...elements, copy]
     setElements(newEls)
@@ -580,24 +556,6 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
     scheduleSnapshot(newEls)
     toast.success('Element duplicated')
   }, [elements, scheduleSnapshot])
-
-  const bringToFront = useCallback((id: string) => {
-    setElements(prev => {
-      const maxZ = Math.max(...prev.map(p => p.zIndex ?? 0), 0)
-      const newEls = prev.map(e => e.id === id ? { ...e, zIndex: maxZ + 1 } : e)
-      scheduleSnapshot(newEls)
-      return newEls
-    })
-  }, [scheduleSnapshot])
-
-  const sendToBack = useCallback((id: string) => {
-    setElements(prev => {
-      const minZ = Math.min(...prev.map(p => p.zIndex ?? 0), 0)
-      const newEls = prev.map(e => e.id === id ? { ...e, zIndex: minZ - 1 } : e)
-      scheduleSnapshot(newEls)
-      return newEls
-    })
-  }, [scheduleSnapshot])
 
   // ============================================================
   // Shape Drawing
@@ -702,7 +660,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
 
   const onBgPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     const t = e.target as HTMLElement
-    if (t !== wrapRef.current && t !== pdfCanvasRef.current && t !== drawCanvasRef.current) return
+    if (t !== wrapRef.current && t !== pdfCanvasRef.current && t !== drawCanvasRef.current && t !== maskCanvasRef.current) return
 
     if (tool === 'text') {
       const r = wrapRef.current!.getBoundingClientRect()
@@ -711,10 +669,9 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
       onShapeStart(e.clientX, e.clientY)
     } else if (tool === 'draw') {
       onDrawStart(e.clientX, e.clientY)
-    } else if (tool === 'select' || tool === 'edit') {
+    } else if (tool === 'select') {
       setSelId(null)
       setEditingTextId(null)
-      setEditingPdfTextId(null)
     }
   }, [tool, addText, onShapeStart, onDrawStart])
 
@@ -774,12 +731,12 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       const tag = (document.activeElement?.tagName ?? '')
-      const isEditing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || editingTextId !== null || editingPdfTextId !== null
+      const isEditing = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || editingTextId !== null
       if (isEditing) return
 
       if ((e.key === 'Delete' || e.key === 'Backspace') && selId) { e.preventDefault(); delEl(selId) }
       if (e.key === 'Escape') {
-        setSelId(null); setEditingTextId(null); setEditingPdfTextId(null)
+        setSelId(null); setEditingTextId(null)
       }
       if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) { e.preventDefault(); undo() }
       if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) { e.preventDefault(); redo() }
@@ -787,10 +744,10 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
     }
     window.addEventListener('keydown', down)
     return () => window.removeEventListener('keydown', down)
-  }, [selId, delEl, undo, redo, duplicateEl, editingTextId, editingPdfTextId])
+  }, [selId, delEl, undo, redo, duplicateEl, editingTextId])
 
   // ============================================================
-  // Inline Text Editing (overlay elements)
+  // Inline Text Editing
   // ============================================================
 
   const startTextEdit = useCallback((id: string) => {
@@ -810,34 +767,6 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
   }, [editingTextId, elements, scheduleSnapshot])
 
   // ============================================================
-  // PDF Existing Text Editing
-  // ============================================================
-
-  const startPdfTextEdit = useCallback((id: string) => {
-    setEditingPdfTextId(id)
-    setSelId(null)
-    setTimeout(() => {
-      if (pdfTextInputRef.current) {
-        pdfTextInputRef.current.focus()
-        pdfTextInputRef.current.select()
-      }
-    }, 50)
-  }, [])
-
-  const finishPdfTextEdit = useCallback((id: string, newText: string) => {
-    setPdfTextItems(prev => prev.map(t => {
-      if (t.id !== id) return t
-      return { ...t, str: newText, edited: newText !== t.originalStr }
-    }))
-    if (newText.trim() !== '') {
-      pdfTextEditedRef.current.set(id, newText)
-    } else {
-      pdfTextEditedRef.current.delete(id)
-    }
-    setEditingPdfTextId(null)
-  }, [])
-
-  // ============================================================
   // Navigation helpers
   // ============================================================
 
@@ -846,7 +775,6 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
     setPage(n)
     setSelId(null)
     setEditingTextId(null)
-    setEditingPdfTextId(null)
   }, [saveDrawing])
 
   const changeZoom = useCallback((d: number) => {
@@ -875,15 +803,36 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
       saveDrawing()
 
       const pdfDoc = await PDFDocument.load(pdfBuffer)
+      pdfDoc.registerFontkit(fontkit)
       pdfDoc.setCreator('mypdftools.in')
       pdfDoc.setProducer('mypdftools.in')
       pdfDoc.setTitle(pdfDoc.getTitle() || 'Edited PDF')
       const pgs = pdfDoc.getPages()
 
-      const fontCache = new Map<StandardFonts, Awaited<ReturnType<typeof pdfDoc.embedFont>>>()
-      async function getFont(font: StandardFonts) {
-        if (!fontCache.has(font)) fontCache.set(font, await pdfDoc.embedFont(font))
-        return fontCache.get(font)!
+      // Font Caching
+      const fontCache = new Map<string, any>()
+      
+      const getPdfFont = async (fontFamily: string, fallbackKey?: StandardFonts) => {
+        if (fontCache.has(fontFamily)) return fontCache.get(fontFamily)
+        
+        const googleFont = GOOGLE_FONTS.find(f => f.value === fontFamily)
+        if (googleFont && googleFont.url) {
+          try {
+            const fontBytes = await dataUrlToBuffer(googleFont.url)
+            const customFont = await pdfDoc.embedFont(fontBytes)
+            fontCache.set(fontFamily, customFont)
+            return customFont
+          } catch (e) {
+            console.error("Failed to load custom font", e)
+            // fallback to standard
+          }
+        }
+        
+        // Fallback
+        const std = fallbackKey || StandardFonts.Helvetica
+        const font = await pdfDoc.embedFont(std)
+        fontCache.set(fontFamily, font)
+        return font
       }
 
       for (let i = 0; i < pgs.length; i++) {
@@ -891,39 +840,18 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
         const { width: pw, height: ph } = pg.getSize()
         const pn = i + 1
 
-        // 1. Handle edited existing PDF text â€” white-out original, draw new
-        const pageItems = pdfTextItems.filter(t => t.page === pn)
-        for (const item of pageItems) {
-          const currentText = pdfTextEditedRef.current.get(item.id) ?? item.originalStr
-          if (currentText === item.originalStr) continue // unchanged
+        const pageElements = elements.filter(e => e.page === pn)
 
-          const font = await getFont(item.pdfFontKey)
-          const fs = item.fontSize
-
-          // White-out original text region (with padding)
-          const whiteoutX = item.x - 1
-          const whiteoutY = ph - item.y - fs - 2
-          const whiteoutW = Math.max(item.width + 4, font.widthOfTextAtSize(currentText || ' ', fs) + 4)
-          const whiteoutH = fs * 1.3
-
+        // 1. Mask original text (always mask them based on originalMasks to handle deletions)
+        const pageMasks = originalMasks.filter(m => m.page === pn)
+        for (const b of pageMasks) {
           pg.drawRectangle({
-            x: whiteoutX,
-            y: whiteoutY,
-            width: whiteoutW,
-            height: whiteoutH,
+            x: b.x - 1,
+            y: ph - b.y - b.h - 1,
+            width: b.w + 2,
+            height: b.h + 2,
             color: rgb(1, 1, 1),
           })
-
-          // Draw new text (only if not empty)
-          if (currentText.trim()) {
-            pg.drawText(currentText, {
-              x: item.x,
-              y: ph - item.y - fs * 0.85,
-              size: fs,
-              font,
-              color: rgb(0, 0, 0),
-            })
-          }
         }
 
         // 2. Drawings (freehand)
@@ -933,30 +861,29 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
             const buf = await dataUrlToBuffer(drawUrl)
             const img = await pdfDoc.embedPng(buf)
             pg.drawImage(img, { x: 0, y: 0, width: pw, height: ph })
-          } catch (err) { console.warn('draw embed fail p' + pn, err) }
+          } catch (err) { console.warn('draw embed fail', err) }
         }
 
-        // 3. Overlay elements (added text, images, shapes)
-        const els = elements.filter(e => e.page === pn).sort((a, b) => (a.zIndex ?? 0) - (b.zIndex ?? 0))
-        for (const el of els) {
+        // 3. Render all overlay elements
+        const sortedEls = pageElements.sort((a, b) => (a.zIndex ?? 0) - (b.zIndex ?? 0))
+        for (const el of sortedEls) {
           if (el.type === 'text') {
-            const sfont = mapPdfFont(el.fontFamily, el.bold)
-            const font = await getFont(sfont)
+            const font = await getPdfFont(el.fontFamily, el.pdfFontKey)
             const [r, g, b] = hexToRgb(el.color)
             const wrappedLines = wrapText(el.content, el.width - 4, el.fontSize, el.fontFamily, el.bold)
             const lh = el.fontSize * 1.3
             for (let li = 0; li < wrappedLines.length; li++) {
-              const t = wrappedLines[li]
-              if (t) {
+              const textLine = wrappedLines[li]
+              if (textLine) {
                 let textX = el.x
                 if (el.align === 'center') {
-                  const tw = font.widthOfTextAtSize(t, el.fontSize)
+                  const tw = font.widthOfTextAtSize(textLine, el.fontSize)
                   textX = el.x + (el.width - tw) / 2
                 } else if (el.align === 'right') {
-                  const tw = font.widthOfTextAtSize(t, el.fontSize)
+                  const tw = font.widthOfTextAtSize(textLine, el.fontSize)
                   textX = el.x + el.width - tw
                 }
-                pg.drawText(t, {
+                pg.drawText(textLine, {
                   x: textX,
                   y: ph - el.y - el.fontSize * 0.85 - li * lh,
                   size: el.fontSize,
@@ -1009,7 +936,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
     } finally {
       setExporting(false)
     }
-  }, [pdfBuffer, elements, pdfTextItems, saveDrawing])
+  }, [pdfBuffer, elements, originalMasks, saveDrawing])
 
   // ============================================================
   // Reset
@@ -1017,21 +944,19 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
 
   const resetEditor = useCallback(() => {
     setPdfFile(null); setPdfBuffer(null); setElements([]); setSelId(null)
-    setPages(0); setPage(1); drawDataRef.current.clear()
+    setOriginalMasks([]); setPages(0); setPage(1); drawDataRef.current.clear()
     historyRef.current = []; historyIndexRef.current = -1
-    setPdfTextItems([]); setEditingPdfTextId(null)
-    pdfTextEditedRef.current.clear()
   }, [])
 
   // ============================================================
-  // RENDER â€“ Upload Phase
+  // RENDER - Upload Phase
   // ============================================================
 
   if (!pdfFile) {
     return (
       <ToolLayout
-        title="Edit PDF"
-        description="Full canvas-based PDF editor â€” edit existing text, add text, images, shapes, draw freehand, and more."
+        title="Canva-Style PDF Editor"
+        description="A full-featured PDF editor. Edit existing text seamlessly with custom Google Fonts, add images, draw shapes, and more."
         icon={<Pencil className="h-5 w-5" />}
         onBack={onBack}
       >
@@ -1041,25 +966,18 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
           files={pdfFile ? [pdfFile] : []}
           onFilesChange={f => setPdfFile(f[0] ?? null)}
           label="Drop a PDF file here"
-          description="Select a PDF to edit â€” existing text becomes fully editable"
+          description="Your PDF background stays perfect while text becomes 100% editable."
         />
-
         <div className="rounded-xl border bg-muted/30 p-5 space-y-3">
           <div className="flex items-center gap-2">
             <Pencil className="h-4 w-4 text-[#EE6C4D]" />
-            <span className="text-sm font-semibold">Editor Features</span>
+            <span className="text-sm font-semibold">Pro Editor Features</span>
           </div>
           <ul className="text-xs text-muted-foreground space-y-1.5 ml-6 list-disc">
-            <li><strong>Edit existing PDF text</strong> â€” click any text in the PDF to modify it (fonts auto-detected)</li>
-            <li>Add <strong>new text</strong> with custom font, size, color, and alignment</li>
-            <li>Add <strong>images</strong> and position them anywhere on the page</li>
-            <li>Draw <strong>shapes</strong> â€” rectangles and lines</li>
-            <li>Freehand <strong>drawing</strong> with adjustable pen color and size</li>
-            <li>Move, resize, rotate, and arrange elements</li>
-            <li><strong>Undo/Redo</strong> support (Ctrl+Z / Ctrl+Y)</li>
-            <li>Multi-page support with page navigation</li>
-            <li>Zoom in/out for precise editing</li>
-            <li>Works on desktop and touch devices</li>
+            <li><strong>Seamless Text Editing:</strong> Original text is automatically detected and converted to editable text boxes.</li>
+            <li><strong>Rich Fonts:</strong> Choose from popular Google Fonts (Roboto, Montserrat, Lato, etc.).</li>
+            <li><strong>Full Control:</strong> Add new text, upload images, draw rectangles, lines, and freehand.</li>
+            <li><strong>Canva Layout:</strong> Professional sidebars and contextual top toolbars for rapid editing.</li>
           </ul>
         </div>
       </ToolLayout>
@@ -1067,133 +985,208 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
   }
 
   // ============================================================
-  // RENDER â€“ Editor Phase
+  // RENDER - Editor Phase
   // ============================================================
 
   const cw = pageSize.w * scale
   const ch = pageSize.h * scale
 
-  const TOOLS: { t: ToolType; icon: React.ElementType; label: string }[] = [
-    { t: 'select', icon: MousePointer2, label: 'Select / Move (V)' },
-    { t: 'edit', icon: Edit3, label: 'Edit PDF Text (E)' },
-    { t: 'text', icon: Type, label: 'Add Text (T)' },
-    { t: 'image', icon: ImagePlus, label: 'Add Image (I)' },
-    { t: 'rect', icon: Square, label: 'Rectangle (R)' },
-    { t: 'line', icon: Minus, label: 'Line (L)' },
-    { t: 'draw', icon: Pen, label: 'Free Draw (D)' },
-    { t: 'delete', icon: Trash2, label: 'Delete (X)' },
-  ]
-
-  const editedCount = pdfTextEditedRef.current.size
-
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] min-h-[520px]">
-      {/* ============ TOP BAR ============ */}
-      <div className="flex items-center gap-2 border-b px-3 py-1.5 bg-background shrink-0 flex-wrap">
-        <Button variant="ghost" size="sm" onClick={resetEditor} className="shrink-0">
-          <ArrowLeft className="h-4 w-4 mr-1" />Back
+      
+      {/* ============ TOP CONTEXTUAL TOOLBAR ============ */}
+      <div className="flex items-center gap-2 border-b px-4 py-2 bg-background shrink-0 flex-wrap min-h-[52px]">
+        <Button variant="ghost" size="sm" onClick={resetEditor} className="shrink-0 mr-2">
+          <ArrowLeft className="h-4 w-4 mr-1" />Home
         </Button>
-        <Separator orientation="vertical" className="h-6 hidden sm:block" />
-        <div className="flex items-center gap-1.5 shrink-0">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#EE6C4D]/15 to-[#D04526]/10 text-[#EE6C4D]">
-            <Pencil className="h-3.5 w-3.5" />
+        <Separator orientation="vertical" className="h-6 hidden sm:block mx-1" />
+        
+        {selEl && selEl.type === 'text' && (
+          <div className="flex items-center gap-1.5 bg-muted/30 rounded-md p-1 shadow-sm border">
+            <Select value={selEl.fontFamily} onValueChange={v => updateEl(selEl.id, { fontFamily: v })}>
+              <SelectTrigger className="h-8 text-xs w-[140px] bg-background border-dashed">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {GOOGLE_FONTS.map(f => <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>)}
+              </SelectContent>
+            </Select>
+            <div className="flex items-center gap-1 bg-background border border-dashed rounded-md px-1">
+              <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => updateEl(selEl.id, { fontSize: Math.max(6, selEl.fontSize - 1) })}><Minus className="h-3 w-3" /></Button>
+              <span className="text-xs w-6 text-center">{Math.round(selEl.fontSize)}</span>
+              <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => updateEl(selEl.id, { fontSize: selEl.fontSize + 1 })}><div className="text-xs">+</div></Button>
+            </div>
+            <input type="color" value={selEl.color} onChange={e => updateEl(selEl.id, { color: e.target.value })} className="h-8 w-8 cursor-pointer rounded border p-0.5 bg-background" title="Text Color" />
+            <Separator orientation="vertical" className="h-6 mx-1" />
+            <Button variant={selEl.bold ? 'secondary' : 'ghost'} size="icon" className="h-8 w-8" onClick={() => updateEl(selEl.id, { bold: !selEl.bold })}><Bold className="h-3.5 w-3.5" /></Button>
+            <Button variant={selEl.italic ? 'secondary' : 'ghost'} size="icon" className="h-8 w-8" onClick={() => updateEl(selEl.id, { italic: !selEl.italic })}><Italic className="h-3.5 w-3.5" /></Button>
+            <div className="flex bg-background border border-dashed rounded-md">
+              <Button variant={selEl.align === 'left' ? 'secondary' : 'ghost'} size="icon" className="h-8 w-8 rounded-none" onClick={() => updateEl(selEl.id, { align: 'left' })}><AlignLeft className="h-3.5 w-3.5" /></Button>
+              <Button variant={selEl.align === 'center' ? 'secondary' : 'ghost'} size="icon" className="h-8 w-8 rounded-none" onClick={() => updateEl(selEl.id, { align: 'center' })}><AlignCenter className="h-3.5 w-3.5" /></Button>
+              <Button variant={selEl.align === 'right' ? 'secondary' : 'ghost'} size="icon" className="h-8 w-8 rounded-none" onClick={() => updateEl(selEl.id, { align: 'right' })}><AlignRight className="h-3.5 w-3.5" /></Button>
+            </div>
+            <Separator orientation="vertical" className="h-6 mx-1" />
+            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => duplicateEl(selEl.id)} title="Duplicate"><Copy className="h-3.5 w-3.5" /></Button>
+            <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:bg-destructive/10" onClick={() => delEl(selEl.id)} title="Delete"><Trash2 className="h-3.5 w-3.5" /></Button>
           </div>
-          <span className="font-semibold text-sm hidden sm:inline">Edit PDF</span>
-          {editedCount > 0 && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-[#EE6C4D]/15 text-[#EE6C4D] font-medium">
-              {editedCount} edited
-            </span>
-          )}
-        </div>
+        )}
 
-        <div className="flex items-center gap-0.5 shrink-0">
-          <Button
-            variant="ghost" size="icon" className="h-7 w-7"
-            onClick={undo}
-            disabled={historyIndexRef.current <= 0}
-            title="Undo (Ctrl+Z)"
-          >
-            <Undo2 className="h-3.5 w-3.5" />
-          </Button>
-          <Button
-            variant="ghost" size="icon" className="h-7 w-7"
-            onClick={redo}
-            disabled={historyIndexRef.current >= historyRef.current.length - 1}
-            title="Redo (Ctrl+Y)"
-          >
-            <Redo2 className="h-3.5 w-3.5" />
-          </Button>
-        </div>
+        {selEl && selEl.type === 'shape' && (
+          <div className="flex items-center gap-1.5 bg-muted/30 rounded-md p-1 shadow-sm border">
+             <div className="flex items-center gap-2 px-2 text-xs text-muted-foreground"><Palette className="w-3.5 h-3.5" /> Stroke</div>
+             <input type="color" value={selEl.strokeColor} onChange={e => updateEl(selEl.id, { strokeColor: e.target.value })} className="h-8 w-8 cursor-pointer rounded border p-0.5 bg-background" />
+             <div className="flex items-center gap-2 px-2 text-xs text-muted-foreground ml-2">Weight</div>
+             <Slider className="w-24" value={[selEl.strokeWidth]} onValueChange={([v]) => updateEl(selEl.id, { strokeWidth: v })} min={1} max={10} step={1} />
+             {selEl.shape === 'rect' && (
+               <>
+                 <Separator orientation="vertical" className="h-6 mx-2" />
+                 <div className="flex items-center gap-2 px-2 text-xs text-muted-foreground">Fill</div>
+                 <input type="color" value={selEl.fillColor ?? '#ffffff'} onChange={e => updateEl(selEl.id, { fillColor: e.target.value + '20' })} className="h-8 w-8 cursor-pointer rounded border p-0.5 bg-background" />
+               </>
+             )}
+             <Separator orientation="vertical" className="h-6 mx-1" />
+             <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:bg-destructive/10" onClick={() => delEl(selEl.id)} title="Delete"><Trash2 className="h-3.5 w-3.5" /></Button>
+          </div>
+        )}
 
-        <div className="flex items-center gap-1 mx-auto shrink-0">
-          <Button variant="outline" size="icon" className="h-7 w-7" disabled={page <= 1} onClick={() => goToPage(page - 1)}>
-            <ChevronLeft className="h-3.5 w-3.5" />
-          </Button>
-          <span className="text-xs min-w-[72px] text-center tabular-nums">Page {page} / {pages}</span>
-          <Button variant="outline" size="icon" className="h-7 w-7" disabled={page >= pages} onClick={() => goToPage(page + 1)}>
-            <ChevronRight className="h-3.5 w-3.5" />
-          </Button>
-        </div>
-
-        <div className="flex items-center gap-1 shrink-0">
-          <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => changeZoom(-0.25)} disabled={scale <= 0.5}>
-            <ZoomOut className="h-3.5 w-3.5" />
-          </Button>
-          <span className="text-xs min-w-[40px] text-center tabular-nums">{Math.round(scale * 100)}%</span>
-          <Button variant="outline" size="icon" className="h-7 w-7" onClick={() => changeZoom(0.25)} disabled={scale >= 3}>
-            <ZoomIn className="h-3.5 w-3.5" />
-          </Button>
+        {/* Global Toolbar items */}
+        <div className="ml-auto flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-0.5">
+            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={undo} disabled={historyIndexRef.current <= 0} title="Undo (Ctrl+Z)"><Undo2 className="h-4 w-4" /></Button>
+            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={redo} disabled={historyIndexRef.current >= historyRef.current.length - 1} title="Redo (Ctrl+Y)"><Redo2 className="h-4 w-4" /></Button>
+          </div>
           <Separator orientation="vertical" className="h-6 mx-1" />
-          <Button size="sm" onClick={handleExport} disabled={exporting} className="h-7 bg-gradient-to-r from-[#EE6C4D] to-[#D04526] text-white hover:opacity-90">
-            {exporting ? <Loader2 className="h-3.5 w-3.5 mr-1 animate-spin" /> : <Download className="h-3.5 w-3.5 mr-1" />}
+          <div className="flex items-center gap-1 shrink-0">
+            <Button variant="outline" size="icon" className="h-8 w-8" disabled={page <= 1} onClick={() => goToPage(page - 1)}>
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <span className="text-xs min-w-[72px] text-center font-medium">Page {page} / {pages}</span>
+            <Button variant="outline" size="icon" className="h-8 w-8" disabled={page >= pages} onClick={() => goToPage(page + 1)}>
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+          <Separator orientation="vertical" className="h-6 mx-1" />
+          <div className="flex items-center gap-1 shrink-0 bg-muted/20 rounded-md border p-0.5 hidden sm:flex">
+            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => changeZoom(-0.25)} disabled={scale <= 0.5}><ZoomOut className="h-3.5 w-3.5" /></Button>
+            <span className="text-xs min-w-[40px] text-center font-medium">{Math.round(scale * 100)}%</span>
+            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => changeZoom(0.25)} disabled={scale >= 3}><ZoomIn className="h-3.5 w-3.5" /></Button>
+          </div>
+          <Button size="sm" onClick={handleExport} disabled={exporting} className="h-9 ml-2 bg-gradient-to-r from-[#EE6C4D] to-[#D04526] text-white hover:opacity-90 shadow-md">
+            {exporting ? <Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> : <Download className="h-4 w-4 mr-1.5" />}
             Export PDF
           </Button>
         </div>
       </div>
 
-      {/* ============ MAIN ============ */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* ---- Left Toolbar ---- */}
-        <div className="flex flex-col items-center gap-1 p-1.5 border-r bg-muted/30 shrink-0 w-11 overflow-y-auto">
-          {TOOLS.map(({ t, icon: Ic, label }) => (
-            <Button
-              key={t}
-              variant={tool === t ? 'default' : 'ghost'}
-              size="icon"
-              className={`h-8 w-8 ${tool === t ? 'bg-gradient-to-br from-[#EE6C4D] to-[#D04526] text-white' : ''}`}
-              onClick={() => {
-                setTool(t)
-                if (t === 'image') imgInputRef.current?.click()
-                if (t !== 'select' && t !== 'edit') setSelId(null)
-                if (t !== 'edit') setEditingPdfTextId(null)
-              }}
-              title={label}
-            >
-              <Ic className="h-4 w-4" />
-            </Button>
-          ))}
-          <Separator className="my-0.5" />
-          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={clearDraw} title="Clear Drawing">
-            <RotateCcw className="h-4 w-4" />
+      {/* ============ MAIN WORKSPACE ============ */}
+      <div className="flex flex-1 overflow-hidden bg-muted/30">
+        
+        {/* ---- Left Sidebar (Canva Style) ---- */}
+        <div className="w-16 sm:w-20 border-r bg-background flex flex-col items-center py-4 gap-4 shrink-0 z-10 shadow-sm">
+          <Button variant={leftTab === 'text' ? 'secondary' : 'ghost'} className="w-14 h-14 sm:w-16 sm:h-16 flex-col gap-1 rounded-xl" onClick={() => { setLeftTab('text'); setTool('select'); }}>
+            <TypeIcon className="w-5 h-5 text-blue-500" />
+            <span className="text-[10px]">Text</span>
+          </Button>
+          <Button variant={leftTab === 'elements' ? 'secondary' : 'ghost'} className="w-14 h-14 sm:w-16 sm:h-16 flex-col gap-1 rounded-xl" onClick={() => { setLeftTab('elements'); setTool('select'); }}>
+            <LayoutTemplate className="w-5 h-5 text-purple-500" />
+            <span className="text-[10px]">Elements</span>
+          </Button>
+          <Button variant={leftTab === 'uploads' ? 'secondary' : 'ghost'} className="w-14 h-14 sm:w-16 sm:h-16 flex-col gap-1 rounded-xl" onClick={() => { setLeftTab('uploads'); setTool('image'); imgInputRef.current?.click(); }}>
+            <UploadCloud className="w-5 h-5 text-orange-500" />
+            <span className="text-[10px]">Uploads</span>
+          </Button>
+          <Button variant={leftTab === 'draw' ? 'secondary' : 'ghost'} className="w-14 h-14 sm:w-16 sm:h-16 flex-col gap-1 rounded-xl" onClick={() => { setLeftTab('draw'); setTool('draw'); }}>
+            <Pen className="w-5 h-5 text-green-500" />
+            <span className="text-[10px]">Draw</span>
           </Button>
         </div>
 
+        {/* ---- Sidebar Panel Content ---- */}
+        <div className="w-64 border-r bg-card shrink-0 overflow-y-auto hidden md:block z-10 shadow-[2px_0_10px_rgba(0,0,0,0.02)]">
+          <div className="p-4">
+            {leftTab === 'text' && (
+              <div className="space-y-4">
+                <h3 className="font-semibold text-sm mb-3">Add Text</h3>
+                <Button className="w-full justify-start h-12 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 shadow-none font-bold text-lg" onClick={() => addText(100, 100)}>
+                  Add a heading
+                </Button>
+                <Button className="w-full justify-start h-10 bg-muted/50 hover:bg-muted text-foreground border border-dashed font-semibold text-sm" onClick={() => addText(100, 160)}>
+                  Add a subheading
+                </Button>
+                <Button className="w-full justify-start h-8 bg-transparent hover:bg-muted text-muted-foreground text-xs" onClick={() => addText(100, 220)}>
+                  Add a little bit of body text
+                </Button>
+                <div className="mt-6 pt-4 border-t">
+                  <p className="text-xs font-semibold text-foreground mb-2">Edit Existing Text!</p>
+                  <p className="text-[11px] text-muted-foreground bg-muted p-2 rounded-md leading-relaxed border">
+                    All original PDF text has been converted into editable blocks. Click any text on the right canvas to rewrite it, change its font, or move it around seamlessly.
+                  </p>
+                </div>
+              </div>
+            )}
+            
+            {leftTab === 'elements' && (
+              <div className="space-y-4">
+                <h3 className="font-semibold text-sm mb-3">Shapes & Lines</h3>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button variant={tool === 'rect' ? 'default' : 'outline'} className="h-16 flex flex-col gap-2 bg-muted/30 hover:bg-muted" onClick={() => setTool('rect')}>
+                    <Square className="h-5 w-5" />
+                    <span className="text-[10px]">Rectangle</span>
+                  </Button>
+                  <Button variant={tool === 'line' ? 'default' : 'outline'} className="h-16 flex flex-col gap-2 bg-muted/30 hover:bg-muted" onClick={() => setTool('line')}>
+                    <Minus className="h-5 w-5" />
+                    <span className="text-[10px]">Line</span>
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {leftTab === 'uploads' && (
+              <div className="space-y-4">
+                <h3 className="font-semibold text-sm mb-3">Images</h3>
+                <Button className="w-full h-12 border-dashed border-2 bg-orange-50/50 hover:bg-orange-50 text-orange-600 border-orange-200 shadow-none" onClick={() => { setTool('image'); imgInputRef.current?.click(); }}>
+                  <UploadCloud className="mr-2 h-4 w-4" /> Upload Image
+                </Button>
+                <p className="text-[11px] text-muted-foreground text-center mt-2">JPEG, PNG supported.</p>
+              </div>
+            )}
+
+            {leftTab === 'draw' && (
+              <div className="space-y-4">
+                <h3 className="font-semibold text-sm mb-3">Freehand Drawing</h3>
+                <Button className={`w-full justify-start h-10 ${tool === 'draw' ? 'ring-2 ring-green-500 bg-green-50 text-green-700' : 'bg-muted/50 text-muted-foreground'} border`} onClick={() => setTool('draw')}>
+                  <Pen className="mr-2 h-4 w-4" /> Enable Pen
+                </Button>
+                <div className="space-y-3 mt-4">
+                  <Label className="text-xs font-semibold">Pen Color</Label>
+                  <input type="color" value={drawColor} onChange={e => setDrawColor(e.target.value)} className="h-8 w-full cursor-pointer rounded-md border p-1" />
+                  
+                  <Label className="text-xs font-semibold mt-3 block">Pen Size: {drawSize}px</Label>
+                  <Slider value={[drawSize]} onValueChange={([v]) => setDrawSize(v)} min={1} max={20} step={1} />
+                </div>
+                <Button variant="outline" className="w-full mt-4 text-xs h-8 text-destructive hover:bg-destructive/10" onClick={clearDraw}>
+                  <RotateCcw className="mr-2 h-3 w-3" /> Clear Drawings
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* ---- Canvas Area ---- */}
-        <div className="flex-1 overflow-auto bg-muted/60 flex items-start justify-center p-4 relative">
+        <div className="flex-1 overflow-auto flex items-start justify-center p-6 relative">
           {rendering && (
-            <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-background/90 backdrop-blur px-3 py-1.5 rounded-lg shadow text-xs text-muted-foreground">
-              <Loader2 className="h-3.5 w-3.5 animate-spin" /> Renderingâ€¦
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-background/90 backdrop-blur px-4 py-2 rounded-full shadow-lg text-sm font-medium border text-foreground">
+              <Loader2 className="h-4 w-4 animate-spin text-[#EE6C4D]" /> Rendering...
             </div>
           )}
           {cw > 0 && (
             <div
               ref={wrapRef}
-              className="relative shadow-xl bg-white shrink-0"
+              className="relative shadow-2xl bg-white shrink-0 transition-transform duration-200 ring-1 ring-border"
               style={{
                 width: cw, height: ch,
                 cursor: tool === 'text' ? 'text'
                   : (tool === 'draw' || tool === 'rect' || tool === 'line') ? 'crosshair'
-                  : tool === 'edit' ? 'text'
                   : 'default',
                 touchAction: 'none',
               }}
@@ -1201,6 +1194,9 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
             >
               {/* PDF page canvas */}
               <canvas ref={pdfCanvasRef} className="absolute inset-0 pointer-events-none" style={{ width: cw, height: ch }} />
+
+              {/* Mask Canvas (hides original text) */}
+              <canvas ref={maskCanvasRef} className="absolute inset-0 pointer-events-none z-[5]" style={{ width: cw, height: ch }} />
 
               {/* Drawing canvas */}
               <canvas
@@ -1212,74 +1208,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                 }}
               />
 
-              {/* PDF Existing Text Layer (editable) */}
-              <div
-                className="absolute inset-0 z-15 pointer-events-none"
-                style={{ width: cw, height: ch }}
-              >
-                {pageTextItems.map(item => {
-                  const isEditing = item.id === editingPdfTextId
-                  const displayText = pdfTextEditedRef.current.get(item.id) ?? item.originalStr
-                  const isEdited = displayText !== item.originalStr
-                  const isActiveTool = tool === 'edit' || tool === 'select'
-
-                  return (
-                    <div
-                      key={item.id}
-                      className={`absolute ${isActiveTool ? 'pointer-events-auto' : ''} ${
-                        isActiveTool ? 'cursor-text hover:bg-[#EE6C4D]/10 hover:outline hover:outline-1 hover:outline-[#EE6C4D]/40' : ''
-                      } ${isEdited ? 'bg-[#EE6C4D]/5 outline outline-1 outline-[#EE6C4D]/30' : ''}`}
-                      style={{
-                        left: item.x * scale,
-                        top: item.y * scale,
-                        minWidth: item.width * scale,
-                        minHeight: item.height * scale,
-                        fontSize: item.fontSize * scale,
-                        fontFamily: displayFont(item.fontName),
-                        color: item.color,
-                        lineHeight: 1.2,
-                        whiteSpace: 'pre',
-                      }}
-                      onClick={(e) => {
-                        if (!isActiveTool) return
-                        e.stopPropagation()
-                        if (tool === 'edit' || tool === 'select') {
-                          startPdfTextEdit(item.id)
-                        }
-                      }}
-                    >
-                      {isEditing ? (
-                        <textarea
-                          ref={pdfTextInputRef}
-                          defaultValue={displayText}
-                          onBlur={(e) => finishPdfTextEdit(item.id, e.target.value)}
-                          onPointerDown={e => e.stopPropagation()}
-                          onKeyDown={e => {
-                            e.stopPropagation()
-                            if (e.key === 'Escape' || (e.key === 'Enter' && !e.shiftKey)) {
-                              e.preventDefault()
-                              finishPdfTextEdit(item.id, (e.target as HTMLTextAreaElement).value)
-                            }
-                          }}
-                          className="w-full h-full min-w-[60px] min-h-[20px] p-0 m-0 border-0 outline-none resize-none bg-[#EE6C4D]/10 ring-2 ring-[#EE6C4D] rounded-sm"
-                          style={{
-                            fontSize: item.fontSize * scale,
-                            fontFamily: displayFont(item.fontName),
-                            color: item.color,
-                            lineHeight: 1.2,
-                          }}
-                        />
-                      ) : (
-                        <span className="inline-block">
-                          {displayText || '\u00A0'}
-                        </span>
-                      )}
-                    </div>
-                  )
-                })}
-              </div>
-
-              {/* Overlay elements (added text, images, shapes) */}
+              {/* Overlay elements (added text, images, shapes, and extracted PDF text) */}
               {pageEls.map(el => {
                 const sel = el.id === selId
                 const isEditing = el.id === editingTextId
@@ -1289,11 +1218,14 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                 const lh = el.height * scale
                 const cursor = tool === 'select' ? 'cursor-move' : tool === 'delete' ? 'cursor-pointer' : ''
                 const rot = el.rotation ?? 0
+                
+                // For original text, we want to show a subtle hover effect to indicate it's editable
+                const isOriginalTextHoverable = el.isOriginal && !sel && tool === 'select'
 
                 return (
                   <div
                     key={el.id}
-                    className={`absolute z-20 ${cursor} ${sel ? 'ring-2 ring-[#EE6C4D] ring-offset-1' : 'hover:ring-1 hover:ring-[#EE6C4D]/50'}`}
+                    className={`absolute z-20 ${cursor} ${sel ? 'ring-2 ring-primary ring-offset-0 shadow-sm bg-primary/5' : isOriginalTextHoverable ? 'hover:ring-1 hover:ring-primary/40 hover:bg-primary/5 rounded-sm' : 'hover:ring-1 hover:ring-primary/50'}`}
                     style={{
                       left: lx, top: ly, width: lw, height: lh,
                       transform: `rotate(${rot}deg)`,
@@ -1322,10 +1254,11 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                           className="w-full h-full p-0 m-0 border-0 outline-none resize-none bg-transparent"
                           style={{
                             fontSize: el.fontSize * scale,
-                            fontFamily: displayFont(el.fontFamily),
-                            fontWeight: el.bold || el.fontFamily === '__helvetica_bold__' ? 'bold' : 'normal',
+                            fontFamily: el.fontFamily === 'Helvetica' ? 'sans-serif' : `"${el.fontFamily}", sans-serif`,
+                            fontWeight: el.bold ? 'bold' : 'normal',
+                            fontStyle: el.italic ? 'italic' : 'normal',
                             color: el.color,
-                            lineHeight: 1.3,
+                            lineHeight: 1.2,
                             textAlign: el.align ?? 'left',
                           }}
                         />
@@ -1334,10 +1267,11 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                           className="w-full h-full whitespace-pre-wrap break-words overflow-hidden select-none pointer-events-none"
                           style={{
                             fontSize: el.fontSize * scale,
-                            fontFamily: displayFont(el.fontFamily),
-                            fontWeight: el.bold || el.fontFamily === '__helvetica_bold__' ? 'bold' : 'normal',
+                            fontFamily: el.fontFamily === 'Helvetica' ? 'sans-serif' : `"${el.fontFamily}", sans-serif`,
+                            fontWeight: el.bold ? 'bold' : 'normal',
+                            fontStyle: el.italic ? 'italic' : 'normal',
                             color: el.color,
-                            lineHeight: 1.3,
+                            lineHeight: 1.2,
                             textAlign: el.align ?? 'left',
                           }}
                         >
@@ -1377,7 +1311,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                         {(['tl', 'tr', 'bl', 'br'] as const).map(h => (
                           <div
                             key={h}
-                            className="absolute w-2.5 h-2.5 bg-white border-2 border-[#EE6C4D] rounded-sm z-30"
+                            className="absolute w-2.5 h-2.5 bg-white border border-primary rounded-full z-30 shadow-sm"
                             style={{
                               top: h.includes('t') ? -5 : undefined,
                               bottom: h.includes('b') ? -5 : undefined,
@@ -1389,19 +1323,20 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                           />
                         ))}
                         <div
-                          className="absolute w-2.5 h-2.5 bg-white border-2 border-[#7B68EE] rounded-full z-30"
+                          className="absolute w-5 h-5 bg-white border border-primary text-primary rounded-full z-30 flex items-center justify-center shadow-md cursor-grab active:cursor-grabbing"
                           style={{
-                            top: -25,
+                            top: -28,
                             left: '50%',
                             transform: 'translateX(-50%)',
-                            cursor: 'grab',
                           }}
                           onPointerDown={e => onRotateDown(e, el.id)}
                           title="Rotate"
-                        />
+                        >
+                          <RotateCcw className="w-2.5 h-2.5" />
+                        </div>
                         <div
-                          className="absolute bg-[#7B68EE] z-20"
-                          style={{ top: -20, left: '50%', width: 1, height: 15, transform: 'translateX(-50%)' }}
+                          className="absolute bg-primary/30 z-20 pointer-events-none"
+                          style={{ top: -20, left: '50%', width: 1, height: 20, transform: 'translateX(-50%)' }}
                         />
                       </>
                     )}
@@ -1412,277 +1347,9 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
           )}
         </div>
 
-        {/* ---- Right Panel ---- */}
-        <div className="w-56 border-l bg-background p-3 overflow-y-auto shrink-0 hidden md:block">
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">Properties</h3>
-
-          {(tool === 'edit' || tool === 'select') && !selEl && !editingPdfItem && (
-            <div className="rounded-lg border border-[#EE6C4D]/30 bg-[#EE6C4D]/5 p-3 mb-3">
-              <div className="flex items-center gap-2 mb-1.5">
-                <Edit3 className="h-3.5 w-3.5 text-[#EE6C4D]" />
-                <span className="text-xs font-semibold">Edit PDF Text</span>
-              </div>
-              <p className="text-[10px] text-muted-foreground leading-relaxed">
-                Click on any text in the PDF to edit it directly. The original font will be auto-detected and preserved.
-              </p>
-              {editedCount > 0 && (
-                <p className="text-[10px] text-[#EE6C4D] mt-2 font-medium">
-                  âœ“ {editedCount} text item{editedCount > 1 ? 's' : ''} edited on this PDF
-                </p>
-              )}
-            </div>
-          )}
-
-          {editingPdfItem && (
-            <div className="space-y-3">
-              <div className="rounded-lg border border-[#EE6C4D]/40 bg-[#EE6C4D]/5 p-2">
-                <div className="flex items-center gap-1.5 mb-1">
-                  <Edit3 className="h-3 w-3 text-[#EE6C4D]" />
-                  <span className="text-[10px] font-semibold text-[#EE6C4D]">EDITING PDF TEXT</span>
-                </div>
-                <p className="text-[10px] text-muted-foreground">
-                  Font: <span className="font-mono">{editingPdfItem.fontName}</span>
-                </p>
-                <p className="text-[10px] text-muted-foreground">
-                  Size: {editingPdfItem.fontSize.toFixed(1)}pt
-                </p>
-              </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Text</Label>
-                <Textarea
-                  value={pdfTextEditedRef.current.get(editingPdfItem.id) ?? editingPdfItem.originalStr}
-                  onChange={e => {
-                    pdfTextEditedRef.current.set(editingPdfItem.id, e.target.value)
-                    setPdfTextItems(prev => prev.map(t =>
-                      t.id === editingPdfItem.id
-                        ? { ...t, str: e.target.value, edited: e.target.value !== t.originalStr }
-                        : t
-                    ))
-                  }}
-                  className="min-h-[80px] text-xs"
-                  rows={4}
-                />
-                <p className="text-[10px] text-muted-foreground">
-                  Tip: You can also click directly on the text in the PDF to edit inline.
-                </p>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-7 text-xs w-full"
-                onClick={() => {
-                  pdfTextEditedRef.current.delete(editingPdfItem.id)
-                  setPdfTextItems(prev => prev.map(t =>
-                    t.id === editingPdfItem.id ? { ...t, str: t.originalStr, edited: false } : t
-                  ))
-                  setEditingPdfTextId(null)
-                  toast.success('Text reverted to original')
-                }}
-              >
-                Revert to Original
-              </Button>
-            </div>
-          )}
-
-          {tool === 'draw' && (
-            <div className="space-y-3">
-              <div className="space-y-1">
-                <Label className="text-xs">Pen Color</Label>
-                <input type="color" value={drawColor} onChange={e => setDrawColor(e.target.value)} className="h-7 w-full cursor-pointer rounded border" />
-              </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Pen Size: {drawSize}px</Label>
-                <Slider value={[drawSize]} onValueChange={([v]) => setDrawSize(v)} min={1} max={20} step={1} />
-              </div>
-            </div>
-          )}
-
-          {(tool === 'rect' || tool === 'line') && (
-            <div className="space-y-3">
-              <div className="space-y-1">
-                <Label className="text-xs">Stroke Color</Label>
-                <input type="color" value={shapeColor} onChange={e => setShapeColor(e.target.value)} className="h-7 w-full cursor-pointer rounded border" />
-              </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Stroke Width: {shapeWidth}px</Label>
-                <Slider value={[shapeWidth]} onValueChange={([v]) => setShapeWidth(v)} min={1} max={10} step={1} />
-              </div>
-              <p className="text-[10px] text-muted-foreground">Click and drag on the canvas to draw.</p>
-            </div>
-          )}
-
-          {selEl?.type === 'text' && (
-            <div className="space-y-3">
-              <div className="space-y-1">
-                <Label className="text-xs">Text</Label>
-                <Textarea
-                  value={selEl.content}
-                  onChange={e => updateEl(selEl.id, { content: e.target.value })}
-                  className="min-h-[56px] text-xs"
-                  rows={3}
-                  placeholder="Enter text..."
-                />
-                <p className="text-[10px] text-muted-foreground mt-1">Tip: Double-click on canvas to edit inline.</p>
-              </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Font</Label>
-                <Select value={selEl.fontFamily} onValueChange={v => updateEl(selEl.id, { fontFamily: v })}>
-                  <SelectTrigger className="h-7 text-xs w-full"><SelectValue /></SelectTrigger>
-                  <SelectContent>
-                    {FONT_OPTIONS.map(f => <SelectItem key={f.label} value={f.value}>{f.label}</SelectItem>)}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Size: {selEl.fontSize}pt</Label>
-                <Slider value={[selEl.fontSize]} onValueChange={([v]) => updateEl(selEl.id, { fontSize: v })} min={6} max={72} step={1} />
-              </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Color</Label>
-                <input type="color" value={selEl.color} onChange={e => updateEl(selEl.id, { color: e.target.value })} className="h-7 w-full cursor-pointer rounded border" />
-              </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Alignment</Label>
-                <div className="grid grid-cols-3 gap-1">
-                  {(['left', 'center', 'right'] as const).map(a => (
-                    <Button
-                      key={a}
-                      variant={selEl.align === a ? 'default' : 'outline'}
-                      size="sm"
-                      className="h-7 text-[10px] capitalize"
-                      onClick={() => updateEl(selEl.id, { align: a })}
-                    >
-                      {a}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-              <Separator />
-              <div className="grid grid-cols-2 gap-1">
-                <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => duplicateEl(selEl.id)}>
-                  <Copy className="h-3 w-3 mr-1" />Duplicate
-                </Button>
-                <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => bringToFront(selEl.id)}>
-                  <BringToFront className="h-3 w-3 mr-1" />Front
-                </Button>
-                <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => sendToBack(selEl.id)}>
-                  <SendToBack className="h-3 w-3 mr-1" />Back
-                </Button>
-                <Button variant="destructive" size="sm" className="h-7 text-xs" onClick={() => delEl(selEl.id)}>
-                  <Trash2 className="h-3 w-3 mr-1" />Delete
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {selEl?.type === 'image' && (
-            <div className="space-y-3">
-              <div className="space-y-1">
-                <Label className="text-xs">Width: {Math.round(selEl.width)}pt</Label>
-                <Slider
-                  value={[selEl.width]}
-                  onValueChange={([v]) => {
-                    const ratio = selEl.height / selEl.width
-                    updateEl(selEl.id, { width: v, height: v * ratio })
-                  }}
-                  min={20} max={600} step={1}
-                />
-              </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Rotation: {selEl.rotation ?? 0}Â°</Label>
-                <Slider
-                  value={[selEl.rotation ?? 0]}
-                  onValueChange={([v]) => updateEl(selEl.id, { rotation: v })}
-                  min={-180} max={180} step={1}
-                />
-              </div>
-              <Separator />
-              <div className="grid grid-cols-2 gap-1">
-                <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => duplicateEl(selEl.id)}>
-                  <Copy className="h-3 w-3 mr-1" />Duplicate
-                </Button>
-                <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => bringToFront(selEl.id)}>
-                  <BringToFront className="h-3 w-3 mr-1" />Front
-                </Button>
-                <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => sendToBack(selEl.id)}>
-                  <SendToBack className="h-3 w-3 mr-1" />Back
-                </Button>
-                <Button variant="destructive" size="sm" className="h-7 text-xs" onClick={() => delEl(selEl.id)}>
-                  <Trash2 className="h-3 w-3 mr-1" />Delete
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {selEl?.type === 'shape' && (
-            <div className="space-y-3">
-              <div className="space-y-1">
-                <Label className="text-xs">Stroke Color</Label>
-                <input type="color" value={selEl.strokeColor} onChange={e => updateEl(selEl.id, { strokeColor: e.target.value })} className="h-7 w-full cursor-pointer rounded border" />
-              </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Stroke Width: {selEl.strokeWidth}px</Label>
-                <Slider value={[selEl.strokeWidth]} onValueChange={([v]) => updateEl(selEl.id, { strokeWidth: v })} min={1} max={10} step={1} />
-              </div>
-              {selEl.shape === 'rect' && (
-                <div className="space-y-1">
-                  <Label className="text-xs">Fill Color</Label>
-                  <input
-                    type="color"
-                    value={selEl.fillColor ?? '#ffffff'}
-                    onChange={e => updateEl(selEl.id, { fillColor: e.target.value + '20' })}
-                    className="h-7 w-full cursor-pointer rounded border"
-                  />
-                </div>
-              )}
-              <div className="space-y-1">
-                <Label className="text-xs">Rotation: {selEl.rotation ?? 0}Â°</Label>
-                <Slider
-                  value={[selEl.rotation ?? 0]}
-                  onValueChange={([v]) => updateEl(selEl.id, { rotation: v })}
-                  min={-180} max={180} step={1}
-                />
-              </div>
-              <Separator />
-              <div className="grid grid-cols-2 gap-1">
-                <Button variant="outline" size="sm" className="h-7 text-xs" onClick={() => duplicateEl(selEl.id)}>
-                  <Copy className="h-3 w-3 mr-1" />Duplicate
-                </Button>
-                <Button variant="destructive" size="sm" className="h-7 text-xs" onClick={() => delEl(selEl.id)}>
-                  <Trash2 className="h-3 w-3 mr-1" />Delete
-                </Button>
-              </div>
-            </div>
-          )}
-
-          {!selEl && !editingPdfItem && tool === 'select' && (
-            <div className="text-xs text-muted-foreground space-y-2">
-              <p className="font-medium text-foreground">How to use</p>
-              <ul className="space-y-1 list-disc list-inside">
-                <li><strong>Edit PDF Text</strong> â€” click any existing text</li>
-                <li><strong>Select</strong> â€” click &amp; drag to move added items</li>
-                <li><strong>Add Text</strong> â€” click canvas to place</li>
-                <li><strong>Add Image</strong> â€” upload &amp; place</li>
-                <li><strong>Rectangle/Line</strong> â€” click &amp; drag</li>
-                <li><strong>Draw</strong> â€” freehand pen tool</li>
-                <li><strong>Delete</strong> â€” click element to remove</li>
-              </ul>
-              <div className="mt-3 pt-3 border-t space-y-1">
-                <p className="font-medium text-foreground">Shortcuts</p>
-                <p><kbd className="px-1 py-0.5 bg-muted rounded text-[10px]">Ctrl+Z</kbd> Undo</p>
-                <p><kbd className="px-1 py-0.5 bg-muted rounded text-[10px]">Ctrl+Y</kbd> Redo</p>
-                <p><kbd className="px-1 py-0.5 bg-muted rounded text-[10px]">Ctrl+D</kbd> Duplicate</p>
-                <p><kbd className="px-1 py-0.5 bg-muted rounded text-[10px]">Del</kbd> Delete element</p>
-                <p><kbd className="px-1 py-0.5 bg-muted rounded text-[10px]">Esc</kbd> Deselect</p>
-                <p><kbd className="px-1 py-0.5 bg-muted rounded text-[10px]">Shift+Drag</kbd> Proportional resize</p>
-              </div>
-            </div>
-          )}
-        </div>
       </div>
 
       <input ref={imgInputRef} type="file" accept="image/png,image/jpeg,image/jpg,image/webp" className="hidden" onChange={onImgInput} />
     </div>
   )
 }
-
