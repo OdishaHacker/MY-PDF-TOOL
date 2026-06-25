@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import {
   FileText, Clock, ArrowRight, BookOpen, Merge, Scissors, FileDown,
   FileOutput, Lock, ImageIcon, PenTool, Droplets, Shield, Sparkles,
-  RotateCw, Crop, Hash, Wrench, Code, Type, LayoutList, Table
+  RotateCw, Crop, Hash, Wrench, Code, Type, LayoutList, Table, FileImage
 } from "lucide-react";
 
 export const metadata: Metadata = {
