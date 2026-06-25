@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'
@@ -307,7 +307,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
         if (cancelled) return
         setPdfBuffer(buf)
         const lib = await import('pdfjs-dist')
-        lib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs'
+        lib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.7.284/pdf.worker.min.mjs`
         const pdf = await lib.getDocument({ data: buf.slice(0) }).promise
         if (cancelled) return
         setPages(pdf.numPages)
@@ -383,7 +383,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
       setRendering(true)
       try {
         const lib = await import('pdfjs-dist')
-        lib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs'
+        lib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.7.284/pdf.worker.min.mjs`
         const pdf = await lib.getDocument({ data: pdfBuffer.slice(0) }).promise
         if (cancelled) return
         const p = await pdf.getPage(page)
@@ -891,7 +891,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
         const { width: pw, height: ph } = pg.getSize()
         const pn = i + 1
 
-        // 1. Handle edited existing PDF text — white-out original, draw new
+        // 1. Handle edited existing PDF text â€” white-out original, draw new
         const pageItems = pdfTextItems.filter(t => t.page === pn)
         for (const item of pageItems) {
           const currentText = pdfTextEditedRef.current.get(item.id) ?? item.originalStr
@@ -1024,14 +1024,14 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
   }, [])
 
   // ============================================================
-  // RENDER – Upload Phase
+  // RENDER â€“ Upload Phase
   // ============================================================
 
   if (!pdfFile) {
     return (
       <ToolLayout
         title="Edit PDF"
-        description="Full canvas-based PDF editor — edit existing text, add text, images, shapes, draw freehand, and more."
+        description="Full canvas-based PDF editor â€” edit existing text, add text, images, shapes, draw freehand, and more."
         icon={<Pencil className="h-5 w-5" />}
         onBack={onBack}
       >
@@ -1041,7 +1041,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
           files={pdfFile ? [pdfFile] : []}
           onFilesChange={f => setPdfFile(f[0] ?? null)}
           label="Drop a PDF file here"
-          description="Select a PDF to edit — existing text becomes fully editable"
+          description="Select a PDF to edit â€” existing text becomes fully editable"
         />
 
         <div className="rounded-xl border bg-muted/30 p-5 space-y-3">
@@ -1050,10 +1050,10 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
             <span className="text-sm font-semibold">Editor Features</span>
           </div>
           <ul className="text-xs text-muted-foreground space-y-1.5 ml-6 list-disc">
-            <li><strong>Edit existing PDF text</strong> — click any text in the PDF to modify it (fonts auto-detected)</li>
+            <li><strong>Edit existing PDF text</strong> â€” click any text in the PDF to modify it (fonts auto-detected)</li>
             <li>Add <strong>new text</strong> with custom font, size, color, and alignment</li>
             <li>Add <strong>images</strong> and position them anywhere on the page</li>
-            <li>Draw <strong>shapes</strong> — rectangles and lines</li>
+            <li>Draw <strong>shapes</strong> â€” rectangles and lines</li>
             <li>Freehand <strong>drawing</strong> with adjustable pen color and size</li>
             <li>Move, resize, rotate, and arrange elements</li>
             <li><strong>Undo/Redo</strong> support (Ctrl+Z / Ctrl+Y)</li>
@@ -1067,7 +1067,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
   }
 
   // ============================================================
-  // RENDER – Editor Phase
+  // RENDER â€“ Editor Phase
   // ============================================================
 
   const cw = pageSize.w * scale
@@ -1182,7 +1182,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
         <div className="flex-1 overflow-auto bg-muted/60 flex items-start justify-center p-4 relative">
           {rendering && (
             <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-background/90 backdrop-blur px-3 py-1.5 rounded-lg shadow text-xs text-muted-foreground">
-              <Loader2 className="h-3.5 w-3.5 animate-spin" /> Rendering…
+              <Loader2 className="h-3.5 w-3.5 animate-spin" /> Renderingâ€¦
             </div>
           )}
           {cw > 0 && (
@@ -1427,7 +1427,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
               </p>
               {editedCount > 0 && (
                 <p className="text-[10px] text-[#EE6C4D] mt-2 font-medium">
-                  ✓ {editedCount} text item{editedCount > 1 ? 's' : ''} edited on this PDF
+                  âœ“ {editedCount} text item{editedCount > 1 ? 's' : ''} edited on this PDF
                 </p>
               )}
             </div>
@@ -1589,7 +1589,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                 />
               </div>
               <div className="space-y-1">
-                <Label className="text-xs">Rotation: {selEl.rotation ?? 0}°</Label>
+                <Label className="text-xs">Rotation: {selEl.rotation ?? 0}Â°</Label>
                 <Slider
                   value={[selEl.rotation ?? 0]}
                   onValueChange={([v]) => updateEl(selEl.id, { rotation: v })}
@@ -1636,7 +1636,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                 </div>
               )}
               <div className="space-y-1">
-                <Label className="text-xs">Rotation: {selEl.rotation ?? 0}°</Label>
+                <Label className="text-xs">Rotation: {selEl.rotation ?? 0}Â°</Label>
                 <Slider
                   value={[selEl.rotation ?? 0]}
                   onValueChange={([v]) => updateEl(selEl.id, { rotation: v })}
@@ -1659,13 +1659,13 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
             <div className="text-xs text-muted-foreground space-y-2">
               <p className="font-medium text-foreground">How to use</p>
               <ul className="space-y-1 list-disc list-inside">
-                <li><strong>Edit PDF Text</strong> — click any existing text</li>
-                <li><strong>Select</strong> — click &amp; drag to move added items</li>
-                <li><strong>Add Text</strong> — click canvas to place</li>
-                <li><strong>Add Image</strong> — upload &amp; place</li>
-                <li><strong>Rectangle/Line</strong> — click &amp; drag</li>
-                <li><strong>Draw</strong> — freehand pen tool</li>
-                <li><strong>Delete</strong> — click element to remove</li>
+                <li><strong>Edit PDF Text</strong> â€” click any existing text</li>
+                <li><strong>Select</strong> â€” click &amp; drag to move added items</li>
+                <li><strong>Add Text</strong> â€” click canvas to place</li>
+                <li><strong>Add Image</strong> â€” upload &amp; place</li>
+                <li><strong>Rectangle/Line</strong> â€” click &amp; drag</li>
+                <li><strong>Draw</strong> â€” freehand pen tool</li>
+                <li><strong>Delete</strong> â€” click element to remove</li>
               </ul>
               <div className="mt-3 pt-3 border-t space-y-1">
                 <p className="font-medium text-foreground">Shortcuts</p>
@@ -1685,3 +1685,4 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
     </div>
   )
 }
+

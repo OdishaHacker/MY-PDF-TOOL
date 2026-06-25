@@ -18,21 +18,30 @@ export default function WordToPdf({ onBack }: { onBack: () => void }) {
     setProcessing(true)
     try {
       const XLSX = await import('xlsx')
-      const { Document, Packer, Paragraph, TextRun } = await import('docx')
       const { jsPDF } = await import('jspdf')
       const file = files[0]
       const ext = file.name.split('.').pop()?.toLowerCase()
       let pdfBlob: Blob
 
       if (ext === 'docx') {
-        // Read docx text using xlsx (mammoth-like approach with JSZip)
+        const mammoth = await import('mammoth')
         const arrayBuffer = await file.arrayBuffer()
-        const JSZip = (await import('xlsx')).default
-        // Use a simple text extraction approach
-        const text = await file.text()
+        const result = await mammoth.extractRawText({ arrayBuffer })
+        const text = result.value
+        
         const doc = new jsPDF()
-        const lines = doc.splitTextToSize(text || 'Could not extract text from this DOCX. Try pasting content manually.', 180)
-        doc.text(lines, 15, 20)
+        doc.setFontSize(11)
+        const lines = doc.splitTextToSize(text || 'No text could be extracted from this document.', 180)
+        
+        let y = 20
+        for (let i = 0; i < lines.length; i++) {
+          if (y > 280) {
+            doc.addPage()
+            y = 20
+          }
+          doc.text(lines[i], 15, y)
+          y += 6
+        }
         pdfBlob = doc.output('blob')
       } else if (ext === 'xlsx' || ext === 'xls' || ext === 'csv') {
         const arrayBuffer = await file.arrayBuffer()

@@ -43,19 +43,20 @@ export default function HtmlToPdf({ onBack }: { onBack: () => void }) {
       document.body.removeChild(container)
 
       const doc = new jsPDF('p', 'mm', 'a4')
-      const imgWidth = 210
+      const imgWidth = 210 // A4 width
+      const pageHeight = 297 // A4 height
       const imgHeight = (canvas.height * imgWidth) / canvas.width
-      const pageHeight = 297
       let heightLeft = imgHeight
-      let position = 0
+      let currentPosition = 0
 
-      doc.addImage(canvas.toDataURL('image/png'), 'PNG', 0, position, imgWidth, imgHeight)
+      const imgData = canvas.toDataURL('image/png')
+      doc.addImage(imgData, 'PNG', 0, currentPosition, imgWidth, imgHeight)
       heightLeft -= pageHeight
 
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight
+      while (heightLeft >= 0) {
+        currentPosition -= pageHeight
         doc.addPage()
-        doc.addImage(canvas.toDataURL('image/png'), 'PNG', 0, position, imgWidth, imgHeight)
+        doc.addImage(imgData, 'PNG', 0, currentPosition, imgWidth, imgHeight)
         heightLeft -= pageHeight
       }
 

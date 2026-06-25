@@ -29,7 +29,7 @@ import { Separator } from '@/components/ui/separator'
 import FileDropzone from '@/components/FileDropzone'
 import ToolLayout from '@/components/ToolLayout'
 
-// ─── Password strength calculator ───────────────────────────────────────────
+// â”€â”€â”€ Password strength calculator â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function getPasswordStrength(password: string): {
   score: number
   label: string
@@ -53,7 +53,7 @@ function getPasswordStrength(password: string): {
   return { score, label: 'Very Strong', color: 'text-green-600', icon: <ShieldCheck className="h-4 w-4 text-green-600" /> }
 }
 
-// ─── Permission definition ──────────────────────────────────────────────────
+// â”€â”€â”€ Permission definition â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 interface PermissionOption {
   key: string
   label: string
@@ -130,14 +130,14 @@ const PERMISSION_OPTIONS: PermissionOption[] = [
   },
 ]
 
-// ─── Format helpers ─────────────────────────────────────────────────────────
+// â”€â”€â”€ Format helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function formatSize(bytes: number): string {
   if (bytes < 1024) return bytes + ' B'
   if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB'
   return (bytes / (1024 * 1024)).toFixed(2) + ' MB'
 }
 
-// ─── Component ───────────────────────────────────────────────────────────────
+// â”€â”€â”€ Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function ProtectPdf({ onBack }: { onBack: () => void }) {
   const [files, setFiles] = useState<File[]>([])
   const [userPassword, setUserPassword] = useState('')
@@ -213,7 +213,7 @@ export default function ProtectPdf({ onBack }: { onBack: () => void }) {
 
     try {
       const pdfjsLib = await import('pdfjs-dist')
-      pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs'
+      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.7.284/pdf.worker.min.mjs`
 
       const jsPDF = (await import('jspdf')).default
 
@@ -239,7 +239,7 @@ export default function ProtectPdf({ onBack }: { onBack: () => void }) {
 
         await page.render({ canvasContext: context, viewport, canvas } as any).promise
 
-        // Use PNG for best quality — this is a protect tool, not compression
+        // Use PNG for best quality â€” this is a protect tool, not compression
         const dataUrl = canvas.toDataURL('image/png')
         pageImages.push({
           dataUrl,
@@ -350,15 +350,27 @@ export default function ProtectPdf({ onBack }: { onBack: () => void }) {
 
       {/* File info */}
       {files.length > 0 && (
-        <div className="rounded-xl border bg-muted/30 p-4 space-y-1">
-          <p className="text-sm font-medium">Current File</p>
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">File name:</span>
-            <span className="truncate max-w-[60%] text-right">{files[0].name}</span>
+        <div className="space-y-4">
+          <div className="rounded-xl border bg-muted/30 p-4 space-y-1">
+            <p className="text-sm font-medium">Current File</p>
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">File name:</span>
+              <span className="truncate max-w-[60%] text-right">{files[0].name}</span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Original size:</span>
+              <span className="font-medium">{formatSize(files[0].size)}</span>
+            </div>
           </div>
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Original size:</span>
-            <span className="font-medium">{formatSize(files[0].size)}</span>
+          
+          <div className="rounded-lg border bg-yellow-500/10 border-yellow-500/20 p-3">
+            <p className="text-sm text-yellow-600 dark:text-yellow-400 font-medium flex items-center gap-2">
+              <ShieldAlert className="h-4 w-4" />
+              Important Note on Quality
+            </p>
+            <p className="text-xs text-yellow-600/80 dark:text-yellow-400/80 mt-1">
+              To apply secure encryption entirely in your browser without uploading to a server, this tool converts your PDF pages into high-quality images. The resulting file may be larger, and text will no longer be selectable.
+            </p>
           </div>
         </div>
       )}
@@ -366,7 +378,7 @@ export default function ProtectPdf({ onBack }: { onBack: () => void }) {
       {/* Password section */}
       {files.length > 0 && (
         <div className="rounded-xl border bg-muted/20 p-5 space-y-5">
-          {/* ── User Password ─────────────────────────────────────────── */}
+          {/* â”€â”€ User Password â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <Lock className="h-4 w-4 text-[#EE6C4D]" />
@@ -414,16 +426,16 @@ export default function ProtectPdf({ onBack }: { onBack: () => void }) {
                 </div>
                 <div className="flex gap-3 text-[10px] text-muted-foreground">
                   <span className={userPassword.length >= 6 ? 'text-green-500' : ''}>
-                    {userPassword.length >= 6 ? '✓' : '○'} 6+ chars
+                    {userPassword.length >= 6 ? 'âœ“' : 'â—‹'} 6+ chars
                   </span>
                   <span className={/[A-Z]/.test(userPassword) ? 'text-green-500' : ''}>
-                    {/[A-Z]/.test(userPassword) ? '✓' : '○'} Uppercase
+                    {/[A-Z]/.test(userPassword) ? 'âœ“' : 'â—‹'} Uppercase
                   </span>
                   <span className={/[0-9]/.test(userPassword) ? 'text-green-500' : ''}>
-                    {/[0-9]/.test(userPassword) ? '✓' : '○'} Number
+                    {/[0-9]/.test(userPassword) ? 'âœ“' : 'â—‹'} Number
                   </span>
                   <span className={/[^A-Za-z0-9]/.test(userPassword) ? 'text-green-500' : ''}>
-                    {/[^A-Za-z0-9]/.test(userPassword) ? '✓' : '○'} Symbol
+                    {/[^A-Za-z0-9]/.test(userPassword) ? 'âœ“' : 'â—‹'} Symbol
                   </span>
                 </div>
               </div>
@@ -450,7 +462,7 @@ export default function ProtectPdf({ onBack }: { onBack: () => void }) {
                     confirmUserPassword === userPassword ? 'text-green-500' : 'text-red-500'
                   }`}
                 >
-                  {confirmUserPassword === userPassword ? '✓ Match' : '✗ Mismatch'}
+                  {confirmUserPassword === userPassword ? 'âœ“ Match' : 'âœ— Mismatch'}
                 </span>
               )}
             </div>
@@ -458,7 +470,7 @@ export default function ProtectPdf({ onBack }: { onBack: () => void }) {
 
           <Separator />
 
-          {/* ── Owner Password ─────────────────────────────────────────── */}
+          {/* â”€â”€ Owner Password â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -526,7 +538,7 @@ export default function ProtectPdf({ onBack }: { onBack: () => void }) {
                         confirmOwnerPassword === ownerPassword ? 'text-green-500' : 'text-red-500'
                       }`}
                     >
-                      {confirmOwnerPassword === ownerPassword ? '✓ Match' : '✗ Mismatch'}
+                      {confirmOwnerPassword === ownerPassword ? 'âœ“ Match' : 'âœ— Mismatch'}
                     </span>
                   )}
                 </div>
@@ -536,7 +548,7 @@ export default function ProtectPdf({ onBack }: { onBack: () => void }) {
 
           <Separator />
 
-          {/* ── Permissions ─────────────────────────────────────────────── */}
+          {/* â”€â”€ Permissions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <Label className="text-sm font-semibold">User Permissions</Label>
@@ -667,7 +679,7 @@ export default function ProtectPdf({ onBack }: { onBack: () => void }) {
                       : 'bg-red-500/10 text-red-500 dark:text-red-400'
                   }`}
                 >
-                  {result.permissions.includes(perm.jsPdfValue) ? '✓' : '✗'} {perm.label}
+                  {result.permissions.includes(perm.jsPdfValue) ? 'âœ“' : 'âœ—'} {perm.label}
                 </span>
               ))}
             </div>
@@ -685,3 +697,4 @@ export default function ProtectPdf({ onBack }: { onBack: () => void }) {
     </ToolLayout>
   )
 }
+

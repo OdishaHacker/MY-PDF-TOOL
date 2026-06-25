@@ -53,7 +53,7 @@ export default function PdfToJpg({ onBack }: { onBack: () => void }) {
 
     try {
       const pdfjsLib = await import('pdfjs-dist')
-      pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs'
+      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.7.284/pdf.worker.min.mjs`
 
       const buffer = await files[0].arrayBuffer()
       const pdf = await pdfjsLib.getDocument({ data: buffer }).promise
@@ -95,6 +95,11 @@ export default function PdfToJpg({ onBack }: { onBack: () => void }) {
       const isJpg = imageFormat === 'jpg'
       const mimeType = isJpg ? 'image/jpeg' : 'image/png'
       const extension = isJpg ? 'jpg' : 'png'
+      
+      const JSZip = (await import('jszip')).default
+      const zip = new JSZip()
+      let lastBlob: Blob | null = null
+      const fileName = files[0].name.replace(/\.pdf$/i, '')
 
       for (let pi = 0; pi < pagesToConvert.length; pi++) {
         const pageNum = pagesToConvert[pi]
@@ -116,13 +121,20 @@ export default function PdfToJpg({ onBack }: { onBack: () => void }) {
           )
         })
 
-        const fileName = files[0].name.replace(/\.pdf$/i, '')
-        saveAs(blob, `${fileName}-page-${pageNum}.${extension}`)
+        lastBlob = blob
+        zip.file(`${fileName}-page-${pageNum}.${extension}`, blob)
 
         setProgress(Math.round(((pi + 1) / pagesToConvert.length) * 100))
 
         canvas.width = 0
         canvas.height = 0
+      }
+
+      if (pagesToConvert.length === 1 && lastBlob) {
+        saveAs(lastBlob, `${fileName}-page-${pagesToConvert[0]}.${extension}`)
+      } else {
+        const zipBlob = await zip.generateAsync({ type: 'blob' })
+        saveAs(zipBlob, `${fileName}-images.zip`)
       }
 
       toast.success(`${pagesToConvert.length} page(s) converted to ${extension.toUpperCase()} successfully!`)
@@ -181,8 +193,8 @@ export default function PdfToJpg({ onBack }: { onBack: () => void }) {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="jpg">JPG — Smaller file size</SelectItem>
-                  <SelectItem value="png">PNG — Lossless quality</SelectItem>
+                  <SelectItem value="jpg">JPG â€” Smaller file size</SelectItem>
+                  <SelectItem value="png">PNG â€” Lossless quality</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -287,3 +299,4 @@ export default function PdfToJpg({ onBack }: { onBack: () => void }) {
     </ToolLayout>
   )
 }
+

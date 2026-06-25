@@ -18,15 +18,47 @@ export default function RepairPdf({ onBack }: { onBack: () => void }) {
     setProcessing(true)
     try {
       const arrayBuffer = await files[0].arrayBuffer()
-      // Load and re-save to fix structure issues
-      const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true })
-      const pdfBytes = await pdfDoc.save()
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' })
-      saveAs(blob, 'repaired.pdf')
-      toast.success('PDF repaired successfully!')
+      let pdfBlob: Blob
+      
+      try {
+        // Strategy 1: Load and re-save using pdf-lib (fixes structural issues like xref tables)
+        const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true })
+        const pdfBytes = await pdfDoc.save()
+        pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' })
+        toast.success('PDF structure repaired successfully!')
+      } catch (err) {
+        console.warn('pdf-lib failed, trying pdfjs fallback', err)
+        // Strategy 2: Fallback to rasterization via pdfjs and jspdf
+        const pdfjsLib = await import('pdfjs-dist')
+        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`
+        const { jsPDF } = await import('jspdf')
+        
+        const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(arrayBuffer) }).promise
+        const doc = new jsPDF()
+        
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i)
+          const viewport = page.getViewport({ scale: 2.0 })
+          const canvas = document.createElement('canvas')
+          const context = canvas.getContext('2d')
+          canvas.height = viewport.height
+          canvas.width = viewport.width
+          if (context) await page.render({ canvasContext: context, viewport }).promise
+          
+          if (i > 1) doc.addPage()
+          const imgData = canvas.toDataURL('image/jpeg', 0.95)
+          const pdfWidth = doc.internal.pageSize.getWidth()
+          const pdfHeight = (canvas.height * pdfWidth) / canvas.width
+          doc.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight)
+        }
+        pdfBlob = doc.output('blob')
+        toast.success('PDF repaired via content extraction (rasterized)!')
+      }
+      
+      saveAs(pdfBlob, 'repaired.pdf')
     } catch (error) {
       console.error(error)
-      toast.error('Failed to repair PDF. The file may be too corrupted.')
+      toast.error('Failed to repair PDF. The file is severely corrupted.')
     } finally {
       setProcessing(false)
     }

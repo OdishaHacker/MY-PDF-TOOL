@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import React, { useState } from 'react'
 import { saveAs } from 'file-saver'
@@ -46,7 +46,7 @@ export default function PdfToPowerpoint({ onBack }: { onBack: () => void }) {
 
     try {
       const pdfjsLib = await import('pdfjs-dist')
-      pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs'
+      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.7.284/pdf.worker.min.mjs`
 
       const buffer = await files[0].arrayBuffer()
       const pdf = await pdfjsLib.getDocument({ data: buffer }).promise
@@ -82,20 +82,20 @@ export default function PdfToPowerpoint({ onBack }: { onBack: () => void }) {
           // Stretch to fill entire slide
           imgOpts = { data: imgData, x: 0, y: 0, w: slideW, h: slideH }
         } else if (slideLayout === 'fill') {
-          // Fill — cover entire slide, may crop
+          // Fill â€” cover entire slide, may crop
           if (imgRatio > slideRatio) {
-            // Image is wider — fit height, crop sides
+            // Image is wider â€” fit height, crop sides
             const w = slideH * imgRatio
             const x = (slideW - w) / 2
             imgOpts = { data: imgData, x, y: 0, w, h: slideH }
           } else {
-            // Image is taller — fit width, crop top/bottom
+            // Image is taller â€” fit width, crop top/bottom
             const h = slideW / imgRatio
             const y = (slideH - h) / 2
             imgOpts = { data: imgData, x: 0, y, w: slideW, h }
           }
         } else {
-          // Fit — maintain aspect ratio, center on slide
+          // Fit â€” maintain aspect ratio, center on slide
           if (imgRatio > slideRatio) {
             const w = slideW
             const h = slideW / imgRatio
@@ -198,9 +198,9 @@ export default function PdfToPowerpoint({ onBack }: { onBack: () => void }) {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="fit">Fit — Center with letterbox</SelectItem>
-                <SelectItem value="fill">Fill — Cover, may crop edges</SelectItem>
-                <SelectItem value="stretch">Stretch — Fill entire slide</SelectItem>
+                <SelectItem value="fit">Fit â€” Center with letterbox</SelectItem>
+                <SelectItem value="fill">Fill â€” Cover, may crop edges</SelectItem>
+                <SelectItem value="stretch">Stretch â€” Fill entire slide</SelectItem>
               </SelectContent>
             </Select>
             <p className="text-[10px] text-muted-foreground">
@@ -240,3 +240,4 @@ export default function PdfToPowerpoint({ onBack }: { onBack: () => void }) {
     </ToolLayout>
   )
 }
+

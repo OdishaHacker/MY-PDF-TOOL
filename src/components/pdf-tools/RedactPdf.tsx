@@ -41,13 +41,14 @@ export default function RedactPdf({ onBack }: { onBack: () => void }) {
         for (const item of textContent.items as any[]) {
           if (item.str.toLowerCase().includes(searchText.toLowerCase())) {
             const x = item.transform[4]
-            const y = height - item.transform[5]
-            const textWidth = font.widthOfTextAtSize(searchText, item.transform[0] || 12)
-            const textHeight = Math.abs(item.transform[3]) || 12
+            // pdfjs returns y from bottom, pdf-lib expects y from bottom
+            const y = item.transform[5]
+            const textWidth = item.width || font.widthOfTextAtSize(item.str, item.transform[0] || 12)
+            const textHeight = item.height || Math.abs(item.transform[3]) || 12
 
             const fillColor = replaceColor === 'black' ? rgb(0, 0, 0) : rgb(1, 1, 1)
             pageObj.drawRectangle({
-              x, y: y - textHeight, width: textWidth + 4, height: textHeight + 2,
+              x, y, width: textWidth + 2, height: textHeight + 2,
               color: fillColor,
             })
           }

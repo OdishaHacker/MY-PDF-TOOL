@@ -17,6 +17,7 @@ export default function SignPdf({ onBack }: { onBack: () => void }) {
   const [signing, setSigning] = useState(false)
   const [penSize, setPenSize] = useState(3)
   const [penColor, setPenColor] = useState('#000000')
+  const [position, setPosition] = useState('bottom-right')
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [isDrawing, setIsDrawing] = useState(false)
 
@@ -29,29 +30,43 @@ export default function SignPdf({ onBack }: { onBack: () => void }) {
     ctx.fillRect(0, 0, canvas.width, canvas.height)
   }, [signing])
 
-  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    setIsDrawing(true)
+  const getCoordinates = (e: React.TouchEvent<HTMLCanvasElement> | React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+    if (!canvas) return { x: 0, y: 0 }
     const rect = canvas.getBoundingClientRect()
-    ctx.beginPath()
-    ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top)
+    let clientX, clientY
+    if ('touches' in e) {
+      clientX = e.touches[0].clientX
+      clientY = e.touches[0].clientY
+    } else {
+      clientX = (e as React.MouseEvent).clientX
+      clientY = (e as React.MouseEvent).clientY
+    }
+    // Scale coordinates if canvas display size differs from internal size
+    const scaleX = canvas.width / rect.width
+    const scaleY = canvas.height / rect.height
+    return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY }
   }
 
-  const draw = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!isDrawing) return
-    const canvas = canvasRef.current
-    if (!canvas) return
-    const ctx = canvas.getContext('2d')
+  const startDrawing = (e: React.TouchEvent<HTMLCanvasElement> | React.MouseEvent<HTMLCanvasElement>) => {
+    setIsDrawing(true)
+    const ctx = canvasRef.current?.getContext('2d')
     if (!ctx) return
-    const rect = canvas.getBoundingClientRect()
+    const { x, y } = getCoordinates(e)
+    ctx.beginPath()
+    ctx.moveTo(x, y)
+  }
+
+  const draw = (e: React.TouchEvent<HTMLCanvasElement> | React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isDrawing) return
+    const ctx = canvasRef.current?.getContext('2d')
+    if (!ctx) return
+    const { x, y } = getCoordinates(e)
     ctx.lineWidth = penSize
     ctx.lineCap = 'round'
     ctx.lineJoin = 'round'
     ctx.strokeStyle = penColor
-    ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top)
+    ctx.lineTo(x, y)
     ctx.stroke()
   }
 
@@ -90,9 +105,25 @@ export default function SignPdf({ onBack }: { onBack: () => void }) {
         const { width, height } = lastPage.getSize()
         const sigWidth = 200
         const sigHeight = 80
+        
+        let x = width - sigWidth - 50
+        let y = 50
+        
+        if (position === 'bottom-left') {
+          x = 50
+        } else if (position === 'bottom-center') {
+          x = (width / 2) - (sigWidth / 2)
+        } else if (position === 'top-right') {
+          x = width - sigWidth - 50
+          y = height - sigHeight - 50
+        } else if (position === 'top-left') {
+          x = 50
+          y = height - sigHeight - 50
+        }
+
         lastPage.drawImage(signatureImage, {
-          x: width - sigWidth - 50,
-          y: 50,
+          x,
+          y,
           width: sigWidth,
           height: sigHeight,
         })
@@ -143,19 +174,38 @@ export default function SignPdf({ onBack }: { onBack: () => void }) {
               <input type="color" value={penColor} onChange={(e) => setPenColor(e.target.value)} className="h-6 w-8 cursor-pointer" />
             </div>
           </div>
+          <div className="flex items-center gap-4 mt-4">
+            <Label>Placement:</Label>
+            <select 
+              value={position} 
+              onChange={(e) => setPosition(e.target.value)}
+              className="text-sm border rounded-md p-1 bg-background"
+            >
+              <option value="bottom-right">Bottom Right</option>
+              <option value="bottom-left">Bottom Left</option>
+              <option value="bottom-center">Bottom Center</option>
+              <option value="top-right">Top Right</option>
+              <option value="top-left">Top Left</option>
+            </select>
+          </div>
           <div className="border rounded-lg overflow-hidden bg-white">
             <canvas
               ref={canvasRef}
               width={500}
               height={200}
+              style={{ touchAction: 'none' }}
               className="w-full cursor-crosshair"
               onMouseDown={startDrawing}
               onMouseMove={draw}
               onMouseUp={stopDrawing}
               onMouseLeave={stopDrawing}
+              onTouchStart={startDrawing}
+              onTouchMove={draw}
+              onTouchEnd={stopDrawing}
+              onTouchCancel={stopDrawing}
             />
           </div>
-          <p className="text-xs text-muted-foreground">Signature will be placed at the bottom-right of the last page.</p>
+          <p className="text-xs text-muted-foreground">Signature will be placed at the {position.replace('-', ' ')} of the last page.</p>
         </div>
       )}
       <Button onClick={handleSign} disabled={processing || files.length === 0} className="w-full" size="lg">

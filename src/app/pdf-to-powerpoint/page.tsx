@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import ToolPageSkeleton from '@/components/ToolPageSkeleton';
 import { useRouter } from 'next/navigation';
 
-const ToolComponent = dynamic(() => import('../../components/pdf-tools/PdfToPpt'), { ssr: false, loading: () => <ToolPageSkeleton /> });
+const ToolComponent = dynamic(() => import('../../components/pdf-tools/PdfToPowerpoint'), { ssr: false, loading: () => <ToolPageSkeleton /> });
 
 export default function Page() {
   const router = useRouter();

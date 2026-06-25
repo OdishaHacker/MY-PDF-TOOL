@@ -28,16 +28,26 @@ export default function PdfToWord({ onBack }: { onBack: () => void }) {
         const textContent = await page.getTextContent()
         const lineTexts: string[] = []
         let lastY: number | null = null
+        let currentSize = 12
+        let isBold = false
         for (const item of textContent.items as any[]) {
           if (lastY !== null && Math.abs(item.transform[5] - lastY) > 5) {
-            paragraphs.push(new Paragraph({ children: [new TextRun(lineTexts.join(' '))], spacing: { after: 120 } }))
+            paragraphs.push(new Paragraph({ 
+              children: [new TextRun({ text: lineTexts.join(' '), size: Math.round(currentSize * 2), bold: isBold })], 
+              spacing: { after: 120 } 
+            }))
             lineTexts.length = 0
           }
           lineTexts.push(item.str)
           lastY = item.transform[5]
+          currentSize = item.height || Math.abs(item.transform[0]) || 12
+          isBold = currentSize > 14
         }
         if (lineTexts.length > 0) {
-          paragraphs.push(new Paragraph({ children: [new TextRun(lineTexts.join(' '))], spacing: { after: 120 } }))
+          paragraphs.push(new Paragraph({ 
+            children: [new TextRun({ text: lineTexts.join(' '), size: Math.round(currentSize * 2), bold: isBold })], 
+            spacing: { after: 120 } 
+          }))
         }
         if (i < pdf.numPages) {
           paragraphs.push(new Paragraph({ children: [new TextRun({ text: '', break: 1 })] }))
