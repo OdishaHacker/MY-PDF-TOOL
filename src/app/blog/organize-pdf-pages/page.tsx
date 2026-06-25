@@ -1,11 +1,11 @@
 ﻿import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, FileDown, CheckCircle, AlertTriangle, Lightbulb, ListOrdered, BookOpen, ShieldCheck, Zap } from "lucide-react";
+import { ArrowLeft, LayoutList, CheckCircle, AlertTriangle, Lightbulb, ListOrdered, BookOpen, ShieldCheck, Zap } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Reduce PDF File Size Without Losing Quality: Expert Guide — mypdftools Blog",
-  description: "Master the art of PDF compression. Learn how to shrink file sizes while keeping crisp text and sharp images intact.",
-  keywords: ["PDF guide", "Reduce PDF File Size Without Losing Quality: Expert Guide", "mypdftools", "PDF tips", "online PDF tool", "free PDF converter"],
+  title: "How to Organize, Reorder, and Delete PDF Pages Like a Pro — mypdftools Blog",
+  description: "Master PDF organization. Learn how to rearrange pages, delete unwanted sections, and structure your PDF perfectly.",
+  keywords: ["PDF guide", "How to Organize, Reorder, and Delete PDF Pages Like a Pro", "mypdftools", "PDF tips", "online PDF tool", "free PDF converter"],
 };
 
 export default function BlogPost() {
@@ -20,11 +20,11 @@ export default function BlogPost() {
 
           <header className="mb-10">
             <div className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-[$(System.Collections.Hashtable.color)]/10 text-[$(System.Collections.Hashtable.color)] mb-4">
-              <FileDown className="h-3.5 w-3.5" />
-              Optimize
+              <LayoutList className="h-3.5 w-3.5" />
+              Organize
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-4 text-foreground">
-              Reduce PDF File Size Without Losing Quality: Expert Guide
+              How to Organize, Reorder, and Delete PDF Pages Like a Pro
             </h1>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
               <span>June 2026</span>
@@ -37,7 +37,7 @@ export default function BlogPost() {
 
           <div className="prose-custom space-y-6 text-base leading-relaxed text-muted-foreground">
             <p className="text-lg font-medium text-foreground">
-              Master the art of PDF compression. Learn how to shrink file sizes while keeping crisp text and sharp images intact.
+              Master PDF organization. Learn how to rearrange pages, delete unwanted sections, and structure your PDF perfectly.
             </p>
             <p>
               In today's digital age, working with PDF documents is an everyday necessity for students, professionals, and businesses alike. Whether you are dealing with contracts, assignments, reports, or portfolios, knowing how to properly handle PDF files can save you hours of frustration and dramatically improve your workflow efficiency. 
