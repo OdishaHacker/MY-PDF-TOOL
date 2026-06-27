@@ -354,7 +354,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
         const ctx = c.getContext('2d')
         if (!ctx || cancelled) return
 
-        renderTask = p.render({ canvasContext: ctx, viewport: vp } as never)
+        renderTask = p.render({ canvasContext: ctx, viewport: vp, canvas: c } as any)
         try { await renderTask.promise } catch (e: any) { if (e?.name !== 'RenderingCancelledException') throw e }
 
         if (cancelled) return
