@@ -1365,7 +1365,18 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                         <textarea
                           ref={textInputRef}
                           value={el.content}
-                          onChange={e => updateEl(el.id, { content: e.target.value })}
+                          onChange={e => {
+                            const val = e.target.value
+                            const canvas = document.createElement('canvas')
+                            const ctx = canvas.getContext('2d')!
+                            const isBold = el.bold || el.fontFamily === '__helvetica_bold__'
+                            ctx.font = `${isBold ? 'bold ' : ''}${el.fontSize}px ${displayFont(el.fontFamily)}`
+                            const newW = ctx.measureText(val || ' ').width
+                            updateEl(el.id, { 
+                              content: val, 
+                              width: Math.max(newW + 12, el.originalWidth ?? 15) 
+                            })
+                          }}
                           onBlur={finishTextEdit}
                           onPointerDown={e => e.stopPropagation()}
                           onKeyDown={e => {
@@ -1382,11 +1393,13 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                             color: el.color,
                             lineHeight: 1.3,
                             textAlign: el.align ?? 'left',
+                            whiteSpace: 'pre',
+                            overflow: 'hidden',
                           }}
                         />
                       ) : (
                         <div
-                          className="w-full h-full whitespace-pre-wrap break-words overflow-hidden select-none pointer-events-none"
+                          className="w-full h-full overflow-hidden select-none pointer-events-none"
                           style={{
                             fontSize: el.fontSize * scale,
                             fontFamily: displayFont(el.fontFamily),
@@ -1394,6 +1407,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                             color: el.color,
                             lineHeight: 1.3,
                             textAlign: el.align ?? 'left',
+                            whiteSpace: 'pre',
                           }}
                         >
                           {el.content || ' '}
