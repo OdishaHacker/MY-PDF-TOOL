@@ -1308,7 +1308,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
               />
 
               {/* 3.5 Inactive original text highlight blocks (Click to edit) */}
-              {tool === 'edit' && originalTextItems
+              {(tool === 'edit' || tool === 'select') && originalTextItems
                 .filter(item => item.page === page && !elements.some(el => el.id === item.id) && !deletedOriginals.some(el => el.id === item.id))
                 .map(item => (
                   <div
