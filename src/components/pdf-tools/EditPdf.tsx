@@ -322,121 +322,82 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
         historyRef.current = [[]]
         historyIndexRef.current = 0
 
-        // Parse and merge original PDF text items
+        // Parse and split original PDF text items into words
         const initialElements: EditorElement[] = []
-        console.log(`[EditPdf] Starting text extraction and merging for all pages...`)
-        
+        console.log(`[EditPdf] Starting word-by-word text extraction for all pages...`)
+
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
+
         for (let p = 1; p <= pdf.numPages; p++) {
           console.log(`[EditPdf] Page ${p}: Extracting text content...`)
           const pg = await pdf.getPage(p)
           const baseViewport = pg.getViewport({ scale: 1.0 })
           const pageHeight = baseViewport.height
           const textContent = await pg.getTextContent()
-          console.log(`[EditPdf] Page ${p}: Found ${textContent.items.length} raw text fragments. Merging...`)
+          console.log(`[EditPdf] Page ${p}: Found ${textContent.items.length} raw text fragments. Splitting to words...`)
 
-          // 1. Map raw text items to top-based coordinate system
-          const rawItems = textContent.items.map((item: any) => {
-            if (!item.str || !item.transform) return null
+          let pageWordCount = 0
+          for (const item of textContent.items as any[]) {
+            if (!item.str || !item.transform) continue
             const tx = item.transform
             const fontSize = Math.sqrt(tx[0] * tx[0] + tx[1] * tx[1]) || 12
-            const x = tx[4]
+            const startX = tx[4]
             const yFromBottom = tx[5]
             const y = pageHeight - yFromBottom - fontSize // top-based
             const fontInfo = detectPdfFont(item.fontName || '')
-            return {
-              str: item.str,
-              x,
-              y,
-              width: item.width || 0,
-              height: fontSize * 1.2,
-              fontSize,
-              fontName: item.fontName || 'Helvetica',
-              pdfFontKey: fontInfo.key,
-              yFromBottom,
-            }
-          }).filter(Boolean) as any[]
 
-          // 2. Line-merging algorithm
-          const tolerance = 4 // pixels
-          const lines: any[][] = []
+            // Set font style on canvas context to measure widths accurately
+            const displayFontName = displayFont(FONT_OPTIONS.find(f => f.pdf === fontInfo.key)?.value || 'Helvetica, Arial, sans-serif')
+            ctx.font = `${fontInfo.bold ? 'bold ' : ''}${fontSize}px ${displayFontName}`
 
-          rawItems.forEach(item => {
-            let placed = false
-            for (const line of lines) {
-              const avgY = line.reduce((sum, i) => sum + i.y, 0) / line.length
-              if (Math.abs(item.y - avgY) < tolerance) {
-                line.push(item)
-                placed = true
-                break
-              }
-            }
-            if (!placed) {
-              lines.push([item])
-            }
-          })
+            // Split raw string by space, keeping spaces in the array to compute positions
+            const tokens = item.str.split(/(\s+)/)
+            let currentX = startX
 
-          // Sort and merge items within each line
-          let pageElementCount = 0
-          lines.forEach(line => {
-            line.sort((a, b) => a.x - b.x)
-            let currentBlock: any = null
+            for (const token of tokens) {
+              if (!token) continue
+              const tokenWidth = ctx.measureText(token).width
 
-            line.forEach(item => {
-              if (!currentBlock) {
-                currentBlock = { ...item }
+              if (token.trim() === '') {
+                // If it's space, just advance X coordinate
+                currentX += tokenWidth
               } else {
-                const gap = item.x - (currentBlock.x + currentBlock.width)
-                const mergeThreshold = currentBlock.fontSize * 1.5
-                if (gap < mergeThreshold) {
-                  const needsSpace = gap > currentBlock.fontSize * 0.25 && !currentBlock.str.endsWith(' ') && !item.str.startsWith(' ')
-                  currentBlock.str += (needsSpace ? ' ' : '') + item.str
-                  currentBlock.width = (item.x + item.width) - currentBlock.x
-                } else {
-                  createTextElement(currentBlock, p)
-                  pageElementCount++
-                  currentBlock = { ...item }
-                }
+                // If it's a word, add it as a separate element!
+                initialElements.push({
+                  id: uid(),
+                  type: 'text',
+                  x: currentX,
+                  y: y,
+                  width: Math.max(tokenWidth, 8),
+                  height: fontSize * 1.2,
+                  content: token,
+                  fontSize: fontSize,
+                  fontFamily: FONT_OPTIONS.find(f => f.pdf === fontInfo.key)?.value || 'Helvetica, Arial, sans-serif',
+                  color: '#000000',
+                  page: p,
+                  rotation: 0,
+                  zIndex: initialElements.length,
+                  // Original metadata
+                  isOriginal: true,
+                  originalX: currentX,
+                  originalY: y,
+                  originalWidth: tokenWidth,
+                  originalHeight: fontSize * 1.2,
+                  originalContent: token,
+                  pdfX: currentX,
+                  pdfY: yFromBottom,
+                  pdfWidth: tokenWidth,
+                  pdfHeight: fontSize * 1.2,
+                  pdfFontSize: fontSize,
+                  pdfFontKey: fontInfo.key,
+                })
+                pageWordCount++
+                currentX += tokenWidth
               }
-            })
-
-            if (currentBlock) {
-              createTextElement(currentBlock, p)
-              pageElementCount++
             }
-          })
-          console.log(`[EditPdf] Page ${p}: Merged into ${pageElementCount} text blocks.`)
-        }
-
-        function createTextElement(block: any, pageNum: number) {
-          if (!block.str.trim()) return
-          initialElements.push({
-            id: uid(),
-            type: 'text',
-            x: block.x,
-            y: block.y,
-            width: Math.max(block.width, 25),
-            height: block.height,
-            content: block.str,
-            fontSize: block.fontSize,
-            fontFamily: FONT_OPTIONS.find(f => f.pdf === block.pdfFontKey)?.value || 'Helvetica, Arial, sans-serif',
-            color: '#000000',
-            page: pageNum,
-            rotation: 0,
-            zIndex: initialElements.length,
-            // Original metadata
-            isOriginal: true,
-            originalX: block.x,
-            originalY: block.y,
-            originalWidth: block.width,
-            originalHeight: block.height,
-            originalContent: block.str,
-            pdfX: block.x,
-            pdfY: block.yFromBottom,
-            pdfWidth: block.width,
-            pdfHeight: block.height,
-            pdfFontSize: block.fontSize,
-            pdfFontKey: block.pdfFontKey,
-          })
+          }
+          console.log(`[EditPdf] Page ${p}: Created ${pageWordCount} individual word elements.`)
         }
 
         if (!cancelled) {
