@@ -946,10 +946,13 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
     }, 50)
   }, [])
 
-  const finishTextEdit = useCallback(() => {
-    if (editingTextId) scheduleSnapshot(elements)
-    setEditingTextId(null)
-  }, [editingTextId, elements, scheduleSnapshot])
+  const finishTextEdit = useCallback((id?: string) => {
+    setEditingTextId(currentId => {
+      if (id && currentId !== id) return currentId
+      return null
+    })
+    scheduleSnapshot(elements)
+  }, [elements, scheduleSnapshot])
 
   // ============================================================
   // Navigation & Zoom
@@ -1475,7 +1478,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                               width: Math.max(newW + 12, el.originalWidth ?? 15) 
                             })
                           }}
-                          onBlur={finishTextEdit}
+                          onBlur={() => finishTextEdit(el.id)}
                           onPointerDown={e => e.stopPropagation()}
                           onKeyDown={e => {
                             e.stopPropagation()
