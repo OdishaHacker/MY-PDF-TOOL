@@ -322,9 +322,12 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
         historyRef.current = [[]]
         historyIndexRef.current = 0
 
-        // Parse original PDF text items exactly as they are (no merging, no splitting)
+        // Parse and process original PDF text items (smart merge for kerning, split for words/separators)
         const initialElements: EditorElement[] = []
-        console.log(`[EditPdf] Starting raw text extraction for all pages...`)
+        console.log(`[EditPdf] Starting smart text extraction for all pages...`)
+
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')!
 
         for (let p = 1; p <= pdf.numPages; p++) {
           console.log(`[EditPdf] Page ${p}: Extracting text content...`)
@@ -332,49 +335,126 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
           const baseViewport = pg.getViewport({ scale: 1.0 })
           const pageHeight = baseViewport.height
           const textContent = await pg.getTextContent()
-          console.log(`[EditPdf] Page ${p}: Found ${textContent.items.length} raw text fragments. Mapping directly...`)
+          console.log(`[EditPdf] Page ${p}: Found ${textContent.items.length} raw text fragments. Processing...`)
 
-          let pageWordCount = 0
-          for (const item of textContent.items as any[]) {
-            if (!item.str || !item.str.trim() || !item.transform) continue
+          // 1. Map raw text items to top-based coordinates
+          const rawItems = textContent.items.map((item: any) => {
+            if (!item.str || !item.transform) return null
             const tx = item.transform
             const fontSize = Math.sqrt(tx[0] * tx[0] + tx[1] * tx[1]) || 12
             const x = tx[4]
             const yFromBottom = tx[5]
             const y = pageHeight - yFromBottom - fontSize // top-based
             const fontInfo = detectPdfFont(item.fontName || '')
-            const width = item.width || 0
-
-            initialElements.push({
-              id: uid(),
-              type: 'text',
-              x: x,
-              y: y,
-              width: Math.max(width, 15),
+            return {
+              str: item.str,
+              x,
+              y,
+              width: item.width || 0,
               height: fontSize * 1.2,
-              content: item.str,
-              fontSize: fontSize,
-              fontFamily: FONT_OPTIONS.find(f => f.pdf === fontInfo.key)?.value || 'Helvetica, Arial, sans-serif',
-              color: '#000000',
-              page: p,
-              rotation: 0,
-              zIndex: initialElements.length,
-              // Original metadata
-              isOriginal: true,
-              originalX: x,
-              originalY: y,
-              originalWidth: width,
-              originalHeight: fontSize * 1.2,
-              originalContent: item.str,
-              pdfX: x,
-              pdfY: yFromBottom,
-              pdfWidth: width,
-              pdfHeight: fontSize * 1.2,
-              pdfFontSize: fontSize,
+              fontSize,
               pdfFontKey: fontInfo.key,
+              yFromBottom,
+            }
+          }).filter(Boolean) as any[]
+
+          // 2. Group raw items into horizontal lines (Y tolerance 4px)
+          const tolerance = 4
+          const lines: any[][] = []
+          rawItems.forEach(item => {
+            let placed = false
+            for (const line of lines) {
+              const avgY = line.reduce((sum, i) => sum + i.y, 0) / line.length
+              if (Math.abs(item.y - avgY) < tolerance) {
+                line.push(item)
+                placed = true
+                break
+              }
+            }
+            if (!placed) {
+              lines.push([item])
+            }
+          })
+
+          // 3. Within each line, sort by X and merge tiny kerning gaps (gap < 2.5px)
+          let pageWordCount = 0
+          lines.forEach(line => {
+            line.sort((a, b) => a.x - b.x)
+            const mergedBlocks: any[] = []
+            let currentBlock: any = null
+
+            line.forEach(item => {
+              if (!currentBlock) {
+                currentBlock = { ...item }
+              } else {
+                const gap = item.x - (currentBlock.x + currentBlock.width)
+                // If gap is tiny (< 2.5px), it's definitely kerning/same word
+                const isKerning = gap < 2.5
+                if (isKerning) {
+                  currentBlock.str += item.str
+                  currentBlock.width = (item.x + item.width) - currentBlock.x
+                } else {
+                  mergedBlocks.push(currentBlock)
+                  currentBlock = { ...item }
+                }
+              }
             })
-            pageWordCount++
-          }
+            if (currentBlock) {
+              mergedBlocks.push(currentBlock)
+            }
+
+            // 4. Split each merged block by spaces, colons, or semicolons
+            mergedBlocks.forEach(block => {
+              const displayFontName = displayFont(FONT_OPTIONS.find(f => f.pdf === block.pdfFontKey)?.value || 'Helvetica, Arial, sans-serif')
+              ctx.font = `${block.bold ? 'bold ' : ''}${block.fontSize}px ${displayFontName}`
+
+              // Split by whitespace, semicolon, or colon, keeping separators in the output
+              const tokens = block.str.split(/(\s+|;|:)/)
+              let currentX = block.x
+
+              tokens.forEach(token => {
+                if (!token) return
+                const tokenWidth = ctx.measureText(token).width
+
+                if (token.trim() === '') {
+                  // It's whitespace, just advance X
+                  currentX += tokenWidth
+                } else {
+                  // It's a word or separator, create a separate element!
+                  initialElements.push({
+                    id: uid(),
+                    type: 'text',
+                    x: currentX,
+                    y: block.y,
+                    width: Math.max(tokenWidth, 8),
+                    height: block.height,
+                    content: token,
+                    fontSize: block.fontSize,
+                    fontFamily: FONT_OPTIONS.find(f => f.pdf === block.pdfFontKey)?.value || 'Helvetica, Arial, sans-serif',
+                    color: '#000000',
+                    page: p,
+                    rotation: 0,
+                    zIndex: initialElements.length,
+                    // Original metadata
+                    isOriginal: true,
+                    originalX: currentX,
+                    originalY: block.y,
+                    originalWidth: tokenWidth,
+                    originalHeight: block.height,
+                    originalContent: token,
+                    pdfX: currentX,
+                    pdfY: block.yFromBottom,
+                    pdfWidth: tokenWidth,
+                    pdfHeight: block.height,
+                    pdfFontSize: block.fontSize,
+                    pdfFontKey: block.pdfFontKey,
+                  })
+                  pageWordCount++
+                  currentX += tokenWidth
+                }
+              })
+            })
+          })
           console.log(`[EditPdf] Page ${p}: Loaded ${pageWordCount} original text elements.`)
         }
 
