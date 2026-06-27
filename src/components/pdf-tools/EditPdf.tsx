@@ -207,6 +207,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
 
   // ---- Editor Elements ----
   const [elements, setElements] = useState<EditorElement[]>([])
+  const [originalTextItems, setOriginalTextItems] = useState<EditorElement[]>([])
   const [deletedOriginals, setDeletedOriginals] = useState<EditorElement[]>([])
   const [selId, setSelId] = useState<string | null>(null)
   const [tool, setTool] = useState<ToolType>('select')
@@ -440,8 +441,9 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
 
         if (!cancelled) {
           console.log(`[EditPdf] Text parsing completed. Total elements: ${initialElements.length}. Updating state...`)
-          setElements(initialElements)
-          historyRef.current = [JSON.parse(JSON.stringify(initialElements))]
+          setOriginalTextItems(initialElements)
+          setElements([])
+          historyRef.current = [[]]
           historyIndexRef.current = 0
           toast.success('PDF loaded and parsed successfully!')
         }
@@ -1125,6 +1127,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
     setPages(0); setPage(1); drawDataRef.current.clear()
     historyRef.current = []; historyIndexRef.current = -1
     setDeletedOriginals([])
+    setOriginalTextItems([])
   }, [])
 
   // ============================================================
@@ -1327,7 +1330,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                     }}
                   />
                 ))}
-                {elements.filter(el => el.page === page && isOriginalModified(el)).map(el => (
+                {elements.filter(el => el.page === page && el.isOriginal).map(el => (
                   <div
                     key={el.id}
                     className="absolute bg-white"
@@ -1350,6 +1353,33 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                   pointerEvents: tool === 'draw' ? 'auto' : 'none',
                 }}
               />
+
+              {/* 3.5 Inactive original text highlight blocks (Click to edit) */}
+              {tool === 'edit' && originalTextItems
+                .filter(item => item.page === page && !elements.some(el => el.id === item.id) && !deletedOriginals.some(el => el.id === item.id))
+                .map(item => (
+                  <div
+                    key={item.id}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      console.log(`[EditPdf] Activating original text item: "${item.content}"`)
+                      const newEl = { ...item }
+                      const newElements = [...elements, newEl]
+                      setElements(newElements)
+                      setSelId(item.id)
+                      startTextEdit(item.id)
+                      scheduleSnapshot(newElements)
+                    }}
+                    className="absolute border border-dashed border-transparent hover:border-[#EE6C4D] hover:bg-[#EE6C4D]/10 cursor-text rounded-sm z-18 transition-all duration-150"
+                    style={{
+                      left: item.x * scale,
+                      top: item.y * scale,
+                      width: item.width * scale,
+                      height: item.height * scale,
+                    }}
+                    title="Click to edit this text"
+                  />
+                ))}
 
               {/* 4. Overlay Elements (added text, images, shapes, and interactive original text) */}
               {pageEls.map(el => {
@@ -1504,10 +1534,27 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
             <div className="rounded-lg border border-[#EE6C4D]/30 bg-[#EE6C4D]/5 p-3 mb-3">
               <div className="flex items-center gap-2 mb-1.5">
                 <Edit3 className="h-3.5 w-3.5 text-[#EE6C4D]" />
-                <span className="text-xs font-semibold">Interactive Editor</span>
+                <span className="text-xs font-semibold">Select / Move Mode</span>
               </div>
               <p className="text-[10px] text-muted-foreground leading-relaxed">
-                Click on any text item in the PDF to select, drag, edit, or delete it just like a photo editor layer.
+                Use this tool to select, move, scale, or duplicate any added or activated elements.
+              </p>
+              {totalModifications > 0 && (
+                <p className="text-[10px] text-[#EE6C4D] mt-2 font-medium">
+                  ✓ {totalModifications} element{totalModifications > 1 ? 's' : ''} modified.
+                </p>
+              )}
+            </div>
+          )}
+
+          {tool === 'edit' && !selEl && (
+            <div className="rounded-lg border border-[#EE6C4D]/30 bg-[#EE6C4D]/5 p-3 mb-3">
+              <div className="flex items-center gap-2 mb-1.5">
+                <Edit3 className="h-3.5 w-3.5 text-[#EE6C4D]" />
+                <span className="text-xs font-semibold">Edit PDF Text Mode</span>
+              </div>
+              <p className="text-[10px] text-muted-foreground leading-relaxed">
+                Hover over any original text on the PDF. A dashed box will highlight it. Click to start editing, moving, or formatting!
               </p>
               {totalModifications > 0 && (
                 <p className="text-[10px] text-[#EE6C4D] mt-2 font-medium">
