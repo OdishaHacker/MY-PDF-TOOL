@@ -264,8 +264,8 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
         if (cancelled) return
         setPdfBuffer(buf)
         const lib = await import('pdfjs-dist')
-        lib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.7.284/pdf.worker.min.mjs`
-        const pdf = await lib.getDocument({ data: buf.slice(0) }).promise
+        lib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${lib.version}/pdf.worker.min.mjs`
+        const pdf = await lib.getDocument({ data: new Uint8Array(buf) }).promise
         if (cancelled) return
         setPages(pdf.numPages)
         setPage(1)
@@ -339,8 +339,8 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
       setRendering(true)
       try {
         const lib = await import('pdfjs-dist')
-        lib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.7.284/pdf.worker.min.mjs`
-        const pdf = await lib.getDocument({ data: pdfBuffer.slice(0) }).promise
+        lib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${lib.version}/pdf.worker.min.mjs`
+        const pdf = await lib.getDocument({ data: new Uint8Array(pdfBuffer) }).promise
         if (cancelled) return
         const p = await pdf.getPage(page)
         const base = p.getViewport({ scale: 1.0 })
