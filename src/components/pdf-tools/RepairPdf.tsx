@@ -30,7 +30,7 @@ export default function RepairPdf({ onBack }: { onBack: () => void }) {
         console.warn('pdf-lib failed, trying pdfjs fallback', err)
         // Strategy 2: Fallback to rasterization via pdfjs and jspdf
         const pdfjsLib = await import('pdfjs-dist')
-        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`
+        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`
         const { jsPDF } = await import('jspdf')
         
         const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(arrayBuffer) }).promise

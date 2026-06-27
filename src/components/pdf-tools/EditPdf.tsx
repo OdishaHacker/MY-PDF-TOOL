@@ -298,15 +298,20 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
   useEffect(() => {
     if (!pdfFile) return
     let cancelled = false
+    console.log(`[EditPdf] Loading file: ${pdfFile.name} (${pdfFile.size} bytes)...`)
     ;(async () => {
       try {
         const buf = await pdfFile.arrayBuffer()
         if (cancelled) return
         setPdfBuffer(buf)
+        console.log(`[EditPdf] File loaded into arrayBuffer. Initializing pdfjs-dist...`)
         const lib = await import('pdfjs-dist')
-        lib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.7.284/pdf.worker.min.mjs`
+        lib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@5.7.284/build/pdf.worker.min.mjs'
+        
+        console.log(`[EditPdf] Fetching document from buffer...`)
         const pdf = await lib.getDocument({ data: buf.slice(0) }).promise
         if (cancelled) return
+        console.log(`[EditPdf] Document fetched. Pages: ${pdf.numPages}`)
         setPages(pdf.numPages)
         setPage(1)
         setElements([])
@@ -318,11 +323,15 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
 
         // Parse and merge original PDF text items
         const initialElements: EditorElement[] = []
+        console.log(`[EditPdf] Starting text extraction and merging for all pages...`)
+        
         for (let p = 1; p <= pdf.numPages; p++) {
+          console.log(`[EditPdf] Page ${p}: Extracting text content...`)
           const pg = await pdf.getPage(p)
           const baseViewport = pg.getViewport({ scale: 1.0 })
           const pageHeight = baseViewport.height
           const textContent = await pg.getTextContent()
+          console.log(`[EditPdf] Page ${p}: Found ${textContent.items.length} raw text fragments. Merging...`)
 
           // 1. Map raw text items to top-based coordinate system
           const rawItems = textContent.items.map((item: any) => {
@@ -347,7 +356,6 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
           }).filter(Boolean) as any[]
 
           // 2. Line-merging algorithm
-          // Group items by Y coordinate (within small tolerance)
           const tolerance = 4 // pixels
           const lines: any[][] = []
 
@@ -367,6 +375,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
           })
 
           // Sort and merge items within each line
+          let pageElementCount = 0
           lines.forEach(line => {
             line.sort((a, b) => a.x - b.x)
             let currentBlock: any = null
@@ -383,6 +392,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                   currentBlock.width = (item.x + item.width) - currentBlock.x
                 } else {
                   createTextElement(currentBlock, p)
+                  pageElementCount++
                   currentBlock = { ...item }
                 }
               }
@@ -390,8 +400,10 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
 
             if (currentBlock) {
               createTextElement(currentBlock, p)
+              pageElementCount++
             }
           })
+          console.log(`[EditPdf] Page ${p}: Merged into ${pageElementCount} text blocks.`)
         }
 
         function createTextElement(block: any, pageNum: number) {
@@ -427,16 +439,21 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
         }
 
         if (!cancelled) {
+          console.log(`[EditPdf] Text parsing completed. Total elements: ${initialElements.length}. Updating state...`)
           setElements(initialElements)
           historyRef.current = [JSON.parse(JSON.stringify(initialElements))]
           historyIndexRef.current = 0
+          toast.success('PDF loaded and parsed successfully!')
         }
-      } catch (err) {
-        console.error(err)
-        toast.error('Failed to load PDF')
+      } catch (err: any) {
+        console.error('[EditPdf] Error loading PDF:', err)
+        toast.error(`Failed to load PDF: ${err?.message || err || 'Unknown error'}`)
       }
     })()
-    return () => { cancelled = true }
+    return () => { 
+      cancelled = true 
+      console.log('[EditPdf] Load effect cleanup triggered.')
+    }
   }, [pdfFile])
 
   // ============================================================
@@ -447,12 +464,14 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
     if (!pdfBuffer || page < 1) return
     let cancelled = false
     let renderTask: any = null
+    console.log(`[EditPdf] Starting page render for page ${page} at scale ${scale}...`)
 
     ;(async () => {
       setRendering(true)
       try {
         const lib = await import('pdfjs-dist')
-        lib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.7.284/pdf.worker.min.mjs`
+        lib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@5.7.284/build/pdf.worker.min.mjs'
+        console.log(`[EditPdf] Loading page ${page}...`)
         const pdf = await lib.getDocument({ data: pdfBuffer.slice(0) }).promise
         if (cancelled) return
         const p = await pdf.getPage(page)
@@ -467,8 +486,15 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
         const ctx = c.getContext('2d')
         if (!ctx || cancelled) return
 
+        console.log(`[EditPdf] Rendering page content to canvas...`)
         renderTask = p.render({ canvasContext: ctx, viewport: vp } as never)
-        try { await renderTask.promise } catch (e: any) { if (e?.name !== 'RenderingCancelledException') throw e }
+        try { 
+          await renderTask.promise 
+          console.log(`[EditPdf] Page ${page} successfully rendered.`)
+        } catch (e: any) { 
+          if (e?.name !== 'RenderingCancelledException') throw e 
+          console.log(`[EditPdf] Page render task cancelled for page ${page}.`)
+        }
 
         if (cancelled) return
 
@@ -487,9 +513,11 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
             }
           }
         }
-      } catch (err) {
-        console.error(err)
-        if (!cancelled) toast.error('Failed to render page')
+      } catch (err: any) {
+        console.error(`[EditPdf] Error rendering page ${page}:`, err)
+        if (!cancelled) {
+          toast.error(`Failed to render page: ${err?.message || err || 'Unknown error'}`)
+        }
       } finally {
         if (!cancelled) setRendering(false)
       }
@@ -497,6 +525,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
 
     return () => {
       cancelled = true
+      console.log(`[EditPdf] Render effect cleanup triggered for page ${page}.`)
       try { renderTask?.cancel() } catch { /* ignore */ }
     }
   }, [pdfBuffer, page, scale])

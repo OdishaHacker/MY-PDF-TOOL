@@ -53,7 +53,7 @@ export default function PdfToJpg({ onBack }: { onBack: () => void }) {
 
     try {
       const pdfjsLib = await import('pdfjs-dist')
-      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.7.284/pdf.worker.min.mjs`
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@5.7.284/build/pdf.worker.min.mjs'
 
       const buffer = await files[0].arrayBuffer()
       const pdf = await pdfjsLib.getDocument({ data: buffer }).promise

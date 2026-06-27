@@ -24,7 +24,7 @@ export default function RedactPdf({ onBack }: { onBack: () => void }) {
     setProcessing(true)
     try {
       const pdfjsLib = await import('pdfjs-dist')
-      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`
+      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`
       const arrayBuffer = await files[0].arrayBuffer()
       const pdfDoc = await PDFDocument.load(arrayBuffer)
       const font = await pdfDoc.embedFont(StandardFonts.Helvetica)
