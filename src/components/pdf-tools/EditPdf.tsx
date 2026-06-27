@@ -322,12 +322,9 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
         historyRef.current = [[]]
         historyIndexRef.current = 0
 
-        // Parse and split original PDF text items into words
+        // Parse original PDF text items exactly as they are (no merging, no splitting)
         const initialElements: EditorElement[] = []
-        console.log(`[EditPdf] Starting word-by-word text extraction for all pages...`)
-
-        const canvas = document.createElement('canvas')
-        const ctx = canvas.getContext('2d')!
+        console.log(`[EditPdf] Starting raw text extraction for all pages...`)
 
         for (let p = 1; p <= pdf.numPages; p++) {
           console.log(`[EditPdf] Page ${p}: Extracting text content...`)
@@ -335,69 +332,50 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
           const baseViewport = pg.getViewport({ scale: 1.0 })
           const pageHeight = baseViewport.height
           const textContent = await pg.getTextContent()
-          console.log(`[EditPdf] Page ${p}: Found ${textContent.items.length} raw text fragments. Splitting to words...`)
+          console.log(`[EditPdf] Page ${p}: Found ${textContent.items.length} raw text fragments. Mapping directly...`)
 
           let pageWordCount = 0
           for (const item of textContent.items as any[]) {
-            if (!item.str || !item.transform) continue
+            if (!item.str || !item.str.trim() || !item.transform) continue
             const tx = item.transform
             const fontSize = Math.sqrt(tx[0] * tx[0] + tx[1] * tx[1]) || 12
-            const startX = tx[4]
+            const x = tx[4]
             const yFromBottom = tx[5]
             const y = pageHeight - yFromBottom - fontSize // top-based
             const fontInfo = detectPdfFont(item.fontName || '')
+            const width = item.width || 0
 
-            // Set font style on canvas context to measure widths accurately
-            const displayFontName = displayFont(FONT_OPTIONS.find(f => f.pdf === fontInfo.key)?.value || 'Helvetica, Arial, sans-serif')
-            ctx.font = `${fontInfo.bold ? 'bold ' : ''}${fontSize}px ${displayFontName}`
-
-            // Split raw string by space, keeping spaces in the array to compute positions
-            const tokens = item.str.split(/(\s+)/)
-            let currentX = startX
-
-            for (const token of tokens) {
-              if (!token) continue
-              const tokenWidth = ctx.measureText(token).width
-
-              if (token.trim() === '') {
-                // If it's space, just advance X coordinate
-                currentX += tokenWidth
-              } else {
-                // If it's a word, add it as a separate element!
-                initialElements.push({
-                  id: uid(),
-                  type: 'text',
-                  x: currentX,
-                  y: y,
-                  width: Math.max(tokenWidth, 8),
-                  height: fontSize * 1.2,
-                  content: token,
-                  fontSize: fontSize,
-                  fontFamily: FONT_OPTIONS.find(f => f.pdf === fontInfo.key)?.value || 'Helvetica, Arial, sans-serif',
-                  color: '#000000',
-                  page: p,
-                  rotation: 0,
-                  zIndex: initialElements.length,
-                  // Original metadata
-                  isOriginal: true,
-                  originalX: currentX,
-                  originalY: y,
-                  originalWidth: tokenWidth,
-                  originalHeight: fontSize * 1.2,
-                  originalContent: token,
-                  pdfX: currentX,
-                  pdfY: yFromBottom,
-                  pdfWidth: tokenWidth,
-                  pdfHeight: fontSize * 1.2,
-                  pdfFontSize: fontSize,
-                  pdfFontKey: fontInfo.key,
-                })
-                pageWordCount++
-                currentX += tokenWidth
-              }
-            }
+            initialElements.push({
+              id: uid(),
+              type: 'text',
+              x: x,
+              y: y,
+              width: Math.max(width, 15),
+              height: fontSize * 1.2,
+              content: item.str,
+              fontSize: fontSize,
+              fontFamily: FONT_OPTIONS.find(f => f.pdf === fontInfo.key)?.value || 'Helvetica, Arial, sans-serif',
+              color: '#000000',
+              page: p,
+              rotation: 0,
+              zIndex: initialElements.length,
+              // Original metadata
+              isOriginal: true,
+              originalX: x,
+              originalY: y,
+              originalWidth: width,
+              originalHeight: fontSize * 1.2,
+              originalContent: item.str,
+              pdfX: x,
+              pdfY: yFromBottom,
+              pdfWidth: width,
+              pdfHeight: fontSize * 1.2,
+              pdfFontSize: fontSize,
+              pdfFontKey: fontInfo.key,
+            })
+            pageWordCount++
           }
-          console.log(`[EditPdf] Page ${p}: Created ${pageWordCount} individual word elements.`)
+          console.log(`[EditPdf] Page ${p}: Loaded ${pageWordCount} original text elements.`)
         }
 
         if (!cancelled) {
