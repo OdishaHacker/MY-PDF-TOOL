@@ -891,6 +891,19 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
       if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) { e.preventDefault(); undo() }
       if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) { e.preventDefault(); redo() }
       if ((e.ctrlKey || e.metaKey) && e.key === 'd' && selId) { e.preventDefault(); duplicateEl(selId) }
+
+      // Tool Selection Shortcuts
+      const k = e.key.toLowerCase()
+      if (k === 'v') setTool('select')
+      if (k === 'e') setTool('edit')
+      if (k === 't') setTool('text')
+      if (k === 'i') { setTool('image'); imgInputRef.current?.click() }
+      if (k === 'r') setTool('rect')
+      if (k === 'c') setTool('circle')
+      if (k === 'l') setTool('line')
+      if (k === 'w') setTool('whiteout')
+      if (k === 'd') setTool('draw')
+      if (k === 'x') setTool('delete')
     }
     window.addEventListener('keydown', down)
     return () => window.removeEventListener('keydown', down)
@@ -1188,6 +1201,7 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
 
   const TOOLS: { t: ToolType; icon: React.ElementType; label: string }[] = [
     { t: 'select', icon: MousePointer2, label: 'Select / Move (V)' },
+    { t: 'edit', icon: Edit3, label: 'Edit PDF Text (E)' },
     { t: 'text', icon: Type, label: 'Add Text (T)' },
     { t: 'image', icon: ImagePlus, label: 'Add Image (I)' },
     { t: 'rect', icon: Square, label: 'Rectangle (R)' },
