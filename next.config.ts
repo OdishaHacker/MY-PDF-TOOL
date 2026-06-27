@@ -25,22 +25,17 @@ const nextConfig: NextConfig = {
           net: false,
           tls: false,
         };
-        config.resolve.alias = {
-          ...config.resolve.alias,
-          "node:fs": false,
-          "node:path": false,
-          "node:os": false,
-          "node:crypto": false,
-          "node:stream": false,
-          "node:buffer": false,
-          "node:https": false,
-          "node:http": false,
-          "node:net": false,
-          "node:tls": false,
-        };
+        config.plugins.push(
+          new webpack.NormalModuleReplacementPlugin(
+            /^node:/,
+            (resource: any) => {
+              resource.request = resource.request.replace(/^node:/, '');
+            }
+          )
+        );
       }
       return config;
-  },
+    },
 };
 
 export default nextConfig;
