@@ -186,7 +186,10 @@ function isOriginalModified(el: EditorElement): boolean {
   const textMod = el.type === 'text' && el.content !== el.originalContent
   const posMod = Math.abs(el.x - (el.originalX ?? el.x)) > 0.1 || Math.abs(el.y - (el.originalY ?? el.y)) > 0.1
   const rotMod = (el.rotation ?? 0) !== 0
-  return textMod || posMod || rotMod
+  const sizeMod = el.type === 'text' && el.fontSize !== el.pdfFontSize
+  const boldMod = el.type === 'text' && el.bold !== (el.pdfFontKey?.toLowerCase().includes('bold') ?? false)
+  const colorMod = el.type === 'text' && el.color !== '#000000'
+  return textMod || posMod || rotMod || sizeMod || boldMod || colorMod
 }
 
 // ============================================================
@@ -1027,7 +1030,11 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
         }
 
         // 3. Overlay elements (added text, images, shapes)
-        const els = elements.filter(e => e.page === pn).sort((a, b) => (a.zIndex ?? 0) - (b.zIndex ?? 0))
+        // Filter out unmodified original elements to prevent double rendering and keep original background rendering
+        const els = elements
+          .filter(e => e.page === pn && (!e.isOriginal || isOriginalModified(e)))
+          .sort((a, b) => (a.zIndex ?? 0) - (b.zIndex ?? 0))
+
         for (const el of els) {
           const rotationAngle = el.rotation ?? 0
           const rad = rotationAngle * Math.PI / 180
@@ -1053,12 +1060,23 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
                   textX = el.x + el.width - tw
                 }
 
-                // Center-rotation adjustment for text block line
-                const lineY = ph - el.y - el.fontSize * 0.85 - li * lh
-                const cx = el.x + el.width / 2
-                const cy = ph - el.y - el.height / 2
-                const rx = cx + (textX - cx) * cos - (lineY - cy) * sin
-                const ry = cy + (textX - cx) * sin + (lineY - cy) * cos
+                let lineY = ph - el.y - el.fontSize - li * lh
+
+                const isPosUnchanged = Math.abs(el.x - (el.originalX ?? el.x)) < 0.1 && Math.abs(el.y - (el.originalY ?? el.y)) < 0.1
+                const isRotUnchanged = (el.rotation ?? 0) === 0
+
+                let rx = textX
+                let ry = lineY
+                if (el.isOriginal && isPosUnchanged && isRotUnchanged && el.pdfX !== undefined && el.pdfY !== undefined) {
+                  rx = el.pdfX
+                  ry = el.pdfY - li * lh
+                } else {
+                  // Center-rotation adjustment for text block line
+                  const cx = el.x + el.width / 2
+                  const cy = ph - el.y - el.height / 2
+                  rx = cx + (textX - cx) * cos - (lineY - cy) * sin
+                  ry = cy + (textX - cx) * sin + (lineY - cy) * cos
+                }
 
                 pg.drawText(t, {
                   x: rx,
