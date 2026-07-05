@@ -1194,6 +1194,34 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
         description="Full Canva-style PDF Editor — click & drag any text or element, modify content, or delete anything."
         icon={<Pencil className="h-5 w-5" />}
         onBack={onBack}
+        seoContent={
+          <>
+            <h2 className="text-2xl font-bold text-foreground">A Complete Guide to Editing PDFs Online</h2>
+            <p>
+              For a long time, editing a PDF required expensive desktop software. If you just needed to fill out a form, add a quick signature, or circle an important paragraph, you were often out of luck unless you wanted to print the document, write on it with a pen, and scan it back in. Our <strong>Edit PDF</strong> tool completely changes that workflow, putting professional-grade editing capabilities right inside your web browser.
+            </p>
+            <p>
+              Whether you are a student highlighting study materials, a contractor filling out tax forms, or a teacher grading digital assignments, our suite of editing tools provides exactly what you need without the steep learning curve of traditional software.
+            </p>
+            <h3 className="text-xl font-bold text-foreground mt-8 mb-4">Powerful Features at Your Fingertips</h3>
+            <p>
+              Our web-based editor is packed with features designed to handle any basic or intermediate editing task:
+            </p>
+            <ul className="list-disc pl-6 space-y-2 mt-4">
+              <li><strong>Text Addition:</strong> Easily type new text anywhere on the document. You can adjust the font size, color, and alignment to seamlessly match the original document or stand out as a clear annotation.</li>
+              <li><strong>Drawing & Shapes:</strong> Need to draw attention to a specific chart? Use our freehand drawing tool to circle it, or insert perfectly straight lines and geometric shapes.</li>
+              <li><strong>Image Insertion:</strong> You can overlay new images onto your PDF. This is perfect for adding corporate logos, stamps of approval, or supplementary diagrams to an existing report.</li>
+              <li><strong>Form Filling:</strong> Stop printing forms. You can use the text tool to type directly onto the dotted lines of any digital form, saving paper and ensuring your submissions are perfectly legible.</li>
+            </ul>
+            <h3 className="text-xl font-bold text-foreground mt-8 mb-4">Total Privacy for Your Most Sensitive Edits</h3>
+            <p>
+              The documents you need to edit the most—like W-2 forms, rental agreements, and medical releases—are precisely the documents you should never upload to a random website. With our tool, you don't have to choose between convenience and security.
+            </p>
+            <p>
+              We process all of your edits locally using your device's own computing power. This means the PDF file never leaves your computer, and we have absolutely zero access to the data you are editing. Once you click download, the newly edited file is generated directly on your hard drive. 
+            </p>
+          </>
+        }
       >
         <FileDropzone
           accept=".pdf"
@@ -1846,6 +1874,6 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
       </div>
 
       <input ref={imgInputRef} type="file" accept="image/png,image/jpeg,image/jpg,image/webp" className="hidden" onChange={onImgInput} />
-    </div>
+    </ToolLayout>
   )
 }
