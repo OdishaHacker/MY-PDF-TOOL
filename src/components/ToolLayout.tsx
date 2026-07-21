@@ -273,6 +273,34 @@ export default function ToolLayout({
   const about = aboutContent || getDefaultAboutContent(title)
   const faqs = faqItems || getDefaultFaqItems(title)
 
+  // JSON-LD structured data for FAQ rich snippets
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: f.answer,
+      },
+    })),
+  }
+
+  const softwareJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: title,
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Any (Browser-based)',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+    description: description,
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -411,6 +439,16 @@ export default function ToolLayout({
           </Accordion>
         </div>
       </motion.section>
+
+      {/* JSON-LD structured data for Google rich snippets */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }}
+      />
     </motion.div>
   )
 }
