@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowLeft, Lock, CheckCircle, AlertTriangle, Lightbulb, ListOrdered, BookOpen, ShieldCheck, Zap , ArrowRight } from "lucide-react";
 
@@ -19,7 +19,7 @@ export default function BlogPost() {
           </Link>
 
           <header className="mb-10">
-            <div className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-[$(System.Collections.Hashtable.color)]/10 text-[$(System.Collections.Hashtable.color)] mb-4">
+            <div className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-[#F39C12]/10 text-[#F39C12] mb-4">
               <Lock className="h-3.5 w-3.5" />
               Security
             </div>
@@ -61,18 +61,18 @@ export default function BlogPost() {
             </div>
 
             <h2 id="why-it-matters" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <BookOpen className="h-6 w-6 text-[$(System.Collections.Hashtable.color)]" />
+              <BookOpen className="h-6 w-6 text-[#F39C12]" />
               Why This Matters for Your Workflow
             </h2>
             <p>
-              Optimizing your document management strategy is no longer optional. When you handle PDFs correctly, you ensure compatibility across all devices and platforms. A well-formatted, properly optimized PDF reflects professionalism. Have you ever tried to open an oversized document on a mobile device, or received a file that was completely disorganized? It creates immediate friction. By mastering these PDF skills, you remove that friction for your clients, colleagues, and yourself.
+              Some documents genuinely should not be openable by just anyone. A contract with personal details, a medical report, or a business plan sent to an investor â€” these deserve a layer of protection beyond trust alone. Adding a password means even if the file ends up somewhere unintended, the contents stay locked.
             </p>
             <p>
-              Furthermore, privacy and security should be at the forefront of any document processing. Our tools process everything locally in your browser whenever possible, meaning your sensitive files never touch a remote server. This is a game-changer for medical records, legal contracts, and confidential business plans.
+              Encryption that runs locally is especially valuable here. Your actual file and password never leave your device, which matters a lot for legal papers, financial statements, and anything covered by privacy regulations. The browser does the encryption, and no copy of your document or passphrase sits on an external server.
             </p>
 
             <h2 id="step-by-step" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <Zap className="h-6 w-6 text-[$(System.Collections.Hashtable.color)]" />
+              <Zap className="h-6 w-6 text-[#F39C12]" />
               Step-by-Step Guide
             </h2>
             <p>
@@ -104,7 +104,7 @@ export default function BlogPost() {
             </div>
 
             <h2 id="common-mistakes" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <AlertTriangle className="h-6 w-6 text-[$(System.Collections.Hashtable.color)]" />
+              <AlertTriangle className="h-6 w-6 text-[#F39C12]" />
               Common Mistakes to Avoid
             </h2>
             <ul className="space-y-4 my-6 list-none pl-0">
@@ -132,7 +132,7 @@ export default function BlogPost() {
             </ul>
 
             <h2 id="faq" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <ShieldCheck className="h-6 w-6 text-[$(System.Collections.Hashtable.color)]" />
+              <ShieldCheck className="h-6 w-6 text-[#F39C12]" />
               Frequently Asked Questions
             </h2>
             <div className="space-y-6 mt-6">
