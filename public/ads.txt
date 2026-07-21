@@ -1,5 +1,5 @@
-google.com, pub-5858134800145623, DIRECT, f08c47fec0942fa0
-google.com, pub-3871612249123216, DIRECT, f08c47fec0942fa0
+# mypdftools.in ads.txt
+# Keep ONLY the publisher ID that matches your actual AdSense account.
+# Delete/comment out any lines that are NOT yours.
 
-google.com, pub-7286696534655834, DIRECT, f08c47fec0942fa0
-google.com, pub-1657123342291227, DIRECT, f08c47fec0942fa0
+google.com, pub-XXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
