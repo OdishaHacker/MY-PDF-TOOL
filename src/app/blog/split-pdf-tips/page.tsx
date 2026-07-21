@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowLeft, Scissors, CheckCircle, AlertTriangle, Lightbulb, ListOrdered, BookOpen, ShieldCheck, Zap , ArrowRight } from "lucide-react";
 
@@ -19,7 +19,7 @@ export default function BlogPost() {
           </Link>
 
           <header className="mb-10">
-            <div className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-[$(System.Collections.Hashtable.color)]/10 text-[$(System.Collections.Hashtable.color)] mb-4">
+            <div className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-[#F4A261]/10 text-[#F4A261] mb-4">
               <Scissors className="h-3.5 w-3.5" />
               Organize
             </div>
@@ -61,18 +61,18 @@ export default function BlogPost() {
             </div>
 
             <h2 id="why-it-matters" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <BookOpen className="h-6 w-6 text-[$(System.Collections.Hashtable.color)]" />
+              <BookOpen className="h-6 w-6 text-[#F4A261]" />
               Why This Matters for Your Workflow
             </h2>
             <p>
-              Optimizing your document management strategy is no longer optional. When you handle PDFs correctly, you ensure compatibility across all devices and platforms. A well-formatted, properly optimized PDF reflects professionalism. Have you ever tried to open an oversized document on a mobile device, or received a file that was completely disorganized? It creates immediate friction. By mastering these PDF skills, you remove that friction for your clients, colleagues, and yourself.
+              There are plenty of situations where you only need a slice of a PDF rather than the whole thing. A fifty-page report becomes a lot easier to share once you pull out the three pages that actually matter. Students extract chapters from textbooks, accountants send only the relevant invoices, and designers grab reference pages without dragging along unrelated material.
             </p>
             <p>
-              Furthermore, privacy and security should be at the forefront of any document processing. Our tools process everything locally in your browser whenever possible, meaning your sensitive files never touch a remote server. This is a game-changer for medical records, legal contracts, and confidential business plans.
+              Splitting locally instead of uploading to an unknown server makes a real difference for sensitive material. Tax forms, signed contracts, and internal memos never have to leave your laptop or phone. The browser does the work, you get your extracted pages, and nothing gets stored anywhere besides your own device.
             </p>
 
             <h2 id="step-by-step" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <Zap className="h-6 w-6 text-[$(System.Collections.Hashtable.color)]" />
+              <Zap className="h-6 w-6 text-[#F4A261]" />
               Step-by-Step Guide
             </h2>
             <p>
@@ -104,7 +104,7 @@ export default function BlogPost() {
             </div>
 
             <h2 id="common-mistakes" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <AlertTriangle className="h-6 w-6 text-[$(System.Collections.Hashtable.color)]" />
+              <AlertTriangle className="h-6 w-6 text-[#F4A261]" />
               Common Mistakes to Avoid
             </h2>
             <ul className="space-y-4 my-6 list-none pl-0">
@@ -132,7 +132,7 @@ export default function BlogPost() {
             </ul>
 
             <h2 id="faq" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <ShieldCheck className="h-6 w-6 text-[$(System.Collections.Hashtable.color)]" />
+              <ShieldCheck className="h-6 w-6 text-[#F4A261]" />
               Frequently Asked Questions
             </h2>
             <div className="space-y-6 mt-6">
