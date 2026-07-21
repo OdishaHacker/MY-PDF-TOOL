@@ -64,6 +64,20 @@ function sendFile(res, filePath) {
 }
 
 const server = http.createServer((req, res) => {
+  // Force canonical domain: redirect www -> non-www + HTTPS upgrade
+  const host = (req.headers.host || '').toLowerCase();
+  if (host.startsWith('www.')) {
+    const canonicalHost = host.slice(4);
+    const target = 'https://' + canonicalHost + (req.url || '/');
+    res.writeHead(301, {
+      'Content-Type': 'text/html; charset=utf-8',
+      Location: target,
+      'Cache-Control': 'public, max-age=86400',
+    });
+    res.end('<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=' + target + '"></head><body>Redirecting to <a href="' + target + '">' + target + '</a></body></html>');
+    return;
+  }
+
   // Parse the URL - remove query string
   let urlPath = (req.url || '/').split('?')[0];
   
