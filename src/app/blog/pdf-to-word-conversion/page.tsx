@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowLeft, FileOutput, CheckCircle, AlertTriangle, Lightbulb, ListOrdered, BookOpen, ShieldCheck, Zap , ArrowRight } from "lucide-react";
 
@@ -19,7 +19,7 @@ export default function BlogPost() {
           </Link>
 
           <header className="mb-10">
-            <div className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-[$(System.Collections.Hashtable.color)]/10 text-[$(System.Collections.Hashtable.color)] mb-4">
+            <div className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-[#295795]/10 text-[#295795] mb-4">
               <FileOutput className="h-3.5 w-3.5" />
               Convert
             </div>
@@ -61,18 +61,18 @@ export default function BlogPost() {
             </div>
 
             <h2 id="why-it-matters" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <BookOpen className="h-6 w-6 text-[$(System.Collections.Hashtable.color)]" />
+              <BookOpen className="h-6 w-6 text-[#295795]" />
               Why This Matters for Your Workflow
             </h2>
             <p>
-              Optimizing your document management strategy is no longer optional. When you handle PDFs correctly, you ensure compatibility across all devices and platforms. A well-formatted, properly optimized PDF reflects professionalism. Have you ever tried to open an oversized document on a mobile device, or received a file that was completely disorganized? It creates immediate friction. By mastering these PDF skills, you remove that friction for your clients, colleagues, and yourself.
+              Sometimes a PDF is just the starting point and the real work happens in a word processor. Editing a contract, updating an old report, or reformatting a resume is far easier in Word than in a PDF reader. Pulling the text out in an editable form saves retyping pages of content by hand.
             </p>
             <p>
-              Furthermore, privacy and security should be at the forefront of any document processing. Our tools process everything locally in your browser whenever possible, meaning your sensitive files never touch a remote server. This is a game-changer for medical records, legal contracts, and confidential business plans.
+              Documents like employment letters, legal agreements, and academic transcripts carry information you probably do not want sitting on a random server. Running the conversion locally in your browser keeps that content where it belongs. Nothing gets uploaded, nothing gets stored, and you walk away with an editable file.
             </p>
 
             <h2 id="step-by-step" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <Zap className="h-6 w-6 text-[$(System.Collections.Hashtable.color)]" />
+              <Zap className="h-6 w-6 text-[#295795]" />
               Step-by-Step Guide
             </h2>
             <p>
@@ -104,7 +104,7 @@ export default function BlogPost() {
             </div>
 
             <h2 id="common-mistakes" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <AlertTriangle className="h-6 w-6 text-[$(System.Collections.Hashtable.color)]" />
+              <AlertTriangle className="h-6 w-6 text-[#295795]" />
               Common Mistakes to Avoid
             </h2>
             <ul className="space-y-4 my-6 list-none pl-0">
@@ -132,7 +132,7 @@ export default function BlogPost() {
             </ul>
 
             <h2 id="faq" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <ShieldCheck className="h-6 w-6 text-[$(System.Collections.Hashtable.color)]" />
+              <ShieldCheck className="h-6 w-6 text-[#295795]" />
               Frequently Asked Questions
             </h2>
             <div className="space-y-6 mt-6">
