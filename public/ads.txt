@@ -2,4 +2,4 @@
 # Keep ONLY the publisher ID that matches your actual AdSense account.
 # Delete/comment out any lines that are NOT yours.
 
-google.com, pub-XXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+google.com, pub-3871612249123216, DIRECT, f08c47fec0942fa0
