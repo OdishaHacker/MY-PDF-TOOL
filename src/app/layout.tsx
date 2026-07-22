@@ -42,6 +42,9 @@ export const metadata: Metadata = {
     title: "mypdftools — Free Online PDF Tools",
     description: "Every tool you need to work with PDFs — all in one place. 100% free, 100% private.",
   },
+  verification: {
+    google: "CHc-lI6mBg-GqRTwx9LXdWtMnMKg3vEFwHB0VVzywm0",
+  },
 };
 
 export default function RootLayout({
