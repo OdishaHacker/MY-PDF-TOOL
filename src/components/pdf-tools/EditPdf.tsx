@@ -1874,6 +1874,6 @@ export default function EditPdf({ onBack }: { onBack: () => void }) {
       </div>
 
       <input ref={imgInputRef} type="file" accept="image/png,image/jpeg,image/jpg,image/webp" className="hidden" onChange={onImgInput} />
-    </ToolLayout>
+      </div>
   )
 }
