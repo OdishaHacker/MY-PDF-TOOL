@@ -1,30 +1,43 @@
 import type { Metadata } from 'next';
-import ToolClient from './ToolClient';
-import ToolSeoContent from '@/components/ToolSeoContent';
+import dynamic from 'next/dynamic';
+import ToolSeoPage from '@/components/ToolSeoPage';
+import ToolPageSkeleton from '@/components/ToolPageSkeleton';
+
+const PageNumbers = dynamic(() => import('../../components/pdf-tools/PageNumbers'), {
+  ssr: false,
+  loading: () => <ToolPageSkeleton />,
+});
 
 export const metadata: Metadata = {
-  title: 'Add Page Numbers to PDF Online Free | mypdftools',
-  description: 'Add page numbers to your PDF documents. Customize position, format, and style. Free, no upload, works in your browser.',
-  keywords: ['add page numbers to pdf', 'pdf page numbers', 'number pdf pages', 'page numbering pdf', 'pdf page counter'],
+  title: 'Add Page Numbers to PDF Free — Number PDF Pages Online | mypdftools',
+  description:
+    'Insert custom page numbers into PDF documents online. Select position, format, font, and starting page number for free.',
+  keywords: ['add page numbers to pdf', 'number pdf pages', 'pdf page numbering free'],
   alternates: { canonical: 'https://mypdftools.in/page-numbers/' },
-  openGraph: { title: 'Add Page Numbers to PDF Free | mypdftools', description: 'Add page numbers to PDF documents. Free, browser-based.', url: 'https://mypdftools.in/page-numbers/', siteName: 'mypdftools', type: 'website' },
 };
 
 export default function Page() {
   return (
-    <>
-      <ToolClient />
-      <ToolSeoContent
-        title="Add Page Numbers to PDF — Free Online Tool"
-        description="Add professional page numbering to your PDF documents. Choose from various position options (top, bottom, left, center, right), customize the number format, and set starting page numbers. Perfect for reports, theses, manuals, and multi-page documents. All processing runs in your browser."
-        howTo={['Upload your PDF file.', 'Choose the page number position (e.g., bottom center).', 'Customize format, font, and starting number.', 'Download the numbered PDF.']}
-        features={['Multiple position options', 'Customizable number format', 'Set starting page number', 'Apply to all or selected pages', 'No server uploads — 100% private', 'Works on all devices', 'Free and unlimited', 'No registration needed']}
-        faqs={[
-          { q: 'Can I start numbering from a specific number?', a: 'Yes, you can set any starting number for your page numbering.' },
-          { q: 'Can I exclude the first page?', a: 'Yes, you can choose to skip certain pages like the cover page when adding numbers.' },
-        ]}
-        relatedTools={[{ name: 'Edit PDF', href: '/edit-pdf/' }, { name: 'Add Watermark', href: '/add-watermark/' }, { name: 'Merge PDF', href: '/merge-pdf/' }, { name: 'Organize PDF', href: '/organize-pdf/' }]}
-      />
-    </>
+    <ToolSeoPage
+      title="Add Page Numbers to PDF"
+      description="Format and insert clean page numbers into headers or footers of your PDF pages."
+      slug="page-numbers"
+      category="Organize PDF"
+      howToUseSteps={[
+        'Upload your PDF file.',
+        'Choose numbering position (top-left, top-center, bottom-right, etc.).',
+        'Select number format (e.g. "Page X of Y" or simple numbers).',
+        'Click "Add Page Numbers" and download your numbered PDF.',
+      ]}
+      aboutContent="Add page numbers to legal contracts, academic papers, or ebooks easily with custom font sizing and alignment."
+      faqItems={[
+        {
+          question: 'Can I skip the cover page?',
+          answer: 'Yes, set starting page number options to skip numbering page 1.',
+        },
+      ]}
+    >
+      <PageNumbers onBack={() => {}} />
+    </ToolSeoPage>
   );
 }
