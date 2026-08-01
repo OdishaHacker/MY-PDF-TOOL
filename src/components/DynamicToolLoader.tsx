@@ -21,8 +21,8 @@ const PdfToExcel = dynamic(() => import('./pdf-tools/PdfToExcel'), { ssr: false,
 const PdfToPowerpoint = dynamic(() => import('./pdf-tools/PdfToPowerpoint'), { ssr: false, loading: () => <ToolPageSkeleton /> });
 const PdfToText = dynamic(() => import('./pdf-tools/PdfToText'), { ssr: false, loading: () => <ToolPageSkeleton /> });
 const EditPdf = dynamic(() => import('./pdf-tools/EditPdf'), { ssr: false, loading: () => <ToolPageSkeleton /> });
-const AddWatermark = dynamic(() => import('./pdf-tools/AddWatermark'), { ssr: false, loading: () => <ToolPageSkeleton /> });
-const PageNumbers = dynamic(() => import('./pdf-tools/PageNumbers'), { ssr: false, loading: () => <ToolPageSkeleton /> });
+const AddWatermark = dynamic(() => import('./pdf-tools/WatermarkPdf'), { ssr: false, loading: () => <ToolPageSkeleton /> });
+const PageNumbers = dynamic(() => import('./pdf-tools/PageNumbersPdf'), { ssr: false, loading: () => <ToolPageSkeleton /> });
 const CropPdf = dynamic(() => import('./pdf-tools/CropPdf'), { ssr: false, loading: () => <ToolPageSkeleton /> });
 const RedactPdf = dynamic(() => import('./pdf-tools/RedactPdf'), { ssr: false, loading: () => <ToolPageSkeleton /> });
 const ProtectPdf = dynamic(() => import('./pdf-tools/ProtectPdf'), { ssr: false, loading: () => <ToolPageSkeleton /> });
