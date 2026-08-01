@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const WordToPdf = dynamic(() => import('../../components/pdf-tools/WordToPdf'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'Word to PDF Converter Free — Convert DOCX to PDF Online | mypdftools',
@@ -36,7 +30,7 @@ export default function Page() {
         },
       ]}
     >
-      <WordToPdf onBack={() => {}} />
+      <DynamicToolLoader toolSlug="word-to-pdf" />
     </ToolSeoPage>
   );
 }

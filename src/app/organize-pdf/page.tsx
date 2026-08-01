@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const OrganizePdf = dynamic(() => import('../../components/pdf-tools/OrganizePdf'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'Organize PDF Pages Online — Reorder & Delete Pages | mypdftools',
@@ -37,7 +31,7 @@ export default function Page() {
         },
       ]}
     >
-      <OrganizePdf onBack={() => {}} />
+      <DynamicToolLoader toolSlug="organize-pdf" />
     </ToolSeoPage>
   );
 }

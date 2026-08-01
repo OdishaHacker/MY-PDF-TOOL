@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const PdfToWord = dynamic(() => import('../../components/pdf-tools/PdfToWord'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'PDF to Word Converter Free — Convert PDF to Editable DOCX | mypdftools',
@@ -36,7 +30,7 @@ export default function Page() {
         },
       ]}
     >
-      <PdfToWord onBack={() => {}} />
+      <DynamicToolLoader toolSlug="pdf-to-word" />
     </ToolSeoPage>
   );
 }

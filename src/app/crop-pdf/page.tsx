@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const CropPdf = dynamic(() => import('../../components/pdf-tools/CropPdf'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'Crop PDF Online Free — Trim Margins of PDF Pages | mypdftools',
@@ -37,7 +31,7 @@ export default function Page() {
         },
       ]}
     >
-      <CropPdf onBack={() => {}} />
+      <DynamicToolLoader toolSlug="crop-pdf" />
     </ToolSeoPage>
   );
 }

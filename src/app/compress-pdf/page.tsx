@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const CompressPdf = dynamic(() => import('../../components/pdf-tools/CompressPdf'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'Compress PDF Online Free — Reduce PDF File Size | mypdftools',
@@ -41,7 +35,7 @@ export default function Page() {
         },
       ]}
     >
-      <CompressPdf onBack={() => {}} />
+      <DynamicToolLoader toolSlug="compress-pdf" />
     </ToolSeoPage>
   );
 }

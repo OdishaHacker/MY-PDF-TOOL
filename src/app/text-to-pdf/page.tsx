@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const TextToPdf = dynamic(() => import('../../components/pdf-tools/TextToPdf'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'Text to PDF Converter Free — Convert TXT to PDF | mypdftools',
@@ -37,7 +31,7 @@ export default function Page() {
         },
       ]}
     >
-      <TextToPdf onBack={() => {}} />
+      <DynamicToolLoader toolSlug="text-to-pdf" />
     </ToolSeoPage>
   );
 }

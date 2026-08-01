@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const PageNumbers = dynamic(() => import('../../components/pdf-tools/PageNumbers'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'Add Page Numbers to PDF Free — Number PDF Pages Online | mypdftools',
@@ -37,7 +31,7 @@ export default function Page() {
         },
       ]}
     >
-      <PageNumbers onBack={() => {}} />
+      <DynamicToolLoader toolSlug="page-numbers" />
     </ToolSeoPage>
   );
 }

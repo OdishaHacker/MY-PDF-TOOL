@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const PdfToPowerpoint = dynamic(() => import('../../components/pdf-tools/PdfToPowerpoint'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'PDF to PowerPoint Converter Free — Convert PDF to PPTX | mypdftools',
@@ -36,7 +30,7 @@ export default function Page() {
         },
       ]}
     >
-      <PdfToPowerpoint onBack={() => {}} />
+      <DynamicToolLoader toolSlug="pdf-to-powerpoint" />
     </ToolSeoPage>
   );
 }

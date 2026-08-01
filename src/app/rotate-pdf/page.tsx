@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const RotatePdf = dynamic(() => import('../../components/pdf-tools/RotatePdf'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'Rotate PDF Pages Online Free — Permanent PDF Rotation | mypdftools',
@@ -37,7 +31,7 @@ export default function Page() {
         },
       ]}
     >
-      <RotatePdf onBack={() => {}} />
+      <DynamicToolLoader toolSlug="rotate-pdf" />
     </ToolSeoPage>
   );
 }

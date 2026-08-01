@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const EditPdf = dynamic(() => import('../../components/pdf-tools/EditPdf'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'Edit PDF Online Free — Add Text, Images & Annotations | mypdftools',
@@ -37,7 +31,7 @@ export default function Page() {
         },
       ]}
     >
-      <EditPdf onBack={() => {}} />
+      <DynamicToolLoader toolSlug="edit-pdf" />
     </ToolSeoPage>
   );
 }

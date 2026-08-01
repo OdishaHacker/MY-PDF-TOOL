@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const UnlockPdf = dynamic(() => import('../../components/pdf-tools/UnlockPdf'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'Unlock PDF Online Free — Remove Password from PDF | mypdftools',
@@ -37,7 +31,7 @@ export default function Page() {
         },
       ]}
     >
-      <UnlockPdf onBack={() => {}} />
+      <DynamicToolLoader toolSlug="unlock-pdf" />
     </ToolSeoPage>
   );
 }

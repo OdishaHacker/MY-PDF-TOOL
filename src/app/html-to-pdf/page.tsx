@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const HtmlToPdf = dynamic(() => import('../../components/pdf-tools/HtmlToPdf'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'HTML to PDF Converter Free — Convert HTML Code to PDF | mypdftools',
@@ -37,7 +31,7 @@ export default function Page() {
         },
       ]}
     >
-      <HtmlToPdf onBack={() => {}} />
+      <DynamicToolLoader toolSlug="html-to-pdf" />
     </ToolSeoPage>
   );
 }

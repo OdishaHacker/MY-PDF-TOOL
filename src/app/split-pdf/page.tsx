@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const SplitPdf = dynamic(() => import('../../components/pdf-tools/SplitPdf'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'Split PDF Online Free — Extract Pages from PDF | mypdftools',
@@ -41,7 +35,7 @@ export default function Page() {
         },
       ]}
     >
-      <SplitPdf onBack={() => {}} />
+      <DynamicToolLoader toolSlug="split-pdf" />
     </ToolSeoPage>
   );
 }

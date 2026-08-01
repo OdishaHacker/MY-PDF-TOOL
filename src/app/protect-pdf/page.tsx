@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const ProtectPdf = dynamic(() => import('../../components/pdf-tools/ProtectPdf'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'Password Protect PDF Free — Encrypt PDF Online | mypdftools',
@@ -37,7 +31,7 @@ export default function Page() {
         },
       ]}
     >
-      <ProtectPdf onBack={() => {}} />
+      <DynamicToolLoader toolSlug="protect-pdf" />
     </ToolSeoPage>
   );
 }

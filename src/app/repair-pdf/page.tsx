@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const RepairPdf = dynamic(() => import('../../components/pdf-tools/RepairPdf'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'Repair Corrupted PDF Online Free — Fix Damaged PDF Files | mypdftools',
@@ -37,7 +31,7 @@ export default function Page() {
         },
       ]}
     >
-      <RepairPdf onBack={() => {}} />
+      <DynamicToolLoader toolSlug="repair-pdf" />
     </ToolSeoPage>
   );
 }

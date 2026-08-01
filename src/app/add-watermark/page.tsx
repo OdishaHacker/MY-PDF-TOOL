@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const AddWatermark = dynamic(() => import('../../components/pdf-tools/AddWatermark'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'Add Watermark to PDF Free — Text & Image Watermarks | mypdftools',
@@ -37,7 +31,7 @@ export default function Page() {
         },
       ]}
     >
-      <AddWatermark onBack={() => {}} />
+      <DynamicToolLoader toolSlug="add-watermark" />
     </ToolSeoPage>
   );
 }

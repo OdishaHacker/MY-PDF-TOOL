@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const MergePdf = dynamic(() => import('../../components/pdf-tools/MergePdf'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'Merge PDF Online Free — Combine PDF Files in Browser | mypdftools',
@@ -45,7 +39,7 @@ export default function Page() {
         },
       ]}
     >
-      <MergePdf onBack={() => {}} />
+      <DynamicToolLoader toolSlug="merge-pdf" />
     </ToolSeoPage>
   );
 }

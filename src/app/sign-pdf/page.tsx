@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const SignPdf = dynamic(() => import('../../components/pdf-tools/SignPdf'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'Sign PDF Online Free — Add Electronic Signature to PDF | mypdftools',
@@ -37,7 +31,7 @@ export default function Page() {
         },
       ]}
     >
-      <SignPdf onBack={() => {}} />
+      <DynamicToolLoader toolSlug="sign-pdf" />
     </ToolSeoPage>
   );
 }

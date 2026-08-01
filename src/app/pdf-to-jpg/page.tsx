@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const PdfToJpg = dynamic(() => import('../../components/pdf-tools/PdfToJpg'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'PDF to JPG Converter Online Free — Extract Images from PDF | mypdftools',
@@ -37,7 +31,7 @@ export default function Page() {
         },
       ]}
     >
-      <PdfToJpg onBack={() => {}} />
+      <DynamicToolLoader toolSlug="pdf-to-jpg" />
     </ToolSeoPage>
   );
 }

@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const ExcelToPdf = dynamic(() => import('../../components/pdf-tools/ExcelToPdf'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'Excel to PDF Converter Free — Convert XLSX to PDF | mypdftools',
@@ -37,7 +31,7 @@ export default function Page() {
         },
       ]}
     >
-      <ExcelToPdf onBack={() => {}} />
+      <DynamicToolLoader toolSlug="excel-to-pdf" />
     </ToolSeoPage>
   );
 }

@@ -1,12 +1,6 @@
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
 import ToolSeoPage from '@/components/ToolSeoPage';
-import ToolPageSkeleton from '@/components/ToolPageSkeleton';
-
-const RedactPdf = dynamic(() => import('../../components/pdf-tools/RedactPdf'), {
-  ssr: false,
-  loading: () => <ToolPageSkeleton />,
-});
+import DynamicToolLoader from '@/components/DynamicToolLoader';
 
 export const metadata: Metadata = {
   title: 'Redact PDF Online Free — Blackout Sensitive Text in PDF | mypdftools',
@@ -37,7 +31,7 @@ export default function Page() {
         },
       ]}
     >
-      <RedactPdf onBack={() => {}} />
+      <DynamicToolLoader toolSlug="redact-pdf" />
     </ToolSeoPage>
   );
 }
