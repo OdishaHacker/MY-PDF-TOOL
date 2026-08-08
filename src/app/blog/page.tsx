@@ -3,13 +3,15 @@ import type { Metadata } from "next";
 import {
   FileText, Clock, ArrowRight, BookOpen, Merge, Scissors, FileDown,
   FileOutput, Lock, ImageIcon, PenTool, Droplets, Shield, Sparkles,
-  RotateCw, Crop, Hash, Wrench, Code, Type, LayoutList, Table, FileImage
+  RotateCw, Crop, Hash, Wrench, Code, Type, LayoutList, Table, FileImage,
+  CheckCircle2, User
 } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Blog — mypdftools | PDF Tips, Guides & Tutorials",
   description: "Expert guides, tips, and tutorials on PDF tools. Learn how to merge, split, compress, convert, sign, and secure your PDF files with our comprehensive blog.",
   keywords: ["PDF blog", "PDF tips", "PDF tutorials", "merge PDF guide", "split PDF", "compress PDF", "PDF to Word", "mypdftools blog"],
+  alternates: { canonical: "https://mypdftools.in/blog/" },
 };
 
 interface BlogPost {
@@ -24,12 +26,11 @@ interface BlogPost {
 }
 
 const blogPosts: BlogPost[] = [
-  // EXISTING 10 POSTS
   {
     slug: "merge-pdf-guide",
-    title: "How to Merge PDF Files Like a Pro: Complete Guide 2026",
+    title: "How to Merge PDF Files Like a Pro: Complete Guide",
     description: "Learn the easiest ways to combine multiple PDF files into one seamless document. Step-by-step instructions, pro tips, and common mistakes to avoid.",
-    date: "May 2, 2026",
+    date: "August 2026",
     readTime: "6 min read",
     icon: Merge,
     color: "#EE6C4D",
@@ -39,7 +40,7 @@ const blogPosts: BlogPost[] = [
     slug: "split-pdf-tips",
     title: "Split PDF Files Instantly: Tips and Tricks You Need to Know",
     description: "Discover how to split large PDFs into smaller files with precision. From extracting single pages to custom ranges — everything covered.",
-    date: "May 5, 2026",
+    date: "August 2026",
     readTime: "5 min read",
     icon: Scissors,
     color: "#F4A261",
@@ -49,7 +50,7 @@ const blogPosts: BlogPost[] = [
     slug: "compress-pdf-guide",
     title: "Reduce PDF File Size Without Losing Quality: Expert Guide",
     description: "Master the art of PDF compression. Learn how to shrink file sizes while keeping crisp text and sharp images intact.",
-    date: "May 8, 2026",
+    date: "August 2026",
     readTime: "7 min read",
     icon: FileDown,
     color: "#8FBC5D",
@@ -59,7 +60,7 @@ const blogPosts: BlogPost[] = [
     slug: "pdf-to-word-conversion",
     title: "Convert PDF to Word Documents: The Easiest Methods Explained",
     description: "Transform static PDFs into editable Word documents in seconds. Compare methods and find the one that works best for your needs.",
-    date: "May 11, 2026",
+    date: "August 2026",
     readTime: "6 min read",
     icon: FileOutput,
     color: "#295795",
@@ -69,7 +70,7 @@ const blogPosts: BlogPost[] = [
     slug: "protect-pdf-password",
     title: "How to Password Protect Your PDF Files for Free",
     description: "Keep sensitive documents safe with PDF password protection. A complete walkthrough on encrypting and securing your files.",
-    date: "May 14, 2026",
+    date: "August 2026",
     readTime: "5 min read",
     icon: Lock,
     color: "#F39C12",
@@ -79,7 +80,7 @@ const blogPosts: BlogPost[] = [
     slug: "jpg-to-pdf-conversion",
     title: "Convert JPG Images to PDF in Seconds: Step-by-Step Tutorial",
     description: "Turn your photos and scans into organized PDF documents. Perfect for receipts, portfolios, and multi-page image collections.",
-    date: "May 16, 2026",
+    date: "August 2026",
     readTime: "5 min read",
     icon: ImageIcon,
     color: "#5F83C6",
@@ -89,7 +90,7 @@ const blogPosts: BlogPost[] = [
     slug: "watermark-pdf-guide",
     title: "Add Watermarks to PDF Files: Protect Your Intellectual Property",
     description: "Learn how to easily add text and image watermarks to your PDF documents to prevent unauthorized use and copying.",
-    date: "May 19, 2026",
+    date: "August 2026",
     readTime: "4 min read",
     icon: Droplets,
     color: "#5DADE2",
@@ -99,7 +100,7 @@ const blogPosts: BlogPost[] = [
     slug: "sign-pdf-electronically",
     title: "How to Sign PDF Documents Electronically (Legally Binding)",
     description: "Ditch the printer and scanner. Discover how to add legally binding electronic signatures to your PDF contracts and forms.",
-    date: "May 22, 2026",
+    date: "August 2026",
     readTime: "6 min read",
     icon: PenTool,
     color: "#9B59B6",
@@ -109,7 +110,7 @@ const blogPosts: BlogPost[] = [
     slug: "pdf-security-tips",
     title: "7 Essential PDF Security Tips Every Business Needs to Know",
     description: "Protect your confidential business data with these crucial PDF security best practices, from redaction to strong encryption.",
-    date: "May 25, 2026",
+    date: "August 2026",
     readTime: "8 min read",
     icon: Shield,
     color: "#E74C3C",
@@ -119,19 +120,17 @@ const blogPosts: BlogPost[] = [
     slug: "free-pdf-tools-online",
     title: "Why You Should Stop Using Paid PDF Software in 2026",
     description: "Explore the powerful capabilities of free online PDF tools that can replace your expensive Adobe Acrobat subscription.",
-    date: "May 28, 2026",
+    date: "August 2026",
     readTime: "5 min read",
     icon: Sparkles,
     color: "#F1C40F",
     category: "Tools",
   },
-  
-  // NEW 10 POSTS (AdSense Ready)
   {
     slug: "pdf-to-excel-guide",
     title: "How to Convert PDF to Excel: Extract Tables Perfectly",
     description: "Learn how to accurately extract tabular data from PDF files into Excel spreadsheets without losing formatting.",
-    date: "June 1, 2026",
+    date: "August 2026",
     readTime: "5 min read",
     icon: Table,
     color: "#2E7237",
@@ -141,183 +140,206 @@ const blogPosts: BlogPost[] = [
     slug: "rotate-pdf-guide",
     title: "How to Rotate PDF Pages — Quick & Easy Guide",
     description: "Scanned your documents upside down? Here is a simple guide on how to permanently rotate individual pages or entire PDFs.",
-    date: "June 4, 2026",
+    date: "August 2026",
     readTime: "4 min read",
     icon: RotateCw,
     color: "#2A9D8F",
     category: "Organize",
   },
   {
-    slug: "edit-pdf-online",
-    title: "How to Edit a PDF Online Without Adobe Acrobat",
-    description: "Need to fix a typo or add text to a PDF? Discover how to quickly edit PDF documents directly in your web browser.",
-    date: "June 7, 2026",
-    readTime: "6 min read",
-    icon: FileText,
-    color: "#AB6993",
-    category: "Edit",
-  },
-  {
-    slug: "pdf-to-jpg-guide",
-    title: "Best Way to Convert PDF to JPG Images (High Quality)",
-    description: "Extract high-resolution JPG images from your PDF files or convert entire PDF pages into images seamlessly.",
-    date: "June 10, 2026",
-    readTime: "5 min read",
-    icon: FileImage,
-    color: "#E76F51",
-    category: "Convert",
-  },
-  {
     slug: "crop-pdf-guide",
-    title: "How to Crop PDF Pages to Remove Margins and White Space",
-    description: "Optimize your PDFs for e-readers or mobile devices by cropping out unnecessary white space and margins.",
-    date: "June 13, 2026",
-    readTime: "4 min read",
+    title: "How to Crop PDF Pages and Trim Margins Online",
+    description: "A complete walkthrough on how to remove white borders and trim page margins from your PDF documents for clean printing.",
+    date: "August 2026",
+    readTime: "5 min read",
     icon: Crop,
-    color: "#9C6ADE",
+    color: "#48C9B0",
     category: "Edit",
   },
   {
     slug: "pdf-page-numbers",
-    title: "How to Add Page Numbers to PDF Files Effortlessly",
-    description: "Make your PDF documents look professional by adding sequential page numbers to the header or footer of your files.",
-    date: "June 16, 2026",
-    readTime: "4 min read",
+    title: "How to Add Page Numbers to PDF Files (Position, Font & Format)",
+    description: "Learn how to number your PDF pages cleanly for legal briefs, academic dissertations, and multi-chapter documents.",
+    date: "August 2026",
+    readTime: "5 min read",
     icon: Hash,
-    color: "#4A90E2",
+    color: "#AF7AC5",
     category: "Edit",
   },
   {
     slug: "repair-pdf-guide",
-    title: "How to Fix and Repair Corrupted PDF Files",
-    description: "Cannot open a PDF file? Follow our comprehensive guide to repair damaged and corrupted PDF documents to recover your data.",
-    date: "June 19, 2026",
-    readTime: "7 min read",
+    title: "How to Repair Corrupted and Damaged PDF Files Online",
+    description: "Step-by-step guide to recovering unreadable or broken PDF files and restoring critical document contents.",
+    date: "August 2026",
+    readTime: "6 min read",
     icon: Wrench,
     color: "#6D9DC5",
     category: "Optimize",
   },
   {
     slug: "html-to-pdf-guide",
-    title: "How to Convert HTML Webpages to PDF Documents",
-    description: "Save any webpage for offline reading or archiving. Learn how to convert HTML to PDF while retaining styling and links.",
-    date: "June 22, 2026",
-    readTime: "5 min read",
+    title: "Convert HTML to PDF: Complete Developer & User Guide",
+    description: "Discover how to convert HTML web pages and raw code into clean vector PDF documents with full styling preserved.",
+    date: "August 2026",
+    readTime: "6 min read",
     icon: Code,
     color: "#9B59B6",
     category: "Convert",
   },
   {
     slug: "text-to-pdf-guide",
-    title: "How to Convert Plain Text Files (TXT) to PDF",
-    description: "Easily turn your plain text notes and documents into secure, universally readable PDF files with a few clicks.",
-    date: "June 24, 2026",
-    readTime: "3 min read",
+    title: "How to Convert Plain Text to Formatted PDF Online",
+    description: "Learn how to turn raw text files and plain notes into beautifully formatted, printable PDF documents in seconds.",
+    date: "August 2026",
+    readTime: "4 min read",
     icon: Type,
     color: "#3498DB",
     category: "Convert",
   },
   {
     slug: "organize-pdf-pages",
-    title: "How to Organize, Reorder, and Delete PDF Pages Like a Pro",
-    description: "Master PDF organization. Learn how to rearrange pages, delete unwanted sections, and structure your PDF perfectly.",
-    date: "June 25, 2026",
-    readTime: "6 min read",
+    title: "How to Rearrange and Reorder PDF Pages Visually",
+    description: "Master PDF page management: learn how to reorder, delete unnecessary pages, and restructure documents with visual drag and drop.",
+    date: "August 2026",
+    readTime: "5 min read",
     icon: LayoutList,
     color: "#E9C46A",
     category: "Organize",
   },
+  {
+    slug: "edit-pdf-online",
+    title: "How to Edit PDF Files Online: Add Text, Images & Annotations",
+    description: "A comprehensive guide on editing existing PDF documents directly in your web browser without installing heavy software.",
+    date: "August 2026",
+    readTime: "7 min read",
+    icon: FileText,
+    color: "#AB6993",
+    category: "Edit",
+  },
+  {
+    slug: "pdf-to-jpg-guide",
+    title: "How to Extract High-Quality JPG Images from PDF Files",
+    description: "Learn the best methods for converting PDF pages into crisp JPG and PNG image files with zero quality degradation.",
+    date: "August 2026",
+    readTime: "5 min read",
+    icon: FileImage,
+    color: "#E76F51",
+    category: "Convert",
+  },
+  {
+    slug: "pdf-metadata-hidden-info",
+    title: "PDF Metadata: What Hidden Information Is Lurking in Your Files?",
+    description: "Discover what PDF metadata is, how it affects your document privacy, and how to safely inspect and remove sensitive info.",
+    date: "August 2026",
+    readTime: "6 min read",
+    icon: Shield,
+    color: "#16A085",
+    category: "Security",
+  }
 ];
 
-export default function BlogPage() {
-  const featuredPost = blogPosts[0];
-  const remainingPosts = blogPosts.slice(1);
+export default function BlogIndex() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: "mypdftools Knowledge Hub",
+    description: "Comprehensive guides, tutorials, and security tips for working with PDF documents.",
+    url: "https://mypdftools.in/blog/",
+    blogPost: blogPosts.map((post) => ({
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: post.description,
+      url: `https://mypdftools.in/blog/${post.slug}/`,
+      datePublished: "2026-08-01T00:00:00Z",
+      author: {
+        "@type": "Organization",
+        name: "mypdftools Editorial Team"
+      }
+    }))
+  };
 
   return (
-    <div className="bg-background min-h-screen">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-slate-900 text-white pt-24 pb-32">
-        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500 via-slate-900 to-slate-900"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
-            The <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">mypdftools</span> Blog
-          </h1>
-          <p className="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto">
-            Expert guides, tutorials, and tips to master your PDF documents. Learn how to edit, convert, organize, and secure your files effortlessly.
-          </p>
-        </div>
-      </section>
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 -mt-20 relative z-20">
-        
-        {/* Featured Post */}
-        <div className="mb-20">
-          <div className="text-sm font-bold uppercase tracking-wider text-slate-300 mb-6 drop-shadow-md">Featured Article</div>
-          <Link href={`/blog/${featuredPost.slug}`} className="group block">
-            <div className="bg-card rounded-2xl shadow-xl overflow-hidden border border-border/50 hover:shadow-2xl transition-all duration-300 flex flex-col md:flex-row">
-              <div className="md:w-2/5 p-12 flex items-center justify-center" style={{ backgroundColor: `${featuredPost.color}15` }}>
-                <featuredPost.icon className="w-32 h-32 transition-transform duration-300 group-hover:scale-110" style={{ color: featuredPost.color }} />
-              </div>
-              <div className="md:w-3/5 p-8 md:p-12 flex flex-col justify-center">
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="text-xs font-semibold px-3 py-1 rounded-full" style={{ backgroundColor: `${featuredPost.color}20`, color: featuredPost.color }}>
-                    {featuredPost.category}
-                  </span>
-                  <span className="text-sm text-muted-foreground flex items-center gap-1">
-                    <Clock className="w-4 h-4" /> {featuredPost.readTime}
-                  </span>
-                </div>
-                <h2 className="text-3xl font-bold mb-4 group-hover:text-primary transition-colors text-foreground">{featuredPost.title}</h2>
-                <p className="text-lg text-muted-foreground mb-8">{featuredPost.description}</p>
-                <div className="flex items-center gap-2 text-primary font-medium">
-                  Read Full Guide <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </div>
+    <div className="bg-background min-h-screen pb-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <main className="flex-1">
+        {/* Hero Section */}
+        <section className="relative overflow-hidden border-b bg-muted/20">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-14 sm:py-20 text-center">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20 mb-4">
+              <BookOpen className="h-3.5 w-3.5" /> PDF Guides &amp; Tutorials
             </div>
-          </Link>
-        </div>
-
-        {/* Latest Posts Grid */}
-        <div>
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-foreground">Latest Articles</h2>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground leading-tight">
+              The mypdftools Knowledge Hub
+            </h1>
+            <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              In-depth tutorials, practical tips, and document security insights to help you work faster, safer, and more effectively with PDF files.
+            </p>
+            <div className="mt-6 flex items-center justify-center gap-4 text-xs text-muted-foreground">
+              <span className="inline-flex items-center gap-1">
+                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" /> Fact-checked &amp; Verified
+              </span>
+              <span>•</span>
+              <span className="inline-flex items-center gap-1">
+                <User className="h-3.5 w-3.5 text-primary" /> Written by Technical Specialists
+              </span>
+            </div>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {remainingPosts.map((post) => (
-              <Link key={post.slug} href={`/blog/${post.slug}`} className="group h-full block">
-                <article className="bg-card rounded-xl border border-border/50 h-full flex flex-col overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                  <div className="h-48 flex items-center justify-center relative overflow-hidden" style={{ backgroundColor: `${post.color}10` }}>
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-background/80 to-transparent z-10" />
-                    <post.icon className="w-20 h-20 transition-transform duration-500 group-hover:scale-110" style={{ color: post.color }} />
+        </section>
+
+        {/* Blog Post Grid */}
+        <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {blogPosts.map((post) => {
+              const Icon = post.icon;
+              return (
+                <article
+                  key={post.slug}
+                  className="group flex flex-col rounded-2xl border bg-card p-6 shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-200"
+                >
+                  <div className="flex items-center justify-between gap-2 mb-4">
+                    <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-primary/10 text-primary">
+                      {post.category}
+                    </span>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <Clock className="h-3.5 w-3.5" />
+                      <span>{post.readTime}</span>
+                    </div>
                   </div>
-                  <div className="p-6 flex flex-col flex-1">
-                    <div className="flex items-center gap-3 mb-4 text-xs font-medium">
-                      <span className="px-2.5 py-1 rounded-md" style={{ backgroundColor: `${post.color}15`, color: post.color }}>
-                        {post.category}
-                      </span>
-                      <span className="text-muted-foreground flex items-center gap-1">
-                        <Clock className="w-3.5 h-3.5" /> {post.readTime}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-bold leading-tight mb-3 group-hover:text-primary transition-colors text-foreground">
+
+                  <div
+                    className="flex h-12 w-12 items-center justify-center rounded-xl mb-4 group-hover:scale-105 transition-transform duration-200"
+                    style={{ backgroundColor: `${post.color}15` }}
+                  >
+                    <Icon className="h-6 w-6" style={{ color: post.color }} />
+                  </div>
+
+                  <h2 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-2">
+                    <Link href={`/blog/${post.slug}`}>
                       {post.title}
-                    </h3>
-                    <p className="text-muted-foreground text-sm flex-1 mb-6">
-                      {post.description}
-                    </p>
-                    <div className="flex items-center justify-between mt-auto pt-4 border-t border-border/50">
-                      <span className="text-xs text-muted-foreground">{post.date}</span>
-                      <span className="text-sm font-medium text-primary flex items-center gap-1">
-                        Read more <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </span>
-                    </div>
+                    </Link>
+                  </h2>
+
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed line-clamp-3 mb-6 flex-1">
+                    {post.description}
+                  </p>
+
+                  <div className="pt-4 border-t flex items-center justify-between text-xs text-muted-foreground mt-auto">
+                    <span>{post.date}</span>
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="text-primary font-medium inline-flex items-center gap-1 group-hover:underline"
+                    >
+                      Read Guide <ArrowRight className="h-3 w-3" />
+                    </Link>
                   </div>
                 </article>
-              </Link>
-            ))}
+              );
+            })}
           </div>
-        </div>
+        </section>
       </main>
     </div>
   );

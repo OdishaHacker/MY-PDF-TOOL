@@ -2,13 +2,13 @@
 
 import React, { useState, useMemo } from 'react'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
 import {
   Merge, Scissors, ImageIcon, FileImage, RotateCw, FileDown,
   Droplets, Hash, Lock, Unlock, FileText, PenTool, Search,
   Shield, Zap, Globe, FileUp, Code, Type,
   LayoutList, Pencil, Crop, FileSearch, Wrench, Table,
-  Presentation, ArrowRight, Sparkles
+  Presentation, ArrowRight, Sparkles, CheckCircle2, ShieldCheck,
+  Cpu, HeartHandshake, HelpCircle, BookOpen
 } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 
@@ -18,14 +18,14 @@ interface ToolDef {
   id: string
   name: string
   description: string
-  icon: any
+  icon: React.ElementType
   color: string
   category: Category[]
   popular?: boolean
   href: string
 }
 
-const categories: { id: Category; label: string; icon: any }[] = [
+const categories: { id: Category; label: string; icon: React.ElementType }[] = [
   { id: 'all', label: 'All Tools', icon: Sparkles },
   { id: 'organize', label: 'Organize', icon: LayoutList },
   { id: 'optimize', label: 'Optimize', icon: Zap },
@@ -43,7 +43,8 @@ const tools: ToolDef[] = [
   { id: 'compress', name: 'Compress PDF', description: 'Reduce file size', icon: FileDown, color: '#8FBC5D', category: ['optimize'], popular: true, href: '/compress-pdf' },
   { id: 'repair', name: 'Repair PDF', description: 'Fix corrupted PDFs', icon: Wrench, color: '#6D9DC5', category: ['optimize'], href: '/repair-pdf' },
   { id: 'image-to-pdf', name: 'JPG to PDF', description: 'Convert images to PDF', icon: ImageIcon, color: '#5F83C6', category: ['convert-to'], popular: true, href: '/jpg-to-pdf' },
-  { id: 'word-to-pdf', name: 'Word to PDF', description: 'Convert DOCX, XLSX, TXT', icon: FileUp, color: '#7B68EE', category: ['convert-to'], href: '/word-to-pdf' },
+  { id: 'word-to-pdf', name: 'Word to PDF', description: 'Convert DOCX to PDF', icon: FileUp, color: '#7B68EE', category: ['convert-to'], href: '/word-to-pdf' },
+  { id: 'excel-to-pdf', name: 'Excel to PDF', description: 'Convert XLSX to PDF', icon: Table, color: '#2E7237', category: ['convert-to'], href: '/excel-to-pdf' },
   { id: 'html-to-pdf', name: 'HTML to PDF', description: 'Convert HTML to PDF', icon: Code, color: '#9B59B6', category: ['convert-to'], href: '/html-to-pdf' },
   { id: 'text-to-pdf', name: 'Text to PDF', description: 'Convert plain text to PDF', icon: Type, color: '#3498DB', category: ['convert-to'], href: '/text-to-pdf' },
   { id: 'pdf-to-image', name: 'PDF to JPG', description: 'Convert pages to images', icon: FileImage, color: '#E76F51', category: ['convert-from'], popular: true, href: '/pdf-to-jpg' },
@@ -82,99 +83,78 @@ export default function Home() {
   return (
     <>
       {/* ===== HERO SECTION ===== */}
-      <section className="relative overflow-hidden">
-        {/* Animated background */}
-        <div className="absolute inset-0 animate-gradient bg-gradient-to-br from-[#EE6C4D]/8 via-[#7B68EE]/5 to-[#2A9D8F]/8" />
+      <section className="relative overflow-hidden border-b">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#EE6C4D]/8 via-[#7B68EE]/5 to-[#2A9D8F]/8" />
         <div className="absolute top-20 left-10 w-72 h-72 bg-[#EE6C4D]/10 rounded-full blur-3xl" />
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-[#5F83C6]/10 rounded-full blur-3xl" />
         <div className="absolute top-40 right-1/3 w-64 h-64 bg-[#8FBC5D]/8 rounded-full blur-3xl" />
 
-        <div className="relative mx-auto max-w-5xl px-4 sm:px-6 pt-20 pb-14 text-center">
-          {/* Brand name */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-none mb-2">
-              <span className="bg-gradient-to-r from-[#EE6C4D] via-[#D04526] to-[#7B68EE] bg-clip-text text-transparent">
-                mypdftools
-              </span>
-            </h1>
-          </motion.div>
+        <div className="relative mx-auto max-w-5xl px-4 sm:px-6 pt-16 pb-14 text-center">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20 mb-4">
+            <Sparkles className="h-3.5 w-3.5" /> 100% Free &amp; Private Browser-Based PDF Suite
+          </div>
 
-          <motion.p
-            className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mt-4 mb-3 leading-relaxed"
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-          >
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-tighter leading-tight mb-4">
+            <span className="bg-gradient-to-r from-[#EE6C4D] via-[#D04526] to-[#7B68EE] bg-clip-text text-transparent">
+              mypdftools
+            </span>{' '}
+            <span className="text-foreground">— Online PDF Tools</span>
+          </h1>
+
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-2 leading-relaxed">
             Every tool you need to work with PDFs — all in one place.
-          </motion.p>
+          </p>
+          <p className="text-sm text-muted-foreground/80 mb-8 max-w-xl mx-auto">
+            Merge, split, compress, convert, sign, watermark &amp; redact. 100% free, 100% private. Files never leave your browser.
+          </p>
 
-          <motion.p
-            className="text-sm text-muted-foreground/70 mb-8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.25 }}
-          >
-            Merge, split, compress, convert, sign, watermark &amp; more. 100% free. 100% private. All in your browser.
-          </motion.p>
-
-          {/* Search Bar */}
-          <motion.div
-            className="max-w-xl mx-auto relative"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
+          {/* Search bar */}
+          <div className="max-w-xl mx-auto relative mb-6">
             <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
+              type="text"
+              placeholder="Search tools... (e.g. merge, compress, word to pdf)"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search tools... (merge, compress, convert...)"
+              onChange={e => setSearch(e.target.value)}
               className="pl-13 h-14 rounded-2xl text-base shadow-lg border-2 border-transparent focus:border-[#EE6C4D]/40 focus:shadow-xl transition-all bg-card"
             />
-          </motion.div>
+          </div>
 
-          {/* Quick Access Popular Tools */}
-          {!search && activeCategory === 'all' && (
-            <motion.div
-              className="flex flex-wrap justify-center gap-2 mt-8"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              {popularTools.map(tool => (
+          {/* Popular shortcuts */}
+          <div className="flex flex-wrap justify-center gap-2 mt-4">
+            {popularTools.map(t => {
+              const Icon = t.icon
+              return (
                 <Link
-                  key={tool.id}
-                  href={tool.href}
-                  className="group flex items-center gap-1.5 px-4 py-2 rounded-full bg-card border shadow-sm hover:shadow-md hover:border-primary/30 transition-all text-sm font-medium"
+                  key={t.id}
+                  href={t.href}
+                  className="group flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-card border shadow-xs hover:shadow-md hover:border-primary/30 transition-all text-xs font-medium text-foreground"
                 >
-                  <tool.icon className="h-3.5 w-3.5" style={{ color: tool.color }} />
-                  {tool.name}
+                  <Icon className="h-3.5 w-3.5" style={{ color: t.color }} />
+                  {t.name}
                   <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:translate-x-0.5 transition-transform" />
                 </Link>
-              ))}
-            </motion.div>
-          )}
+              )
+            })}
+          </div>
         </div>
       </section>
 
-      {/* ===== CATEGORY TABS ===== */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 mb-8">
-        <div className="flex gap-2 overflow-x-auto pb-2 justify-center scrollbar-none">
+      {/* ===== TOOLS DIRECTORY SECTION ===== */}
+      <section id="all-tools" className="mx-auto max-w-7xl px-4 sm:px-6 py-12">
+        {/* Category Tabs */}
+        <div className="flex gap-2 overflow-x-auto pb-4 mb-8 justify-start sm:justify-center scrollbar-none">
           {categories.map(cat => {
             const Icon = cat.icon
-            const isActive = activeCategory === cat.id
+            const active = activeCategory === cat.id
             return (
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all duration-200 ${
-                  isActive
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                  active
                     ? 'bg-gradient-to-r from-[#EE6C4D] to-[#D04526] text-white shadow-md shadow-[#EE6C4D]/25'
-                    : 'bg-card border hover:border-primary/30 hover:shadow-sm text-muted-foreground hover:text-foreground'
+                    : 'bg-card border hover:border-primary/30 hover:shadow-xs text-muted-foreground hover:text-foreground'
                 }`}
               >
                 <Icon className="h-3.5 w-3.5" />
@@ -183,48 +163,39 @@ export default function Home() {
             )
           })}
         </div>
-      </section>
 
-      {/* ===== TOOLS GRID ===== */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 pb-20">
+        {/* Tools Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
-          {filteredTools.map((tool) => {
+          {filteredTools.map(tool => {
             const Icon = tool.icon
             return (
               <Link
                 key={tool.id}
                 href={tool.href}
-                className="group relative text-left rounded-2xl border bg-card p-4 sm:p-5 hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 overflow-hidden glow-card"
+                className="group relative text-left rounded-2xl border bg-card p-4 sm:p-5 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 overflow-hidden"
               >
-                {/* Top color accent line */}
                 <div
-                  className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                   style={{ background: `linear-gradient(90deg, ${tool.color}, ${tool.color}88)` }}
                 />
-
-                {/* Hover glow background */}
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
-                  style={{ background: `radial-gradient(ellipse at top left, ${tool.color}12, transparent 70%)` }}
-                />
-
                 <div className="relative">
                   <div
-                    className="flex h-12 w-12 items-center justify-center rounded-xl mb-3 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-sm"
+                    className="flex h-11 w-11 items-center justify-center rounded-xl mb-3 group-hover:scale-105 transition-all duration-200 shadow-xs"
                     style={{ backgroundColor: `${tool.color}15` }}
                   >
-                    <Icon className="h-6 w-6" style={{ color: tool.color }} />
+                    <Icon className="h-5 w-5" style={{ color: tool.color }} />
                   </div>
-                  <h3 className="font-semibold text-sm mb-0.5 group-hover:text-foreground transition-colors">{tool.name}</h3>
-                  <p className="text-[11px] text-muted-foreground leading-relaxed line-clamp-2">{tool.description}</p>
+                  <h3 className="font-semibold text-sm mb-0.5 text-foreground group-hover:text-primary transition-colors">
+                    {tool.name}
+                  </h3>
+                  <p className="text-[11px] text-muted-foreground leading-relaxed line-clamp-2">
+                    {tool.description}
+                  </p>
                 </div>
-
-                {/* Popular badge */}
                 {tool.popular && (
                   <div className="absolute top-3 right-3">
-                    <span className="flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#EE6C4D] opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#EE6C4D]"></span>
+                    <span className="relative flex h-2 w-2">
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#EE6C4D]" />
                     </span>
                   </div>
                 )}
@@ -232,40 +203,151 @@ export default function Home() {
             )
           })}
         </div>
-
-        {filteredTools.length === 0 && (
-          <div className="text-center py-20">
-            <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-muted mb-4">
-              <Search className="h-8 w-8 text-muted-foreground/50" />
-            </div>
-            <p className="text-lg font-medium">No tools found</p>
-            <p className="text-sm text-muted-foreground mt-1">Try a different search or category</p>
-          </div>
-        )}
       </section>
 
-      {/* ===== STATS SECTION ===== */}
-      <section className="border-y bg-muted/30">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {[
-              { value: '23+', label: 'PDF Tools', icon: Sparkles },
-              { value: '100%', label: 'Free & Private', icon: Shield },
-              { value: '0', label: 'Files Uploaded', icon: Globe },
-              { value: '<3s', label: 'Avg. Processing', icon: Zap },
-            ].map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <stat.icon className="h-5 w-5 mx-auto mb-2 text-primary" />
-                <p className="text-2xl sm:text-3xl font-bold">{stat.value}</p>
-                <p className="text-xs text-muted-foreground mt-0.5">{stat.label}</p>
-              </motion.div>
-            ))}
+      {/* ===== WHY CHOOSE SECTION ===== */}
+      <section className="bg-muted/30 border-y py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+              Why Millions Choose mypdftools for PDF Workflows
+            </h2>
+            <p className="mt-3 text-sm sm:text-base text-muted-foreground">
+              Built from the ground up for maximum speed, security, and simplicity without bloated software or hidden fees.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="p-6 rounded-2xl bg-card border shadow-xs space-y-3">
+              <div className="p-3 rounded-xl bg-emerald-500/10 text-emerald-600 w-fit">
+                <ShieldCheck className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground">100% Client-Side Privacy</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Your PDF documents never leave your computer or get uploaded to cloud servers. All conversions, merges, and edits happen directly in your browser using local memory.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-card border shadow-xs space-y-3">
+              <div className="p-3 rounded-xl bg-amber-500/10 text-amber-600 w-fit">
+                <Cpu className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground">High-Speed WebAssembly</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Powered by next-generation WebAssembly engines that process huge files in milliseconds without waiting in long server upload queues.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-card border shadow-xs space-y-3">
+              <div className="p-3 rounded-xl bg-blue-500/10 text-blue-600 w-fit">
+                <HeartHandshake className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-semibold text-foreground">Free Forever &amp; No Signup</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                No credit cards, no subscriptions, no email registration, and no intrusive watermarks stamped on your finished PDF documents.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== HOW IT WORKS SECTION ===== */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+            How It Works in 3 Simple Steps
+          </h2>
+          <p className="mt-2 text-sm sm:text-base text-muted-foreground">
+            Professional PDF editing made accessible in just a few clicks.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="relative p-6 rounded-2xl border bg-card text-center space-y-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mx-auto text-sm">
+              1
+            </span>
+            <h3 className="font-semibold text-base text-foreground">Select Your Tool &amp; File</h3>
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              Choose from 24+ free PDF tools and drag-and-drop your documents into the clean dropzone.
+            </p>
+          </div>
+
+          <div className="relative p-6 rounded-2xl border bg-card text-center space-y-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mx-auto text-sm">
+              2
+            </span>
+            <h3 className="font-semibold text-base text-foreground">Customize &amp; Process</h3>
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              Reorder pages, select compression level, add signatures, or set passwords with instant visual preview.
+            </p>
+          </div>
+
+          <div className="relative p-6 rounded-2xl border bg-card text-center space-y-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mx-auto text-sm">
+              3
+            </span>
+            <h3 className="font-semibold text-base text-foreground">Download Instantly</h3>
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              Click download to save your finalized, pristine PDF document directly to your device storage.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== FREQUENTLY ASKED QUESTIONS SECTION ===== */}
+      <section className="bg-muted/30 border-t py-16">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 space-y-8">
+          <div className="text-center max-w-3xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground flex items-center justify-center gap-2">
+              <HelpCircle className="h-6 w-6 text-primary" />
+              Frequently Asked Questions
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Everything you need to know about our free online PDF tools.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-5 rounded-2xl border bg-card space-y-2">
+              <h3 className="font-semibold text-sm text-foreground flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
+                Are my documents safe and private?
+              </h3>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                Yes, 100%. Unlike standard online converters that upload your confidential files to remote cloud servers, mypdftools executes all logic locally in your web browser. Your files never touch our servers.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl border bg-card space-y-2">
+              <h3 className="font-semibold text-sm text-foreground flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
+                Is there any page or file size limit?
+              </h3>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                There are no artificial limits imposed on file sizes or page counts. You can process as many documents as your local device RAM and browser can handle.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl border bg-card space-y-2">
+              <h3 className="font-semibold text-sm text-foreground flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
+                Do I need to install any software or plugins?
+              </h3>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                No software installation or browser extensions are required. mypdftools works seamlessly across Chrome, Safari, Firefox, Edge, and mobile browsers on iOS and Android.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl border bg-card space-y-2">
+              <h3 className="font-semibold text-sm text-foreground flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
+                Will watermarks be added to my output files?
+              </h3>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                Never. All output documents remain clean, professional, and free of any promotional watermarks or branding.
+              </p>
+            </div>
           </div>
         </div>
       </section>
