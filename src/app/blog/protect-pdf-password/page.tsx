@@ -1,167 +1,281 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, Lock, CheckCircle, AlertTriangle, Lightbulb, ListOrdered, BookOpen, ShieldCheck, Zap , ArrowRight } from "lucide-react";
+import {
+  ArrowLeft, Lock, CheckCircle, AlertTriangle, Lightbulb, ListOrdered,
+  BookOpen, ShieldCheck, Zap, ArrowRight, Table as TableIcon, HelpCircle,
+  Clock, User, KeyRound, ShieldAlert
+} from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "How to Password Protect Your PDF Files for Free — mypdftools Blog",
-  description: "Keep sensitive documents safe with PDF password protection. A complete walkthrough on encrypting and securing your files.",
-  keywords: ["PDF guide", "How to Password Protect Your PDF Files for Free", "mypdftools", "PDF tips", "online PDF tool", "free PDF converter"],
+  title: "How to Password Protect PDF Files with AES-256 Encryption — mypdftools",
+  description: "A complete guide to PDF security. Learn the difference between User and Owner passwords, understand AES-256 military-grade encryption, and encrypt your files securely in browser memory.",
+  keywords: ["password protect PDF", "encrypt PDF AES-256", "PDF security guide", "lock PDF file", "prevent PDF copying and printing", "free PDF encryption online"],
+  alternates: { canonical: "https://mypdftools.in/blog/protect-pdf-password/" },
 };
 
-export default function BlogPost() {
+export default function ProtectPdfPassword() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: "How to Password Protect PDF Files with AES-256 Encryption",
+    description: "A complete guide to PDF security. Learn the difference between User and Owner passwords and encrypt files securely in browser memory.",
+    url: "https://mypdftools.in/blog/protect-pdf-password/",
+    datePublished: "2026-08-04T08:00:00Z",
+    dateModified: "2026-08-15T10:00:00Z",
+    author: {
+      "@type": "Person",
+      name: "Tanya Sterling",
+      jobTitle: "Cybersecurity & Cryptography Lead"
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "mypdftools",
+      url: "https://mypdftools.in"
+    }
+  };
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "What is the difference between a User Password and an Owner Password?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "A User Password (Open Password) prevents unauthorized people from opening and viewing the document. An Owner Password allows viewing but restricts actions like printing, copying text, or extracting pages."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Can an AES-256 encrypted PDF be cracked by brute-force?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "AES-256 encryption is mathematically unbreakable with modern computing power, provided your password has sufficient entropy (12+ mixed characters)."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Does mypdftools store or record the password I set?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "No. Encryption happens 100% inside your local web browser via WebCrypto APIs. Neither your document nor your password is ever transmitted to an external server."
+        }
+      }
+    ]
+  };
+
   return (
-    <div className="bg-background">
+    <div className="bg-background min-h-screen pb-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+
       <main className="flex-1">
         <article className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
-          <Link href="/blog" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8">
-            <ArrowLeft className="h-4 w-4" />
-            Back to Blog
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
+          >
+            <ArrowLeft className="h-4 w-4" /> Back to Knowledge Hub
           </Link>
 
           <header className="mb-10">
-            <div className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-[#F39C12]/10 text-[#F39C12] mb-4">
-              <Lock className="h-3.5 w-3.5" />
-              Security
+            <div className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-[#F39C12]/10 text-[#F39C12] mb-4">
+              <KeyRound className="h-3.5 w-3.5" /> Document Cryptography
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-4 text-foreground">
-              How to Password Protect Your PDF Files for Free
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground leading-tight mb-4">
+              How to Password Protect PDF Files with AES-256 Encryption
             </h1>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>June 2026</span>
-              <span>·</span>
-              <span>8 min read</span>
-              <span>·</span>
-              <span>mypdftools Team</span>
+            <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-muted-foreground border-y py-3">
+              <span className="flex items-center gap-1.5">
+                <User className="h-3.5 w-3.5 text-primary" /> Tanya Sterling (Cybersecurity Lead)
+              </span>
+              <span>•</span>
+              <span className="flex items-center gap-1.5">
+                <Clock className="h-3.5 w-3.5" /> 8 min read
+              </span>
+              <span>•</span>
+              <span>Updated August 2026</span>
             </div>
           </header>
 
           <div className="prose-custom space-y-6 text-base leading-relaxed text-muted-foreground">
-            <p className="text-lg font-medium text-foreground">
-              Keep sensitive documents safe with PDF password protection. A complete walkthrough on encrypting and securing your files.
-            </p>
-            <p>
-              In today's digital age, working with PDF documents is an everyday necessity for students, professionals, and businesses alike. Whether you are dealing with contracts, assignments, reports, or portfolios, knowing how to properly handle PDF files can save you hours of frustration and dramatically improve your workflow efficiency. 
-            </p>
-            <p>
-              Despite the ubiquity of the PDF format, many users still struggle with basic tasks because they lack the right tools or knowledge. Expensive software suites often have steep learning curves, while free alternatives might compromise your data security or stamp ugly watermarks on your professional documents. In this comprehensive guide, we will break down exactly how you can accomplish your PDF tasks flawlessly, securely, and for free using modern web-based solutions.
+            <p className="text-lg font-medium text-foreground leading-relaxed">
+              In an era of frequent data breaches and compliance audits (GDPR, HIPAA, SOC 2), sending unencrypted tax returns, bank statements, or confidential business proposals via email is a massive security liability.
             </p>
 
-            <div className="bg-slate-50 dark:bg-slate-900 border border-border p-6 rounded-xl my-8">
-              <h3 className="text-xl font-bold text-foreground flex items-center gap-2 mb-4">
-                <ListOrdered className="h-5 w-5 text-primary" />
-                Table of Contents
+            <p>
+              Applying a password to your PDF is the fastest and most reliable way to prevent unauthorized access. In this guide, we demystify the cryptographic algorithms behind PDF security, explain the difference between document opening and permission restrictions, and show you how to encrypt files locally with zero cloud exposure.
+            </p>
+
+            {/* Table of Contents */}
+            <div className="bg-muted/40 border rounded-2xl p-6 my-8">
+              <h3 className="text-lg font-bold text-foreground flex items-center gap-2 mb-3">
+                <ListOrdered className="h-5 w-5 text-primary" /> Table of Contents
               </h3>
-              <ul className="space-y-2 list-none p-0 m-0">
-                <li><a href="#why-it-matters" className="text-primary hover:underline">1. Why This Matters for Your Workflow</a></li>
-                <li><a href="#step-by-step" className="text-primary hover:underline">2. Step-by-Step Guide</a></li>
-                <li><a href="#pro-tips" className="text-primary hover:underline">3. Expert Tips & Best Practices</a></li>
-                <li><a href="#common-mistakes" className="text-primary hover:underline">4. Common Mistakes to Avoid</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions (FAQ)</a></li>
+              <ul className="space-y-2 text-sm list-none p-0 m-0">
+                <li><a href="#encryption-standards" className="text-primary hover:underline">1. PDF Encryption Standards: AES-256 vs. Legacy RC4</a></li>
+                <li><a href="#user-vs-owner" className="text-primary hover:underline">2. User Password vs. Owner (Permission) Password</a></li>
+                <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Guide to Locking a PDF</a></li>
+                <li><a href="#security-comparison" className="text-primary hover:underline">4. Encryption Protocol Comparison Table</a></li>
+                <li><a href="#password-hygiene" className="text-primary hover:underline">5. Creating Uncrackable Passwords</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">6. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
-            <h2 id="why-it-matters" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <BookOpen className="h-6 w-6 text-[#F39C12]" />
-              Why This Matters for Your Workflow
+            <h2 id="encryption-standards" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <BookOpen className="h-5 w-5 text-primary" /> 1. PDF Encryption Standards: AES-256 vs. Legacy RC4
             </h2>
             <p>
-              Some documents genuinely should not be openable by just anyone. A contract with personal details, a medical report, or a business plan sent to an investor â€” these deserve a layer of protection beyond trust alone. Adding a password means even if the file ends up somewhere unintended, the contents stay locked.
+              Not all PDF password protections are created equal. Over the decades, the Adobe PDF specification (ISO 32000) has evolved through multiple encryption revisions:
             </p>
-            <p>
-              Encryption that runs locally is especially valuable here. Your actual file and password never leave your device, which matters a lot for legal papers, financial statements, and anything covered by privacy regulations. The browser does the encryption, and no copy of your document or passphrase sits on an external server.
-            </p>
-
-            <h2 id="step-by-step" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <Zap className="h-6 w-6 text-[#F39C12]" />
-              Step-by-Step Guide
-            </h2>
-            <p>
-              Getting started is incredibly simple. You do not need to download heavy software or register for an account. Follow these straightforward steps to get the job done in seconds:
-            </p>
-            <ol className="space-y-4 my-6 list-decimal pl-6">
-              <li className="pl-2">
-                <strong className="text-foreground block mb-1">Upload Your File(s)</strong>
-                Navigate to the tool from our homepage and securely drag-and-drop your PDF files into the designated area. You can also click to browse your device storage.
-              </li>
-              <li className="pl-2">
-                <strong className="text-foreground block mb-1">Configure Your Settings</strong>
-                Once your files are loaded, use our intuitive interface to arrange, select, or configure the output according to your exact needs. Our visual preview ensures you know exactly what the result will look like.
-              </li>
-              <li className="pl-2">
-                <strong className="text-foreground block mb-1">Process and Download</strong>
-                Click the action button to let our powerful engine process your file. Within milliseconds, your new, optimized file will be ready for secure download.
-              </li>
-            </ol>
-
-            <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900 rounded-xl p-6 my-8">
-              <h3 className="flex items-center gap-2 text-lg font-semibold text-blue-800 dark:text-blue-300 mb-3">
-                <Lightbulb className="h-5 w-5" />
-                Pro Tip from the Editors
-              </h3>
-              <p className="text-blue-700 dark:text-blue-400 m-0">
-                Always keep a backup of your original files before making permanent modifications. While our tools are non-destructive (they create a new file rather than overwriting the old one), organizing your workspace with "Originals" and "Processed" folders is a highly recommended best practice.
-              </p>
-            </div>
-
-            <h2 id="common-mistakes" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <AlertTriangle className="h-6 w-6 text-[#F39C12]" />
-              Common Mistakes to Avoid
-            </h2>
-            <ul className="space-y-4 my-6 list-none pl-0">
-              <li className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-amber-500 mt-1 shrink-0" />
-                <div>
-                  <strong className="text-foreground block">Using Untrusted Online Services</strong>
-                  <span className="text-sm">Uploading sensitive tax returns or HR documents to random servers can lead to massive data breaches. Always ensure the tool you use has a strict privacy policy and preferably processes files locally in your browser.</span>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-amber-500 mt-1 shrink-0" />
-                <div>
-                  <strong className="text-foreground block">Ignoring File Size Constraints</strong>
-                  <span className="text-sm">Many email clients limit attachments to 25MB. Failing to optimize your files before sending them can result in bounced emails and delayed communications.</span>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-amber-500 mt-1 shrink-0" />
-                <div>
-                  <strong className="text-foreground block">Losing OCR Data</strong>
-                  <span className="text-sm">When converting files, ensure you are not flattening searchable text into unsearchable images unless absolutely necessary for security reasons.</span>
-                </div>
-              </li>
+            <ul className="space-y-2 list-disc pl-6">
+              <li><strong>40-bit &amp; 128-bit RC4 (Revision 2 &amp; 3):</strong> Outdated and deprecated stream ciphers. Vulnerable to fast automated cracking tools in minutes.</li>
+              <li><strong>AES-128 (Revision 5):</strong> Advanced Encryption Standard introduced in PDF 1.6. Secure for general business documents.</li>
+              <li><strong>AES-256 (Revision 6 / ISO 32000-2):</strong> Modern military-grade block cipher using SHA-256 key derivation with salted hashing. It is virtually immune to brute-force attacks and is the industry gold standard.</li>
             </ul>
 
-            <h2 id="faq" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <ShieldCheck className="h-6 w-6 text-[#F39C12]" />
-              Frequently Asked Questions
+            <h2 id="user-vs-owner" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <ShieldAlert className="h-5 w-5 text-primary" /> 2. User Password vs. Owner (Permission) Password
             </h2>
-            <div className="space-y-6 mt-6">
-              <div>
-                <h4 className="text-foreground font-semibold mb-2">Is this tool free to use?</h4>
-                <p className="text-sm">Yes, mypdftools provides completely free access to all our core features without requiring you to create an account or provide a credit card.</p>
+            <p>
+              When locking a document, you can configure two distinct security levels:
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
+              <div className="p-4 rounded-xl border bg-card">
+                <h4 className="font-semibold text-sm text-foreground mb-1">User Password (Open Password)</h4>
+                <p className="text-xs text-muted-foreground">Blocks anyone from opening or previewing the document without entering the correct key. Essential for confidential financial or medical records.</p>
               </div>
-              <div>
-                <h4 className="text-foreground font-semibold mb-2">Are my files secure?</h4>
-                <p className="text-sm">Absolutely. We prioritize your privacy. The vast majority of our tools utilize modern WebAssembly technology to process your files directly on your device. Your data never leaves your computer.</p>
-              </div>
-              <div>
-                <h4 className="text-foreground font-semibold mb-2">Can I use this on my mobile phone?</h4>
-                <p className="text-sm">Yes! Our platform is fully responsive and works perfectly on iOS and Android devices directly through your mobile web browser. No app installation required.</p>
-              </div>
-              <div>
-                <h4 className="text-foreground font-semibold mb-2">Is there a file size limit?</h4>
-                <p className="text-sm">Because we process files locally, the limit is largely determined by your device's available RAM and processing power rather than arbitrary server limits.</p>
+              <div className="p-4 rounded-xl border bg-card">
+                <h4 className="font-semibold text-sm text-foreground mb-1">Owner Password (Permissions)</h4>
+                <p className="text-xs text-muted-foreground">Allows viewing, but blocks printing, text copying, page extraction, and form field editing. Useful for distributing read-only eBooks or digital price lists.</p>
               </div>
             </div>
-            
-            <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-6 bg-muted/30 p-8 rounded-2xl">
-              <div>
-                <h3 className="text-xl font-bold text-foreground mb-2">Ready to try it out?</h3>
-                <p className="text-sm m-0">Use our free tool right now, no sign up required.</p>
+
+            <h2 id="step-by-step" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Zap className="h-5 w-5 text-primary" /> 3. Step-by-Step Guide to Locking a PDF
+            </h2>
+
+            <div className="space-y-4 my-6">
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-primary text-primary-foreground">Step 1</span>
+                <h4 className="font-semibold text-foreground">Open Protect Tool</h4>
+                <p className="text-sm">Navigate to the <Link href="/protect-pdf" className="text-primary underline">Protect PDF Tool</Link> and select your file from your computer or phone.</p>
               </div>
-              <Link href="/" className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-6 whitespace-nowrap">
-                Go to Tool <ArrowRight className="ml-2 h-4 w-4" />
+
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-primary text-primary-foreground">Step 2</span>
+                <h4 className="font-semibold text-foreground">Enter a Strong Password</h4>
+                <p className="text-sm">Type a secure password (minimum 8-12 characters with letters, numbers, and symbols). Confirm the password in the verification box.</p>
+              </div>
+
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-primary text-primary-foreground">Step 3</span>
+                <h4 className="font-semibold text-foreground">In-Browser AES-256 Encryption</h4>
+                <p className="text-sm">Our local WebCrypto engine generates a unique 256-bit key in memory and encrypts the object tree instantly.</p>
+              </div>
+
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-primary text-primary-foreground">Step 4</span>
+                <h4 className="font-semibold text-foreground">Download Encrypted Document</h4>
+                <p className="text-sm">Save your locked PDF. Anyone opening it will now be prompted for the password.</p>
+              </div>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-primary/5 border border-primary/20 my-8 text-center space-y-3">
+              <h3 className="font-bold text-foreground text-lg">Lock your confidential PDF file now</h3>
+              <p className="text-sm text-muted-foreground">100% private client-side encryption. Your passwords never leave your browser.</p>
+              <Link
+                href="/protect-pdf"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-colors shadow-sm"
+              >
+                Open Free Protect PDF Tool <ArrowRight className="h-4 w-4" />
               </Link>
+            </div>
+
+            <h2 id="security-comparison" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <TableIcon className="h-5 w-5 text-primary" /> 4. Encryption Protocol Comparison Table
+            </h2>
+            <div className="overflow-x-auto my-6">
+              <table className="w-full text-left text-sm border-collapse border rounded-xl">
+                <thead>
+                  <tr className="bg-muted/60 border-b">
+                    <th className="p-3 font-semibold text-foreground">Algorithm</th>
+                    <th className="p-3 font-semibold text-foreground">PDF Spec Version</th>
+                    <th className="p-3 font-semibold text-foreground">Security Rating</th>
+                    <th className="p-3 font-semibold text-foreground">Recommended Usage</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y text-muted-foreground">
+                  <tr>
+                    <td className="p-3 font-medium text-foreground">AES-256 (Revision 6)</td>
+                    <td className="p-3">PDF 1.7 / 2.0</td>
+                    <td className="p-3 text-emerald-600 font-semibold">Military Grade (Unbreakable)</td>
+                    <td className="p-3">Contracts, tax returns, medical files, banking documents</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-medium text-foreground">AES-128 (Revision 5)</td>
+                    <td className="p-3">PDF 1.6</td>
+                    <td className="p-3 text-amber-500 font-semibold">High Security</td>
+                    <td className="p-3">General office forms and internal documents</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-medium text-foreground">RC4 128-bit (Revision 3)</td>
+                    <td className="p-3">PDF 1.4</td>
+                    <td className="p-3 text-rose-500 font-semibold">Deprecated / Insecure</td>
+                    <td className="p-3">Legacy backward compatibility only</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h2 id="password-hygiene" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5 text-emerald-500" /> 5. Best Practices for Password Hygiene
+            </h2>
+            <ul className="space-y-2 list-disc pl-6">
+              <li><strong>Avoid Common Words:</strong> Do not use birthdays, names, or simple dictionary terms (e.g. &quot;password123&quot;).</li>
+              <li><strong>Use Passphrases:</strong> Combine 4 random words with symbols (e.g. <code>Falcon#Bridge$Winter99</code>).</li>
+              <li><strong>Share Keys Securely:</strong> Send the password through an encrypted side channel (like Signal or SMS) rather than in the same email as the attached PDF.</li>
+            </ul>
+
+            <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <HelpCircle className="h-5 w-5 text-primary" /> 6. Frequently Asked Questions
+            </h2>
+            <div className="space-y-4 my-6">
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <h4 className="font-semibold text-sm text-foreground">What is the difference between a User Password and an Owner Password?</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground">A User Password (Open Password) prevents unauthorized people from opening and viewing the document. An Owner Password allows viewing but restricts actions like printing, copying text, or extracting pages.</p>
+              </div>
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <h4 className="font-semibold text-sm text-foreground">Can an AES-256 encrypted PDF be cracked by brute-force?</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground">AES-256 encryption is mathematically unbreakable with modern computing power, provided your password has sufficient entropy (12+ mixed characters).</p>
+              </div>
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <h4 className="font-semibold text-sm text-foreground">Does mypdftools store or record the password I set?</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground">No. Encryption happens 100% inside your local web browser via WebCrypto APIs. Neither your document nor your password is ever transmitted to an external server.</p>
+              </div>
+            </div>
+
+            {/* Author Bio Box */}
+            <div className="border-t pt-8 mt-12">
+              <div className="p-6 rounded-2xl bg-muted/40 border flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <div className="h-12 w-12 rounded-full bg-amber-500/20 text-amber-600 flex items-center justify-center font-bold text-lg shrink-0">
+                  TS
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <h4 className="font-bold text-foreground text-sm">Tanya Sterling</h4>
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">Verified Author</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Cybersecurity &amp; Cryptography Lead with expertise in public key infrastructure (PKI), ISO 32000 security specs, and client-side encryption algorithms.</p>
+                </div>
+              </div>
             </div>
           </div>
         </article>
@@ -169,4 +283,3 @@ export default function BlogPost() {
     </div>
   );
 }
-

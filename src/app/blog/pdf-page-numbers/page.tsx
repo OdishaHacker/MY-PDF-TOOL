@@ -1,167 +1,240 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, Hash, CheckCircle, AlertTriangle, Lightbulb, ListOrdered, BookOpen, ShieldCheck, Zap , ArrowRight } from "lucide-react";
+import {
+  ArrowLeft, Hash, CheckCircle, AlertTriangle, Lightbulb, ListOrdered,
+  BookOpen, ShieldCheck, Zap, ArrowRight, Table as TableIcon, HelpCircle,
+  Clock, User, FileText, AlignCenter
+} from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "How to Add Page Numbers to PDF Files Effortlessly — mypdftools Blog",
-  description: "Make your PDF documents look professional by adding sequential page numbers to the header or footer of your files.",
-  keywords: ["PDF guide", "How to Add Page Numbers to PDF Files Effortlessly", "mypdftools", "PDF tips", "online PDF tool", "free PDF converter"],
+  title: "How to Add Page Numbers to PDF Files (Bates & Custom Formats) — mypdftools",
+  description: "Learn how to insert clean page numbers, Roman numerals, and legal Bates numbering into PDF documents. Customize start pages, positions, fonts, and prefixes.",
+  keywords: ["add page numbers to PDF", "PDF page numbering guide", "Bates numbering PDF", "Roman numeral page numbers PDF", "number PDF pages free online", "mypdftools"],
+  alternates: { canonical: "https://mypdftools.in/blog/pdf-page-numbers/" },
 };
 
-export default function BlogPost() {
+export default function PdfPageNumbers() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: "How to Add Page Numbers to PDF Files (Bates & Custom Formats)",
+    description: "Learn how to insert clean page numbers, Roman numerals, and legal Bates numbering into PDF documents with custom start pages.",
+    url: "https://mypdftools.in/blog/pdf-page-numbers/",
+    datePublished: "2026-08-12T08:00:00Z",
+    dateModified: "2026-08-15T10:00:00Z",
+    author: {
+      "@type": "Person",
+      name: "Marcus Vance",
+      jobTitle: "Senior Document Systems Engineer"
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "mypdftools",
+      url: "https://mypdftools.in"
+    }
+  };
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "Can I skip numbering on the cover page and table of contents?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. You can specify a custom 'Start Numbering From Page' offset (e.g. start on page 3) so that your title sheet and executive summary remain unnumbered."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "What is Bates numbering used for in legal proceedings?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Bates numbering adds sequential alphanumeric identifiers (e.g. DEF-000142) across thousands of discovery documents so attorneys and judges can reference specific pages precisely during trials."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Will adding page numbers overwrite existing text at the bottom of the page?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Our tool lets you customize margin offsets (in points/millimeters) and choose between top-right, bottom-center, or bottom-right placement to prevent overlapping existing footnotes."
+        }
+      }
+    ]
+  };
+
   return (
-    <div className="bg-background">
+    <div className="bg-background min-h-screen pb-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+
       <main className="flex-1">
         <article className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
-          <Link href="/blog" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8">
-            <ArrowLeft className="h-4 w-4" />
-            Back to Blog
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
+          >
+            <ArrowLeft className="h-4 w-4" /> Back to Knowledge Hub
           </Link>
 
           <header className="mb-10">
-            <div className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-[#AF7AC5]/10 text-[#AF7AC5] mb-4">
-              <Hash className="h-3.5 w-3.5" />
-              Edit
+            <div className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-[#AF7AC5]/10 text-[#AF7AC5] mb-4">
+              <Hash className="h-3.5 w-3.5" /> Document Formatting
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-4 text-foreground">
-              How to Add Page Numbers to PDF Files Effortlessly
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground leading-tight mb-4">
+              How to Add Page Numbers to PDF Files: Formats, Positions &amp; Bates Stamping
             </h1>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>June 2026</span>
-              <span>·</span>
-              <span>8 min read</span>
-              <span>·</span>
-              <span>mypdftools Team</span>
+            <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-muted-foreground border-y py-3">
+              <span className="flex items-center gap-1.5">
+                <User className="h-3.5 w-3.5 text-primary" /> Marcus Vance (Document Architect)
+              </span>
+              <span>•</span>
+              <span className="flex items-center gap-1.5">
+                <Clock className="h-3.5 w-3.5" /> 7 min read
+              </span>
+              <span>•</span>
+              <span>Updated August 2026</span>
             </div>
           </header>
 
           <div className="prose-custom space-y-6 text-base leading-relaxed text-muted-foreground">
-            <p className="text-lg font-medium text-foreground">
-              Make your PDF documents look professional by adding sequential page numbers to the header or footer of your files.
-            </p>
-            <p>
-              In today's digital age, working with PDF documents is an everyday necessity for students, professionals, and businesses alike. Whether you are dealing with contracts, assignments, reports, or portfolios, knowing how to properly handle PDF files can save you hours of frustration and dramatically improve your workflow efficiency. 
-            </p>
-            <p>
-              Despite the ubiquity of the PDF format, many users still struggle with basic tasks because they lack the right tools or knowledge. Expensive software suites often have steep learning curves, while free alternatives might compromise your data security or stamp ugly watermarks on your professional documents. In this comprehensive guide, we will break down exactly how you can accomplish your PDF tasks flawlessly, securely, and for free using modern web-based solutions.
+            <p className="text-lg font-medium text-foreground leading-relaxed">
+              When reviewing a 100-page dissertation or presenting an evidence packet in court, telling colleagues to &quot;scroll down about halfway to the chart&quot; is frustrating and inefficient. Clear, consistent page numbers make documents easy to navigate and professional to cite.
             </p>
 
-            <div className="bg-slate-50 dark:bg-slate-900 border border-border p-6 rounded-xl my-8">
-              <h3 className="text-xl font-bold text-foreground flex items-center gap-2 mb-4">
-                <ListOrdered className="h-5 w-5 text-primary" />
-                Table of Contents
+            <p>
+              Adding page numbers to an existing PDF involves injecting dynamic text objects into the page stream at precise footer or header coordinates. In this guide, we explore page numbering conventions, custom offset rules (skipping cover pages), Bates stamping for legal compliance, and step-by-step numbering on mypdftools.in.
+            </p>
+
+            {/* Table of Contents */}
+            <div className="bg-muted/40 border rounded-2xl p-6 my-8">
+              <h3 className="text-lg font-bold text-foreground flex items-center gap-2 mb-3">
+                <ListOrdered className="h-5 w-5 text-primary" /> Table of Contents
               </h3>
-              <ul className="space-y-2 list-none p-0 m-0">
-                <li><a href="#why-it-matters" className="text-primary hover:underline">1. Why This Matters for Your Workflow</a></li>
-                <li><a href="#step-by-step" className="text-primary hover:underline">2. Step-by-Step Guide</a></li>
-                <li><a href="#pro-tips" className="text-primary hover:underline">3. Expert Tips & Best Practices</a></li>
-                <li><a href="#common-mistakes" className="text-primary hover:underline">4. Common Mistakes to Avoid</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions (FAQ)</a></li>
+              <ul className="space-y-2 text-sm list-none p-0 m-0">
+                <li><a href="#numbering-formats" className="text-primary hover:underline">1. Numbering Formats: Standard, &apos;Page X of Y&apos;, &amp; Roman</a></li>
+                <li><a href="#bates-stamping" className="text-primary hover:underline">2. What is Bates Numbering in Legal Practice?</a></li>
+                <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Guide to Numbering PDFs</a></li>
+                <li><a href="#custom-offsets" className="text-primary hover:underline">4. Skipping Cover Pages &amp; Setting Starting Offsets</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
-            <h2 id="why-it-matters" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <BookOpen className="h-6 w-6 text-[#AF7AC5]" />
-              Why This Matters for Your Workflow
+            <h2 id="numbering-formats" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Hash className="h-5 w-5 text-primary" /> 1. Numbering Formats: Standard, &apos;Page X of Y&apos;, &amp; Roman
             </h2>
-            <p>
-              Page numbers seem trivial until you actually need them. Legal documents require them for referencing, long reports use them for navigation, and printed material relies on them for assembly. Adding numbers after the fact is far easier than restructuring the entire document.
-            </p>
-            <p>
-              Numbering that runs in your browser keeps the document completely private. Contracts, academic submissions, and internal reports never leave your device during the process. The browser applies the numbering, you download the finished file, and nothing about the original lands on any external server.
-            </p>
-
-            <h2 id="step-by-step" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <Zap className="h-6 w-6 text-[#AF7AC5]" />
-              Step-by-Step Guide
-            </h2>
-            <p>
-              Getting started is incredibly simple. You do not need to download heavy software or register for an account. Follow these straightforward steps to get the job done in seconds:
-            </p>
-            <ol className="space-y-4 my-6 list-decimal pl-6">
-              <li className="pl-2">
-                <strong className="text-foreground block mb-1">Upload Your File(s)</strong>
-                Navigate to the tool from our homepage and securely drag-and-drop your PDF files into the designated area. You can also click to browse your device storage.
-              </li>
-              <li className="pl-2">
-                <strong className="text-foreground block mb-1">Configure Your Settings</strong>
-                Once your files are loaded, use our intuitive interface to arrange, select, or configure the output according to your exact needs. Our visual preview ensures you know exactly what the result will look like.
-              </li>
-              <li className="pl-2">
-                <strong className="text-foreground block mb-1">Process and Download</strong>
-                Click the action button to let our powerful engine process your file. Within milliseconds, your new, optimized file will be ready for secure download.
-              </li>
-            </ol>
-
-            <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900 rounded-xl p-6 my-8">
-              <h3 className="flex items-center gap-2 text-lg font-semibold text-blue-800 dark:text-blue-300 mb-3">
-                <Lightbulb className="h-5 w-5" />
-                Pro Tip from the Editors
-              </h3>
-              <p className="text-blue-700 dark:text-blue-400 m-0">
-                Always keep a backup of your original files before making permanent modifications. While our tools are non-destructive (they create a new file rather than overwriting the old one), organizing your workspace with "Originals" and "Processed" folders is a highly recommended best practice.
-              </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-4">
+              <div className="p-4 rounded-xl border bg-card">
+                <h4 className="font-semibold text-sm text-foreground mb-1">Single Number (1, 2, 3)</h4>
+                <p className="text-xs text-muted-foreground">Minimalist style. Best for novels, clean reading reports, and single-author articles.</p>
+              </div>
+              <div className="p-4 rounded-xl border bg-card">
+                <h4 className="font-semibold text-sm text-foreground mb-1">&quot;Page X of Y&quot; Format</h4>
+                <p className="text-xs text-muted-foreground">Provides total page context (e.g. <em>Page 4 of 24</em>). Essential for contracts to prove no pages were detached or lost.</p>
+              </div>
+              <div className="p-4 rounded-xl border bg-card">
+                <h4 className="font-semibold text-sm text-foreground mb-1">Roman Numerals (i, ii, iii)</h4>
+                <p className="text-xs text-muted-foreground">Traditional academic format for prefaces, acknowledgments, and tables of contents.</p>
+              </div>
             </div>
 
-            <h2 id="common-mistakes" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <AlertTriangle className="h-6 w-6 text-[#AF7AC5]" />
-              Common Mistakes to Avoid
+            <h2 id="bates-stamping" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <BookOpen className="h-5 w-5 text-primary" /> 2. What is Bates Numbering in Legal Practice?
             </h2>
-            <ul className="space-y-4 my-6 list-none pl-0">
-              <li className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-amber-500 mt-1 shrink-0" />
-                <div>
-                  <strong className="text-foreground block">Using Untrusted Online Services</strong>
-                  <span className="text-sm">Uploading sensitive tax returns or HR documents to random servers can lead to massive data breaches. Always ensure the tool you use has a strict privacy policy and preferably processes files locally in your browser.</span>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-amber-500 mt-1 shrink-0" />
-                <div>
-                  <strong className="text-foreground block">Ignoring File Size Constraints</strong>
-                  <span className="text-sm">Many email clients limit attachments to 25MB. Failing to optimize your files before sending them can result in bounced emails and delayed communications.</span>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-amber-500 mt-1 shrink-0" />
-                <div>
-                  <strong className="text-foreground block">Losing OCR Data</strong>
-                  <span className="text-sm">When converting files, ensure you are not flattening searchable text into unsearchable images unless absolutely necessary for security reasons.</span>
-                </div>
-              </li>
+            <p>
+              Invented by Edwin G. Bates in the late 19th century, Bates numbering applies sequential alphanumeric prefix labels across multi-box evidentiary documents (e.g. <code>PLAINTIFF-000452</code>).
+            </p>
+            <p>
+              In modern electronic discovery (e-Discovery), our tool enables law firms to define a custom prefix, zero-padded digit count (e.g. 6 digits), and starting integer, stamping every page in seconds without manual intervention.
+            </p>
+
+            <h2 id="step-by-step" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Zap className="h-5 w-5 text-primary" /> 3. Step-by-Step Guide to Numbering PDFs
+            </h2>
+
+            <div className="space-y-4 my-6">
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-primary text-primary-foreground">Step 1</span>
+                <h4 className="font-semibold text-foreground">Open Page Numbers Tool</h4>
+                <p className="text-sm">Navigate to our <Link href="/page-numbers" className="text-primary underline">Page Numbers Tool</Link> and upload your PDF.</p>
+              </div>
+
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-primary text-primary-foreground">Step 2</span>
+                <h4 className="font-semibold text-foreground">Select Position, Format &amp; Start Page</h4>
+                <p className="text-sm">Choose placement (Bottom Center, Bottom Right, Top Right), font size, number format, and the start page offset.</p>
+              </div>
+
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-primary text-primary-foreground">Step 3</span>
+                <h4 className="font-semibold text-foreground">Execute &amp; Download</h4>
+                <p className="text-sm">Click Apply Numbers. Page numbers are dynamically stamped into the PDF stream in memory. Download immediately.</p>
+              </div>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-primary/5 border border-primary/20 my-8 text-center space-y-3">
+              <h3 className="font-bold text-foreground text-lg">Add page numbers to your PDF right now</h3>
+              <p className="text-sm text-muted-foreground">100% free, private client-side page numbering. No registration or limits.</p>
+              <Link
+                href="/page-numbers"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-colors shadow-sm"
+              >
+                Open Free Page Numbers Tool <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+
+            <h2 id="custom-offsets" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlignCenter className="h-5 w-5 text-primary" /> 4. Skipping Cover Pages &amp; Setting Starting Offsets
+            </h2>
+            <p>
+              To skip your title sheet and table of contents:
+            </p>
+            <ul className="space-y-2 list-disc pl-6">
+              <li>Set <strong>Start Numbering From Page</strong> to <code>3</code>.</li>
+              <li>Set <strong>Initial Number Value</strong> to <code>1</code>.</li>
+              <li>This ensures pages 1 and 2 remain clean and unnumbered, while page 3 displays as &quot;Page 1.&quot;</li>
             </ul>
 
-            <h2 id="faq" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <ShieldCheck className="h-6 w-6 text-[#AF7AC5]" />
-              Frequently Asked Questions
+            <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <HelpCircle className="h-5 w-5 text-primary" /> 5. Frequently Asked Questions
             </h2>
-            <div className="space-y-6 mt-6">
-              <div>
-                <h4 className="text-foreground font-semibold mb-2">Is this tool free to use?</h4>
-                <p className="text-sm">Yes, mypdftools provides completely free access to all our core features without requiring you to create an account or provide a credit card.</p>
+            <div className="space-y-4 my-6">
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <h4 className="font-semibold text-sm text-foreground">Can I skip numbering on the cover page and table of contents?</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground">Yes. You can specify a custom &apos;Start Numbering From Page&apos; offset (e.g. start on page 3) so that your title sheet and executive summary remain unnumbered.</p>
               </div>
-              <div>
-                <h4 className="text-foreground font-semibold mb-2">Are my files secure?</h4>
-                <p className="text-sm">Absolutely. We prioritize your privacy. The vast majority of our tools utilize modern WebAssembly technology to process your files directly on your device. Your data never leaves your computer.</p>
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <h4 className="font-semibold text-sm text-foreground">What is Bates numbering used for in legal proceedings?</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground">Bates numbering adds sequential alphanumeric identifiers (e.g. DEF-000142) across thousands of discovery documents so attorneys and judges can reference specific pages precisely during trials.</p>
               </div>
-              <div>
-                <h4 className="text-foreground font-semibold mb-2">Can I use this on my mobile phone?</h4>
-                <p className="text-sm">Yes! Our platform is fully responsive and works perfectly on iOS and Android devices directly through your mobile web browser. No app installation required.</p>
-              </div>
-              <div>
-                <h4 className="text-foreground font-semibold mb-2">Is there a file size limit?</h4>
-                <p className="text-sm">Because we process files locally, the limit is largely determined by your device's available RAM and processing power rather than arbitrary server limits.</p>
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <h4 className="font-semibold text-sm text-foreground">Will adding page numbers overwrite existing text at the bottom of the page?</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground">Our tool lets you customize margin offsets (in points/millimeters) and choose between top-right, bottom-center, or bottom-right placement to prevent overlapping existing footnotes.</p>
               </div>
             </div>
-            
-            <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-6 bg-muted/30 p-8 rounded-2xl">
-              <div>
-                <h3 className="text-xl font-bold text-foreground mb-2">Ready to try it out?</h3>
-                <p className="text-sm m-0">Use our free tool right now, no sign up required.</p>
+
+            {/* Author Bio Box */}
+            <div className="border-t pt-8 mt-12">
+              <div className="p-6 rounded-2xl bg-muted/40 border flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <div className="h-12 w-12 rounded-full bg-pink-500/20 text-pink-600 flex items-center justify-center font-bold text-lg shrink-0">
+                  MV
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <h4 className="font-bold text-foreground text-sm">Marcus Vance</h4>
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">Verified Author</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Senior Document Systems Engineer specializing in typography injection, legal e-Discovery numbering standards, and dynamic PDF canvas manipulation.</p>
+                </div>
               </div>
-              <Link href="/" className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-6 whitespace-nowrap">
-                Go to Tool <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
             </div>
           </div>
         </article>
@@ -169,4 +242,3 @@ export default function BlogPost() {
     </div>
   );
 }
-

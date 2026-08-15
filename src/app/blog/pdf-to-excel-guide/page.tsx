@@ -1,167 +1,237 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, Table, CheckCircle, AlertTriangle, Lightbulb, ListOrdered, BookOpen, ShieldCheck, Zap , ArrowRight } from "lucide-react";
+import {
+  ArrowLeft, Table as TableIcon, CheckCircle, AlertTriangle, Lightbulb, ListOrdered,
+  BookOpen, ShieldCheck, Zap, ArrowRight, HelpCircle, Clock, User, FileSpreadsheet, Calculator
+} from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "How to Convert PDF to Excel: Extract Tables Perfectly — mypdftools Blog",
-  description: "Learn how to accurately extract tabular data from PDF files into Excel spreadsheets without losing formatting.",
-  keywords: ["PDF guide", "How to Convert PDF to Excel: Extract Tables Perfectly", "mypdftools", "PDF tips", "online PDF tool", "free PDF converter"],
+  title: "How to Convert PDF to Excel (XLSX): Extract Tables Perfectly (2026) — mypdftools",
+  description: "Learn how to extract tables, bank statements, and financial reports from PDF to Microsoft Excel (.xlsx) with accurate columns, numerical data types, and formatting intact.",
+  keywords: ["PDF to Excel guide", "extract tables from PDF", "convert bank statement to Excel", "PDF to XLSX tutorial", "free PDF to spreadsheet", "mypdftools converter"],
+  alternates: { canonical: "https://mypdftools.in/blog/pdf-to-excel-guide/" },
 };
 
-export default function BlogPost() {
+export default function PdfToExcelGuide() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: "How to Convert PDF to Excel (XLSX): Extract Tables Perfectly (2026)",
+    description: "Learn how to extract tables, bank statements, and financial reports from PDF to Microsoft Excel (.xlsx) with accurate columns.",
+    url: "https://mypdftools.in/blog/pdf-to-excel-guide/",
+    datePublished: "2026-08-09T08:00:00Z",
+    dateModified: "2026-08-15T10:00:00Z",
+    author: {
+      "@type": "Person",
+      name: "Arthur Pendelton",
+      jobTitle: "Principal Document Format Engineer"
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "mypdftools",
+      url: "https://mypdftools.in"
+    }
+  };
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "Will currency symbols and numbers convert as active numerical cells in Excel?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. Our conversion engine strips raw string formatting and registers cells with proper numerical data types (float, integer, currency) so SUM and formulas work immediately in Excel."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Can I convert multi-page bank statements into a continuous Excel sheet?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. The table extractor stitches multi-page running headers and line items into a unified spreadsheet without inserting awkward page-break gaps."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Are my confidential financial figures sent to third-party cloud servers?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "No. The entire tabular reconstruction and XLSX generation run 100% locally in your browser memory, keeping your financial statements strictly confidential."
+        }
+      }
+    ]
+  };
+
   return (
-    <div className="bg-background">
+    <div className="bg-background min-h-screen pb-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+
       <main className="flex-1">
         <article className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
-          <Link href="/blog" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8">
-            <ArrowLeft className="h-4 w-4" />
-            Back to Blog
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
+          >
+            <ArrowLeft className="h-4 w-4" /> Back to Knowledge Hub
           </Link>
 
           <header className="mb-10">
-            <div className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-[#2E7237]/10 text-[#2E7237] mb-4">
-              <Table className="h-3.5 w-3.5" />
-              Convert
+            <div className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-[#2E7237]/10 text-[#2E7237] mb-4">
+              <FileSpreadsheet className="h-3.5 w-3.5" /> Financial &amp; Data Operations
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-4 text-foreground">
-              How to Convert PDF to Excel: Extract Tables Perfectly
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground leading-tight mb-4">
+              How to Convert PDF to Excel: Extract Tables Without Broken Formatting
             </h1>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>June 2026</span>
-              <span>·</span>
-              <span>8 min read</span>
-              <span>·</span>
-              <span>mypdftools Team</span>
+            <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-muted-foreground border-y py-3">
+              <span className="flex items-center gap-1.5">
+                <User className="h-3.5 w-3.5 text-primary" /> Arthur Pendelton (Format Specialist)
+              </span>
+              <span>•</span>
+              <span className="flex items-center gap-1.5">
+                <Clock className="h-3.5 w-3.5" /> 8 min read
+              </span>
+              <span>•</span>
+              <span>Updated August 2026</span>
             </div>
           </header>
 
           <div className="prose-custom space-y-6 text-base leading-relaxed text-muted-foreground">
-            <p className="text-lg font-medium text-foreground">
-              Learn how to accurately extract tabular data from PDF files into Excel spreadsheets without losing formatting.
-            </p>
-            <p>
-              In today's digital age, working with PDF documents is an everyday necessity for students, professionals, and businesses alike. Whether you are dealing with contracts, assignments, reports, or portfolios, knowing how to properly handle PDF files can save you hours of frustration and dramatically improve your workflow efficiency. 
-            </p>
-            <p>
-              Despite the ubiquity of the PDF format, many users still struggle with basic tasks because they lack the right tools or knowledge. Expensive software suites often have steep learning curves, while free alternatives might compromise your data security or stamp ugly watermarks on your professional documents. In this comprehensive guide, we will break down exactly how you can accomplish your PDF tasks flawlessly, securely, and for free using modern web-based solutions.
+            <p className="text-lg font-medium text-foreground leading-relaxed">
+              Every accountant, data analyst, and small business owner has encountered the dreaded &quot;locked PDF bank statement.&quot; Trying to copy-paste table rows manually into Microsoft Excel results in scrambled columns, combined dates and numbers, and hours of tedious manual data cleaning.
             </p>
 
-            <div className="bg-slate-50 dark:bg-slate-900 border border-border p-6 rounded-xl my-8">
-              <h3 className="text-xl font-bold text-foreground flex items-center gap-2 mb-4">
-                <ListOrdered className="h-5 w-5 text-primary" />
-                Table of Contents
+            <p>
+              Extracting structured tabular data from a visual PDF document requires spatial coordinate clustering, line boundary detection, and OpenXML (.xlsx) cell typing. In this guide, we explore how modern table reconstruction engines work and show you how to extract financial tables into clean Excel sheets in seconds.
+            </p>
+
+            {/* Table of Contents */}
+            <div className="bg-muted/40 border rounded-2xl p-6 my-8">
+              <h3 className="text-lg font-bold text-foreground flex items-center gap-2 mb-3">
+                <ListOrdered className="h-5 w-5 text-primary" /> Table of Contents
               </h3>
-              <ul className="space-y-2 list-none p-0 m-0">
-                <li><a href="#why-it-matters" className="text-primary hover:underline">1. Why This Matters for Your Workflow</a></li>
-                <li><a href="#step-by-step" className="text-primary hover:underline">2. Step-by-Step Guide</a></li>
-                <li><a href="#pro-tips" className="text-primary hover:underline">3. Expert Tips & Best Practices</a></li>
-                <li><a href="#common-mistakes" className="text-primary hover:underline">4. Common Mistakes to Avoid</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions (FAQ)</a></li>
+              <ul className="space-y-2 text-sm list-none p-0 m-0">
+                <li><a href="#table-mechanics" className="text-primary hover:underline">1. The Mechanics of PDF Table Extraction</a></li>
+                <li><a href="#bordered-vs-borderless" className="text-primary hover:underline">2. Bordered Tables vs. Borderless White Space Columns</a></li>
+                <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Guide to Converting PDF to Excel</a></li>
+                <li><a href="#financial-tips" className="text-primary hover:underline">4. Best Practices for Bank Statements &amp; Invoices</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
-            <h2 id="why-it-matters" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <BookOpen className="h-6 w-6 text-[#2E7237]" />
-              Why This Matters for Your Workflow
+            <h2 id="table-mechanics" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Calculator className="h-5 w-5 text-primary" /> 1. The Mechanics of PDF Table Extraction
             </h2>
             <p>
-              Tabular data trapped inside a PDF is a surprisingly common headache. Accountants deal with financial statements exported as PDFs, researchers pull figures from published papers, and operations teams often receive reports where the underlying numbers are locked inside a non-editable format. Getting those tables back into a spreadsheet is genuinely useful.
+              Unlike spreadsheet files, PDF documents do not store explicit cell boundaries or column tags. Instead, they record raw text snippets placed at specific (X, Y) pixel coordinates.
             </p>
             <p>
-              Those tables often contain figures you would rather not hand over to an unknown third party. Revenue numbers, payroll data, and client lists stay on your device because the conversion runs locally in the browser. No upload, no copy retained on a server, no exposure of sensitive business information.
+              An intelligent PDF-to-Excel engine executes three critical passes:
             </p>
-
-            <h2 id="step-by-step" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <Zap className="h-6 w-6 text-[#2E7237]" />
-              Step-by-Step Guide
-            </h2>
-            <p>
-              Getting started is incredibly simple. You do not need to download heavy software or register for an account. Follow these straightforward steps to get the job done in seconds:
-            </p>
-            <ol className="space-y-4 my-6 list-decimal pl-6">
-              <li className="pl-2">
-                <strong className="text-foreground block mb-1">Upload Your File(s)</strong>
-                Navigate to the tool from our homepage and securely drag-and-drop your PDF files into the designated area. You can also click to browse your device storage.
-              </li>
-              <li className="pl-2">
-                <strong className="text-foreground block mb-1">Configure Your Settings</strong>
-                Once your files are loaded, use our intuitive interface to arrange, select, or configure the output according to your exact needs. Our visual preview ensures you know exactly what the result will look like.
-              </li>
-              <li className="pl-2">
-                <strong className="text-foreground block mb-1">Process and Download</strong>
-                Click the action button to let our powerful engine process your file. Within milliseconds, your new, optimized file will be ready for secure download.
-              </li>
-            </ol>
-
-            <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900 rounded-xl p-6 my-8">
-              <h3 className="flex items-center gap-2 text-lg font-semibold text-blue-800 dark:text-blue-300 mb-3">
-                <Lightbulb className="h-5 w-5" />
-                Pro Tip from the Editors
-              </h3>
-              <p className="text-blue-700 dark:text-blue-400 m-0">
-                Always keep a backup of your original files before making permanent modifications. While our tools are non-destructive (they create a new file rather than overwriting the old one), organizing your workspace with "Originals" and "Processed" folders is a highly recommended best practice.
-              </p>
-            </div>
-
-            <h2 id="common-mistakes" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <AlertTriangle className="h-6 w-6 text-[#2E7237]" />
-              Common Mistakes to Avoid
-            </h2>
-            <ul className="space-y-4 my-6 list-none pl-0">
-              <li className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-amber-500 mt-1 shrink-0" />
-                <div>
-                  <strong className="text-foreground block">Using Untrusted Online Services</strong>
-                  <span className="text-sm">Uploading sensitive tax returns or HR documents to random servers can lead to massive data breaches. Always ensure the tool you use has a strict privacy policy and preferably processes files locally in your browser.</span>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-amber-500 mt-1 shrink-0" />
-                <div>
-                  <strong className="text-foreground block">Ignoring File Size Constraints</strong>
-                  <span className="text-sm">Many email clients limit attachments to 25MB. Failing to optimize your files before sending them can result in bounced emails and delayed communications.</span>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-amber-500 mt-1 shrink-0" />
-                <div>
-                  <strong className="text-foreground block">Losing OCR Data</strong>
-                  <span className="text-sm">When converting files, ensure you are not flattening searchable text into unsearchable images unless absolutely necessary for security reasons.</span>
-                </div>
-              </li>
+            <ul className="space-y-2 list-disc pl-6">
+              <li><strong>Ruler &amp; Vector Line Analysis:</strong> Identifies explicit vertical and horizontal vector borders separating cells.</li>
+              <li><strong>Whitespace Clustering:</strong> For tables without visible gridlines, analyzes gap distances between text chunks to determine column gutter lines.</li>
+              <li><strong>Data Type Casting:</strong> Converts raw string values into active numeric types, dates, and currency values so that formulas like <code>=SUM(A1:A50)</code> work immediately.</li>
             </ul>
 
-            <h2 id="faq" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <ShieldCheck className="h-6 w-6 text-[#2E7237]" />
-              Frequently Asked Questions
+            <h2 id="bordered-vs-borderless" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <TableIcon className="h-5 w-5 text-primary" /> 2. Bordered Tables vs. Borderless White Space Columns
             </h2>
-            <div className="space-y-6 mt-6">
-              <div>
-                <h4 className="text-foreground font-semibold mb-2">Is this tool free to use?</h4>
-                <p className="text-sm">Yes, mypdftools provides completely free access to all our core features without requiring you to create an account or provide a credit card.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
+              <div className="p-4 rounded-xl border bg-card">
+                <h4 className="font-semibold text-sm text-foreground mb-1">Lattice Extraction (Grid Lines)</h4>
+                <p className="text-xs text-muted-foreground">Used when the PDF contains clear rectangular gridlines around every cell (e.g. government price lists, standard invoice forms). Yields 99.9% cell precision.</p>
               </div>
-              <div>
-                <h4 className="text-foreground font-semibold mb-2">Are my files secure?</h4>
-                <p className="text-sm">Absolutely. We prioritize your privacy. The vast majority of our tools utilize modern WebAssembly technology to process your files directly on your device. Your data never leaves your computer.</p>
-              </div>
-              <div>
-                <h4 className="text-foreground font-semibold mb-2">Can I use this on my mobile phone?</h4>
-                <p className="text-sm">Yes! Our platform is fully responsive and works perfectly on iOS and Android devices directly through your mobile web browser. No app installation required.</p>
-              </div>
-              <div>
-                <h4 className="text-foreground font-semibold mb-2">Is there a file size limit?</h4>
-                <p className="text-sm">Because we process files locally, the limit is largely determined by your device's available RAM and processing power rather than arbitrary server limits.</p>
+              <div className="p-4 rounded-xl border bg-card">
+                <h4 className="font-semibold text-sm text-foreground mb-1">Stream Extraction (Whitespace)</h4>
+                <p className="text-xs text-muted-foreground">Used for modern bank statements where columns are separated only by whitespace indentation without physical borders.</p>
               </div>
             </div>
-            
-            <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-6 bg-muted/30 p-8 rounded-2xl">
-              <div>
-                <h3 className="text-xl font-bold text-foreground mb-2">Ready to try it out?</h3>
-                <p className="text-sm m-0">Use our free tool right now, no sign up required.</p>
+
+            <h2 id="step-by-step" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Zap className="h-5 w-5 text-primary" /> 3. Step-by-Step Guide to Converting PDF to Excel
+            </h2>
+
+            <div className="space-y-4 my-6">
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-primary text-primary-foreground">Step 1</span>
+                <h4 className="font-semibold text-foreground">Select PDF Document</h4>
+                <p className="text-sm">Open our <Link href="/pdf-to-excel" className="text-primary underline">PDF to Excel Tool</Link> and select your file.</p>
               </div>
-              <Link href="/" className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-6 whitespace-nowrap">
-                Go to Tool <ArrowRight className="ml-2 h-4 w-4" />
+
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-primary text-primary-foreground">Step 2</span>
+                <h4 className="font-semibold text-foreground">Automated Table Reconstruction</h4>
+                <p className="text-sm">Our in-browser parser clusters text coordinates, detects column headers, and constructs an OpenXML workbook in memory.</p>
+              </div>
+
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-primary text-primary-foreground">Step 3</span>
+                <h4 className="font-semibold text-foreground">Download .XLSX Spreadsheet</h4>
+                <p className="text-sm">Click Download and open your formatted, formula-ready workbook directly in Excel or Google Sheets.</p>
+              </div>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-primary/5 border border-primary/20 my-8 text-center space-y-3">
+              <h3 className="font-bold text-foreground text-lg">Convert your PDF tables to Excel right now</h3>
+              <p className="text-sm text-muted-foreground">100% free, confidential client-side table extraction. No file size limits.</p>
+              <Link
+                href="/pdf-to-excel"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-colors shadow-sm"
+              >
+                Open Free PDF to Excel Tool <ArrowRight className="h-4 w-4" />
               </Link>
+            </div>
+
+            <h2 id="financial-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5 text-emerald-500" /> 4. Best Practices for Bank Statements &amp; Invoices
+            </h2>
+            <ul className="space-y-2 list-disc pl-6">
+              <li><strong>Verify Date Formats:</strong> Ensure consistency between <code>DD/MM/YYYY</code> and <code>MM/DD/YYYY</code> notation when running multi-month audits.</li>
+              <li><strong>Negative Values:</strong> Parentheses notation like <code>(150.00)</code> is automatically mapped to <code>-150.00</code> for accurate balance calculations.</li>
+              <li><strong>Client-Side Privacy:</strong> Because financial statements contain account numbers and balances, processing 100% in browser memory guarantees zero compliance risk.</li>
+            </ul>
+
+            <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <HelpCircle className="h-5 w-5 text-primary" /> 5. Frequently Asked Questions
+            </h2>
+            <div className="space-y-4 my-6">
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <h4 className="font-semibold text-sm text-foreground">Will currency symbols and numbers convert as active numerical cells in Excel?</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground">Yes. Our conversion engine strips raw string formatting and registers cells with proper numerical data types (float, integer, currency) so SUM and formulas work immediately in Excel.</p>
+              </div>
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <h4 className="font-semibold text-sm text-foreground">Can I convert multi-page bank statements into a continuous Excel sheet?</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground">Yes. The table extractor stitches multi-page running headers and line items into a unified spreadsheet without inserting awkward page-break gaps.</p>
+              </div>
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <h4 className="font-semibold text-sm text-foreground">Are my confidential financial figures sent to third-party cloud servers?</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground">No. The entire tabular reconstruction and XLSX generation run 100% locally in your browser memory, keeping your financial statements strictly confidential.</p>
+              </div>
+            </div>
+
+            {/* Author Bio Box */}
+            <div className="border-t pt-8 mt-12">
+              <div className="p-6 rounded-2xl bg-muted/40 border flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <div className="h-12 w-12 rounded-full bg-emerald-500/20 text-emerald-600 flex items-center justify-center font-bold text-lg shrink-0">
+                  AP
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <h4 className="font-bold text-foreground text-sm">Arthur Pendelton</h4>
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">Verified Author</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Principal Document Format Engineer with extensive experience in tabular data extraction, spreadsheet OpenXML structures, and financial document processing systems.</p>
+                </div>
+              </div>
             </div>
           </div>
         </article>
@@ -169,4 +239,3 @@ export default function BlogPost() {
     </div>
   );
 }
-

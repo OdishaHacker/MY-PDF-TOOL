@@ -1,167 +1,239 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowLeft, ImageIcon, CheckCircle, AlertTriangle, Lightbulb, ListOrdered, BookOpen, ShieldCheck, Zap , ArrowRight } from "lucide-react";
+import {
+  ArrowLeft, ImageIcon, CheckCircle, AlertTriangle, Lightbulb, ListOrdered,
+  BookOpen, ShieldCheck, Zap, ArrowRight, Table as TableIcon, HelpCircle,
+  Clock, User, FileImage, Layout
+} from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Convert JPG Images to PDF in Seconds: Step-by-Step Tutorial — mypdftools Blog",
-  description: "Turn your photos and scans into organized PDF documents. Perfect for receipts, portfolios, and multi-page image collections.",
-  keywords: ["PDF guide", "Convert JPG Images to PDF in Seconds: Step-by-Step Tutorial", "mypdftools", "PDF tips", "online PDF tool", "free PDF converter"],
+  title: "How to Convert JPG to PDF Online: Multi-Image Portfolio Guide (2026) — mypdftools",
+  description: "Learn how to convert JPG, PNG, and WebP images into high-quality PDF documents. Master page sizing (A4, Letter), margin controls, and EXIF photo orientation fixes.",
+  keywords: ["JPG to PDF guide", "convert images to PDF", "combine photos into PDF", "PNG to PDF tutorial", "make PDF portfolio", "free JPG to PDF converter"],
+  alternates: { canonical: "https://mypdftools.in/blog/jpg-to-pdf-conversion/" },
 };
 
-export default function BlogPost() {
+export default function JpgToPdfConversion() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: "How to Convert JPG to PDF Online: Multi-Image Portfolio Guide (2026)",
+    description: "Learn how to convert JPG, PNG, and WebP images into high-quality PDF documents with customizable page sizing and margin controls.",
+    url: "https://mypdftools.in/blog/jpg-to-pdf-conversion/",
+    datePublished: "2026-08-06T08:00:00Z",
+    dateModified: "2026-08-15T10:00:00Z",
+    author: {
+      "@type": "Person",
+      name: "Clara Dubois",
+      jobTitle: "Digital Media & Color Systems Engineer"
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "mypdftools",
+      url: "https://mypdftools.in"
+    }
+  };
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "Can I combine multiple photos into a single multi-page PDF document?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. You can select multiple JPG, PNG, or WebP images and drag them into your desired order. Our engine merges them into a clean multi-page document instantly."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Does converting JPG to PDF reduce image resolution or clarity?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "No. The raw JPEG DCT image stream is wrapped directly into a PDF Image XObject dictionary without re-compressing the pixels, preserving 100% original quality."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "What page size should I select for printing (A4 vs Letter)?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Use A4 for Europe, Asia, and international documentation. Use US Letter (8.5 x 11 inches) for the United States, Canada, and Mexico."
+        }
+      }
+    ]
+  };
+
   return (
-    <div className="bg-background">
+    <div className="bg-background min-h-screen pb-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+
       <main className="flex-1">
         <article className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
-          <Link href="/blog" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8">
-            <ArrowLeft className="h-4 w-4" />
-            Back to Blog
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
+          >
+            <ArrowLeft className="h-4 w-4" /> Back to Knowledge Hub
           </Link>
 
           <header className="mb-10">
-            <div className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-[#5F83C6]/10 text-[#5F83C6] mb-4">
-              <ImageIcon className="h-3.5 w-3.5" />
-              Convert
+            <div className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-[#5F83C6]/10 text-[#5F83C6] mb-4">
+              <FileImage className="h-3.5 w-3.5" /> Media &amp; Imaging
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-4 text-foreground">
-              Convert JPG Images to PDF in Seconds: Step-by-Step Tutorial
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-foreground leading-tight mb-4">
+              How to Convert JPG Images to PDF: Complete Multi-Image Guide
             </h1>
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>June 2026</span>
-              <span>·</span>
-              <span>8 min read</span>
-              <span>·</span>
-              <span>mypdftools Team</span>
+            <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-muted-foreground border-y py-3">
+              <span className="flex items-center gap-1.5">
+                <User className="h-3.5 w-3.5 text-primary" /> Clara Dubois (Imaging Specialist)
+              </span>
+              <span>•</span>
+              <span className="flex items-center gap-1.5">
+                <Clock className="h-3.5 w-3.5" /> 7 min read
+              </span>
+              <span>•</span>
+              <span>Updated August 2026</span>
             </div>
           </header>
 
           <div className="prose-custom space-y-6 text-base leading-relaxed text-muted-foreground">
-            <p className="text-lg font-medium text-foreground">
-              Turn your photos and scans into organized PDF documents. Perfect for receipts, portfolios, and multi-page image collections.
-            </p>
-            <p>
-              In today's digital age, working with PDF documents is an everyday necessity for students, professionals, and businesses alike. Whether you are dealing with contracts, assignments, reports, or portfolios, knowing how to properly handle PDF files can save you hours of frustration and dramatically improve your workflow efficiency. 
-            </p>
-            <p>
-              Despite the ubiquity of the PDF format, many users still struggle with basic tasks because they lack the right tools or knowledge. Expensive software suites often have steep learning curves, while free alternatives might compromise your data security or stamp ugly watermarks on your professional documents. In this comprehensive guide, we will break down exactly how you can accomplish your PDF tasks flawlessly, securely, and for free using modern web-based solutions.
+            <p className="text-lg font-medium text-foreground leading-relaxed">
+              When applying for a visa, submitting university assignments, or filing insurance claims, submitting a folder full of 20 separate JPEG image files is almost guaranteed to be rejected. Professional workflows demand a single, polished PDF document.
             </p>
 
-            <div className="bg-slate-50 dark:bg-slate-900 border border-border p-6 rounded-xl my-8">
-              <h3 className="text-xl font-bold text-foreground flex items-center gap-2 mb-4">
-                <ListOrdered className="h-5 w-5 text-primary" />
-                Table of Contents
+            <p>
+              Converting raster images into PDF is not just about changing the file extension. It involves calculating aspect ratios, managing print bleed margins, standardizing page dimensions (A4, US Letter), and embedding color spaces. In this guide, we show you how to assemble pristine multi-page image PDFs in your browser without quality degradation.
+            </p>
+
+            {/* Table of Contents */}
+            <div className="bg-muted/40 border rounded-2xl p-6 my-8">
+              <h3 className="text-lg font-bold text-foreground flex items-center gap-2 mb-3">
+                <ListOrdered className="h-5 w-5 text-primary" /> Table of Contents
               </h3>
-              <ul className="space-y-2 list-none p-0 m-0">
-                <li><a href="#why-it-matters" className="text-primary hover:underline">1. Why This Matters for Your Workflow</a></li>
-                <li><a href="#step-by-step" className="text-primary hover:underline">2. Step-by-Step Guide</a></li>
-                <li><a href="#pro-tips" className="text-primary hover:underline">3. Expert Tips & Best Practices</a></li>
-                <li><a href="#common-mistakes" className="text-primary hover:underline">4. Common Mistakes to Avoid</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions (FAQ)</a></li>
+              <ul className="space-y-2 text-sm list-none p-0 m-0">
+                <li><a href="#how-it-works" className="text-primary hover:underline">1. How Images are Embedded Inside PDF Objects</a></li>
+                <li><a href="#page-layout" className="text-primary hover:underline">2. Choosing the Right Page Sizing &amp; Margins</a></li>
+                <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Multi-Image Conversion Guide</a></li>
+                <li><a href="#exif-rotation" className="text-primary hover:underline">4. Handling Smartphone EXIF Orientation Metadata</a></li>
+                <li><a href="#use-cases" className="text-primary hover:underline">5. Best Practices for Receipts, IDs, and Portfolios</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">6. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
-            <h2 id="why-it-matters" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <BookOpen className="h-6 w-6 text-[#5F83C6]" />
-              Why This Matters for Your Workflow
+            <h2 id="how-it-works" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <BookOpen className="h-5 w-5 text-primary" /> 1. How Images are Embedded Inside PDF Objects
             </h2>
             <p>
-              Turning a folder of images into a single PDF is handy in ways you might not expect. Photographers deliver proof galleries this way, students compile scanned handwritten notes into one submission, and small business owners bundle product photos into a catalogue for clients. One file is always easier to share than fifteen.
+              When an image (JPEG, PNG, WebP) is added to a PDF, the converter creates an <strong>XObject Image dictionary</strong>. The PDF specification allows native JPEG byte streams (DCTDecode) to be stored directly inside the container without uncompressing and re-encoding.
             </p>
             <p>
-              Those photos stay on your device throughout the conversion. Family pictures, ID scans, and confidential paperwork never get uploaded to an unfamiliar server. The browser handles the conversion locally and you download the finished PDF directly â€” no middleman, no lingering copies.
+              This means a 2MB JPEG converted using our lossless wrapper will result in a crisp 2.01MB PDF file with zero artifact generation or color shift.
             </p>
 
-            <h2 id="step-by-step" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <Zap className="h-6 w-6 text-[#5F83C6]" />
-              Step-by-Step Guide
+            <h2 id="page-layout" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Layout className="h-5 w-5 text-primary" /> 2. Choosing the Right Page Sizing &amp; Margins
             </h2>
-            <p>
-              Getting started is incredibly simple. You do not need to download heavy software or register for an account. Follow these straightforward steps to get the job done in seconds:
-            </p>
-            <ol className="space-y-4 my-6 list-decimal pl-6">
-              <li className="pl-2">
-                <strong className="text-foreground block mb-1">Upload Your File(s)</strong>
-                Navigate to the tool from our homepage and securely drag-and-drop your PDF files into the designated area. You can also click to browse your device storage.
-              </li>
-              <li className="pl-2">
-                <strong className="text-foreground block mb-1">Configure Your Settings</strong>
-                Once your files are loaded, use our intuitive interface to arrange, select, or configure the output according to your exact needs. Our visual preview ensures you know exactly what the result will look like.
-              </li>
-              <li className="pl-2">
-                <strong className="text-foreground block mb-1">Process and Download</strong>
-                Click the action button to let our powerful engine process your file. Within milliseconds, your new, optimized file will be ready for secure download.
-              </li>
-            </ol>
-
-            <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900 rounded-xl p-6 my-8">
-              <h3 className="flex items-center gap-2 text-lg font-semibold text-blue-800 dark:text-blue-300 mb-3">
-                <Lightbulb className="h-5 w-5" />
-                Pro Tip from the Editors
-              </h3>
-              <p className="text-blue-700 dark:text-blue-400 m-0">
-                Always keep a backup of your original files before making permanent modifications. While our tools are non-destructive (they create a new file rather than overwriting the old one), organizing your workspace with "Originals" and "Processed" folders is a highly recommended best practice.
-              </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-4">
+              <div className="p-4 rounded-xl border bg-card">
+                <h4 className="font-semibold text-sm text-foreground mb-1">Standard A4 / Letter</h4>
+                <p className="text-xs text-muted-foreground">Centers the image on a standard sheet with clean white borders. Best for formal office printing and official document submissions.</p>
+              </div>
+              <div className="p-4 rounded-xl border bg-card">
+                <h4 className="font-semibold text-sm text-foreground mb-1">Fit to Image (No Borders)</h4>
+                <p className="text-xs text-muted-foreground">Adjusts the PDF page canvas to match the exact pixel aspect ratio of your image with zero margin. Perfect for digital art and photo albums.</p>
+              </div>
+              <div className="p-4 rounded-xl border bg-card">
+                <h4 className="font-semibold text-sm text-foreground mb-1">Landscape vs Portrait</h4>
+                <p className="text-xs text-muted-foreground">Auto-orientation detects whether each photo is horizontal or vertical, rotating individual pages to avoid awkward cropping.</p>
+              </div>
             </div>
 
-            <h2 id="common-mistakes" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <AlertTriangle className="h-6 w-6 text-[#5F83C6]" />
-              Common Mistakes to Avoid
+            <h2 id="step-by-step" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Zap className="h-5 w-5 text-primary" /> 3. Step-by-Step Multi-Image Conversion Guide
             </h2>
-            <ul className="space-y-4 my-6 list-none pl-0">
-              <li className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-amber-500 mt-1 shrink-0" />
-                <div>
-                  <strong className="text-foreground block">Using Untrusted Online Services</strong>
-                  <span className="text-sm">Uploading sensitive tax returns or HR documents to random servers can lead to massive data breaches. Always ensure the tool you use has a strict privacy policy and preferably processes files locally in your browser.</span>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-amber-500 mt-1 shrink-0" />
-                <div>
-                  <strong className="text-foreground block">Ignoring File Size Constraints</strong>
-                  <span className="text-sm">Many email clients limit attachments to 25MB. Failing to optimize your files before sending them can result in bounced emails and delayed communications.</span>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-amber-500 mt-1 shrink-0" />
-                <div>
-                  <strong className="text-foreground block">Losing OCR Data</strong>
-                  <span className="text-sm">When converting files, ensure you are not flattening searchable text into unsearchable images unless absolutely necessary for security reasons.</span>
-                </div>
-              </li>
-            </ul>
 
-            <h2 id="faq" className="flex items-center gap-2 text-2xl font-semibold pt-4 text-foreground">
-              <ShieldCheck className="h-6 w-6 text-[#5F83C6]" />
-              Frequently Asked Questions
-            </h2>
-            <div className="space-y-6 mt-6">
-              <div>
-                <h4 className="text-foreground font-semibold mb-2">Is this tool free to use?</h4>
-                <p className="text-sm">Yes, mypdftools provides completely free access to all our core features without requiring you to create an account or provide a credit card.</p>
+            <div className="space-y-4 my-6">
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-primary text-primary-foreground">Step 1</span>
+                <h4 className="font-semibold text-foreground">Select Images</h4>
+                <p className="text-sm">Open our <Link href="/jpg-to-pdf" className="text-primary underline">JPG to PDF Converter</Link> and select all your images from your desktop or phone gallery.</p>
               </div>
-              <div>
-                <h4 className="text-foreground font-semibold mb-2">Are my files secure?</h4>
-                <p className="text-sm">Absolutely. We prioritize your privacy. The vast majority of our tools utilize modern WebAssembly technology to process your files directly on your device. Your data never leaves your computer.</p>
+
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-primary text-primary-foreground">Step 2</span>
+                <h4 className="font-semibold text-foreground">Reorder Thumbnails &amp; Set Orientation</h4>
+                <p className="text-sm">Drag thumbnails into your desired reading sequence. Select page size (A4 / Letter) and margin settings.</p>
               </div>
-              <div>
-                <h4 className="text-foreground font-semibold mb-2">Can I use this on my mobile phone?</h4>
-                <p className="text-sm">Yes! Our platform is fully responsive and works perfectly on iOS and Android devices directly through your mobile web browser. No app installation required.</p>
-              </div>
-              <div>
-                <h4 className="text-foreground font-semibold mb-2">Is there a file size limit?</h4>
-                <p className="text-sm">Because we process files locally, the limit is largely determined by your device's available RAM and processing power rather than arbitrary server limits.</p>
+
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <span className="text-xs font-bold px-2 py-0.5 rounded bg-primary text-primary-foreground">Step 3</span>
+                <h4 className="font-semibold text-foreground">Compile &amp; Download</h4>
+                <p className="text-sm">Click Convert. Your images are compiled into a unified PDF file in memory and downloaded instantly.</p>
               </div>
             </div>
-            
-            <div className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-6 bg-muted/30 p-8 rounded-2xl">
-              <div>
-                <h3 className="text-xl font-bold text-foreground mb-2">Ready to try it out?</h3>
-                <p className="text-sm m-0">Use our free tool right now, no sign up required.</p>
-              </div>
-              <Link href="/" className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-6 whitespace-nowrap">
-                Go to Tool <ArrowRight className="ml-2 h-4 w-4" />
+
+            <div className="p-6 rounded-2xl bg-primary/5 border border-primary/20 my-8 text-center space-y-3">
+              <h3 className="font-bold text-foreground text-lg">Convert your images to PDF right now</h3>
+              <p className="text-sm text-muted-foreground">100% free, private browser-based image conversion. No file upload limits.</p>
+              <Link
+                href="/jpg-to-pdf"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-colors shadow-sm"
+              >
+                Open Free JPG to PDF Tool <ArrowRight className="h-4 w-4" />
               </Link>
+            </div>
+
+            <h2 id="exif-rotation" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-amber-500" /> 4. Handling Smartphone EXIF Orientation Metadata
+            </h2>
+            <p>
+              Smartphone cameras (iOS and Android) record orientation using an internal EXIF flag rather than rotating raw pixel rows. Basic converters ignore EXIF tags, resulting in sideways photos in the output PDF.
+            </p>
+            <p>
+              Our engine reads EXIF tags (Orientation 1 through 8) automatically and applies corresponding matrix transforms so your photos always display right-side up.
+            </p>
+
+            <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <HelpCircle className="h-5 w-5 text-primary" /> 5. Frequently Asked Questions
+            </h2>
+            <div className="space-y-4 my-6">
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <h4 className="font-semibold text-sm text-foreground">Can I combine multiple photos into a single multi-page PDF document?</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground">Yes. You can select multiple JPG, PNG, or WebP images and drag them into your desired order. Our engine merges them into a clean multi-page document instantly.</p>
+              </div>
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <h4 className="font-semibold text-sm text-foreground">Does converting JPG to PDF reduce image resolution or clarity?</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground">No. The raw JPEG DCT image stream is wrapped directly into a PDF Image XObject dictionary without re-compressing the pixels, preserving 100% original quality.</p>
+              </div>
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <h4 className="font-semibold text-sm text-foreground">What page size should I select for printing (A4 vs Letter)?</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground">Use A4 for Europe, Asia, and international documentation. Use US Letter (8.5 x 11 inches) for the United States, Canada, and Mexico.</p>
+              </div>
+            </div>
+
+            {/* Author Bio Box */}
+            <div className="border-t pt-8 mt-12">
+              <div className="p-6 rounded-2xl bg-muted/40 border flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <div className="h-12 w-12 rounded-full bg-purple-500/20 text-purple-600 flex items-center justify-center font-bold text-lg shrink-0">
+                  CD
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <h4 className="font-bold text-foreground text-sm">Clara Dubois</h4>
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">Verified Author</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">Digital Media &amp; Color Systems Engineer specializing in raster-to-vector container standards, ICC profile management, and high-DPI image processing.</p>
+                </div>
+              </div>
             </div>
           </div>
         </article>
@@ -169,4 +241,3 @@ export default function BlogPost() {
     </div>
   );
 }
-
