@@ -37,11 +37,20 @@ export const metadata: Metadata = {
     url: "https://mypdftools.in",
     siteName: "mypdftools",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "mypdftools — Free, private, browser-based PDF tools",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "mypdftools — Free Online PDF Tools",
     description: "Every tool you need to work with PDFs — all in one place. 100% free, 100% private.",
+    images: ["/og-image.png"],
   },
   verification: {
     google: "CHc-lI6mBg-GqRTwx9LXdWtMnMKg3vEFwHB0VVzywm0",

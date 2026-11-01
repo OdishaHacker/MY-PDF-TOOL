@@ -283,7 +283,7 @@ export default function BlogIndex() {
               </span>
               <span>•</span>
               <span className="inline-flex items-center gap-1">
-                <User className="h-3.5 w-3.5 text-primary" /> Written by Technical Specialists
+                <User className="h-3.5 w-3.5 text-primary" /> by the mypdftools Team
               </span>
             </div>
           </div>

@@ -21,11 +21,11 @@ export default function PdfSecurityTips() {
     description: "Protect your confidential business data with 7 critical PDF security best practices.",
     url: "https://mypdftools.in/blog/pdf-security-tips/",
     datePublished: "2026-08-14T14:00:00Z",
-    dateModified: "2026-08-15T10:00:00Z",
+    dateModified: "2026-11-02T09:00:00Z",
     author: {
       "@type": "Person",
-      name: "Tanya Sterling",
-      jobTitle: "Cybersecurity & Cryptography Lead"
+      name: "mypdftools Team",
+      jobTitle: "mypdftools Editorial Team"
     },
     publisher: {
       "@type": "Organization",
@@ -94,16 +94,20 @@ export default function PdfSecurityTips() {
             </h1>
             <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-muted-foreground border-y py-3">
               <span className="flex items-center gap-1.5">
-                <User className="h-3.5 w-3.5 text-primary" /> Tanya Sterling (Security Lead)
+                <User className="h-3.5 w-3.5 text-primary" /> mypdftools Team
               </span>
               <span>•</span>
               <span className="flex items-center gap-1.5">
                 <Clock className="h-3.5 w-3.5" /> 9 min read
               </span>
               <span>•</span>
-              <span>Updated August 2026</span>
+              <span>Updated November 2026</span>
             </div>
           </header>
+          <figure className="my-10">
+            <img src="/blog-images/pdf-security-tips-hero.svg" alt="7 Essential PDF Security Tips for Business" width={1200} height={630} className="w-full h-auto rounded-2xl border" />
+            <figcaption className="text-xs text-muted-foreground mt-2 text-center">7 Essential PDF Security Tips for Business — mypdftools Knowledge Hub</figcaption>
+          </figure>
 
           <div className="prose-custom space-y-6 text-base leading-relaxed text-muted-foreground">
             <p className="text-lg font-medium text-foreground leading-relaxed">
@@ -130,6 +134,12 @@ export default function PdfSecurityTips() {
                 <li><a href="#faq" className="text-primary hover:underline">8. Frequently Asked Questions</a></li>
               </ul>
             </div>
+
+          <figure className="my-10">
+            <img src="/blog-images/diagram-local-processing.svg" alt="Local processing keeps confidential business documents on your device" width={1200} height={630} className="w-full h-auto rounded-2xl border" />
+            <figcaption className="text-xs text-muted-foreground mt-2 text-center">Local processing keeps confidential business documents on your device</figcaption>
+          </figure>
+
 
             <h2 id="pillar-1" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
               <ShieldCheck className="h-5 w-5 text-emerald-500" /> 1. True Cryptographic Redaction vs. Visual Overlay Boxes
@@ -216,14 +226,14 @@ export default function PdfSecurityTips() {
             <div className="border-t pt-8 mt-12">
               <div className="p-6 rounded-2xl bg-muted/40 border flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <div className="h-12 w-12 rounded-full bg-red-500/20 text-red-600 flex items-center justify-center font-bold text-lg shrink-0">
-                  TS
+                  MT
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <h4 className="font-bold text-foreground text-sm">Tanya Sterling</h4>
-                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">Verified Author</span>
+                    <h4 className="font-bold text-foreground text-sm">mypdftools Team</h4>
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">Editorial Team</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">Cybersecurity &amp; Document Forensics Lead with deep experience in enterprise document governance, cryptographic protection, and GDPR compliance standards.</p>
+                  <p className="text-xs text-muted-foreground">The mypdftools team researches, writes, and reviews every guide on this site. We test each workflow in real browsers before publishing, and we update articles regularly as PDF tools and standards evolve. Questions or corrections are always welcome at support@mypdftools.in.</p>
                 </div>
               </div>
             </div>

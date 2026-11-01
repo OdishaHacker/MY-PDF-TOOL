@@ -21,11 +21,11 @@ export default function CompressPdfGuide() {
     description: "Master the science of PDF compression. Learn how to downsample images, strip redundant metadata, and optimize vector fonts.",
     url: "https://mypdftools.in/blog/compress-pdf-guide/",
     datePublished: "2026-08-02T08:00:00Z",
-    dateModified: "2026-08-15T10:00:00Z",
+    dateModified: "2026-11-02T09:00:00Z",
     author: {
       "@type": "Person",
-      name: "Dr. Elena Rostova",
-      jobTitle: "Data Compression Specialist"
+      name: "mypdftools Team",
+      jobTitle: "mypdftools Editorial Team"
     },
     publisher: {
       "@type": "Organization",
@@ -94,16 +94,20 @@ export default function CompressPdfGuide() {
             </h1>
             <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-muted-foreground border-y py-3">
               <span className="flex items-center gap-1.5">
-                <User className="h-3.5 w-3.5 text-primary" /> Dr. Elena Rostova (Compression Specialist)
+                <User className="h-3.5 w-3.5 text-primary" /> mypdftools Team
               </span>
               <span>•</span>
               <span className="flex items-center gap-1.5">
                 <Clock className="h-3.5 w-3.5" /> 9 min read
               </span>
               <span>•</span>
-              <span>Updated August 2026</span>
+              <span>Updated November 2026</span>
             </div>
           </header>
+          <figure className="my-10">
+            <img src="/blog-images/compress-pdf-guide-hero.svg" alt="Reduce PDF File Size Without Losing Quality" width={1200} height={630} className="w-full h-auto rounded-2xl border" />
+            <figcaption className="text-xs text-muted-foreground mt-2 text-center">Reduce PDF File Size Without Losing Quality — mypdftools Knowledge Hub</figcaption>
+          </figure>
 
           <div className="prose-custom space-y-6 text-base leading-relaxed text-muted-foreground">
             <p className="text-lg font-medium text-foreground leading-relaxed">
@@ -128,6 +132,12 @@ export default function CompressPdfGuide() {
                 <li><a href="#faq" className="text-primary hover:underline">6. Frequently Asked Questions</a></li>
               </ul>
             </div>
+
+          <figure className="my-10">
+            <img src="/blog-images/diagram-workflow-3steps.svg" alt="The simple three-step mypdftools workflow — select, customize, download" width={1200} height={630} className="w-full h-auto rounded-2xl border" />
+            <figcaption className="text-xs text-muted-foreground mt-2 text-center">The simple three-step mypdftools workflow — select, customize, download</figcaption>
+          </figure>
+
 
             <h2 id="why-large" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
               <Layers className="h-5 w-5 text-primary" /> 1. What Makes PDF Files So Large?
@@ -266,14 +276,14 @@ export default function CompressPdfGuide() {
             <div className="border-t pt-8 mt-12">
               <div className="p-6 rounded-2xl bg-muted/40 border flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <div className="h-12 w-12 rounded-full bg-emerald-500/20 text-emerald-600 flex items-center justify-center font-bold text-lg shrink-0">
-                  ER
+                  MT
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <h4 className="font-bold text-foreground text-sm">Dr. Elena Rostova</h4>
-                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">Verified Author</span>
+                    <h4 className="font-bold text-foreground text-sm">mypdftools Team</h4>
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">Editorial Team</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">Data Compression Specialist and research fellow focusing on lossless streaming entropy coders, raster quantization, and WebAssembly execution pipelines.</p>
+                  <p className="text-xs text-muted-foreground">The mypdftools team researches, writes, and reviews every guide on this site. We test each workflow in real browsers before publishing, and we update articles regularly as PDF tools and standards evolve. Questions or corrections are always welcome at support@mypdftools.in.</p>
                 </div>
               </div>
             </div>

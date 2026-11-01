@@ -21,11 +21,11 @@ export default function RepairPdfGuide() {
     description: "Learn how to recover unreadable, corrupted, or damaged PDF files with automated XREF reconstruction.",
     url: "https://mypdftools.in/blog/repair-pdf-guide/",
     datePublished: "2026-08-13T08:00:00Z",
-    dateModified: "2026-08-15T10:00:00Z",
+    dateModified: "2026-11-02T09:00:00Z",
     author: {
       "@type": "Person",
-      name: "Marcus Vance",
-      jobTitle: "Senior Document Systems Engineer"
+      name: "mypdftools Team",
+      jobTitle: "mypdftools Editorial Team"
     },
     publisher: {
       "@type": "Organization",
@@ -94,16 +94,20 @@ export default function RepairPdfGuide() {
             </h1>
             <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-muted-foreground border-y py-3">
               <span className="flex items-center gap-1.5">
-                <User className="h-3.5 w-3.5 text-primary" /> Marcus Vance (Document Architect)
+                <User className="h-3.5 w-3.5 text-primary" /> mypdftools Team
               </span>
               <span>•</span>
               <span className="flex items-center gap-1.5">
                 <Clock className="h-3.5 w-3.5" /> 8 min read
               </span>
               <span>•</span>
-              <span>Updated August 2026</span>
+              <span>Updated November 2026</span>
             </div>
           </header>
+          <figure className="my-10">
+            <img src="/blog-images/repair-pdf-guide-hero.svg" alt="Repair Corrupted PDF Files — Recover Documents" width={1200} height={630} className="w-full h-auto rounded-2xl border" />
+            <figcaption className="text-xs text-muted-foreground mt-2 text-center">Repair Corrupted PDF Files — Recover Documents — mypdftools Knowledge Hub</figcaption>
+          </figure>
 
           <div className="prose-custom space-y-6 text-base leading-relaxed text-muted-foreground">
             <p className="text-lg font-medium text-foreground leading-relaxed">
@@ -127,6 +131,12 @@ export default function RepairPdfGuide() {
                 <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions</a></li>
               </ul>
             </div>
+
+          <figure className="my-10">
+            <img src="/blog-images/diagram-workflow-3steps.svg" alt="The simple three-step mypdftools workflow — select, customize, download" width={1200} height={630} className="w-full h-auto rounded-2xl border" />
+            <figcaption className="text-xs text-muted-foreground mt-2 text-center">The simple three-step mypdftools workflow — select, customize, download</figcaption>
+          </figure>
+
 
             <h2 id="why-corruption" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-amber-500" /> 1. The Anatomy of PDF Corruption
@@ -222,14 +232,14 @@ export default function RepairPdfGuide() {
             <div className="border-t pt-8 mt-12">
               <div className="p-6 rounded-2xl bg-muted/40 border flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <div className="h-12 w-12 rounded-full bg-blue-500/20 text-blue-600 flex items-center justify-center font-bold text-lg shrink-0">
-                  MV
+                  MT
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <h4 className="font-bold text-foreground text-sm">Marcus Vance</h4>
-                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">Verified Author</span>
+                    <h4 className="font-bold text-foreground text-sm">mypdftools Team</h4>
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">Editorial Team</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">Senior Document Systems Engineer specializing in binary file forensics, low-level object tree recovery, and ISO 32000 PDF syntax parsing.</p>
+                  <p className="text-xs text-muted-foreground">The mypdftools team researches, writes, and reviews every guide on this site. We test each workflow in real browsers before publishing, and we update articles regularly as PDF tools and standards evolve. Questions or corrections are always welcome at support@mypdftools.in.</p>
                 </div>
               </div>
             </div>

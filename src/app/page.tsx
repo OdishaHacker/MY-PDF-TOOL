@@ -210,7 +210,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-              Why Millions Choose mypdftools for PDF Workflows
+              Why Users Trust mypdftools for PDF Workflows
             </h2>
             <p className="mt-3 text-sm sm:text-base text-muted-foreground">
               Built from the ground up for maximum speed, security, and simplicity without bloated software or hidden fees.
@@ -234,7 +234,7 @@ export default function Home() {
               </div>
               <h3 className="text-lg font-semibold text-foreground">High-Speed WebAssembly</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Powered by next-generation WebAssembly engines that process huge files in milliseconds without waiting in long server upload queues.
+                Powered by modern WebAssembly and JavaScript engines that process files in seconds, without waiting in long server upload queues.
               </p>
             </div>
 

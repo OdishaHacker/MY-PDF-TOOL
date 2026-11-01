@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0F172A"/><stop offset="1" stop-color="#1E3A5F"/></linearGradient>
+    <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#EE6C4D"/></marker>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <text x="600" y="110" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="900" fill="#FFFFFF">How It Works — 3 Simple Steps</text>
+  <text x="600" y="148" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#94A3B8">100% inside your browser — no uploads, no accounts</text>
+
+  <g font-family="Arial, Helvetica, sans-serif">
+    <rect x="90" y="230" width="280" height="220" rx="22" fill="#FFFFFF" fill-opacity="0.06" stroke="#EE6C4D" stroke-width="2"/>
+    <circle cx="230" cy="300" r="34" fill="#EE6C4D"/><text x="230" y="312" text-anchor="middle" font-size="30" font-weight="900" fill="#FFFFFF">1</text>
+    <text x="230" y="380" text-anchor="middle" font-size="23" font-weight="bold" fill="#FFFFFF">Select Your File</text>
+    <text x="230" y="412" text-anchor="middle" font-size="16" fill="#94A3B8">Drag &amp; drop your document</text>
+
+    <line x1="380" y1="340" x2="450" y2="340" stroke="#EE6C4D" stroke-width="5" marker-end="url(#ar2)"/>
+
+    <rect x="460" y="230" width="280" height="220" rx="22" fill="#FFFFFF" fill-opacity="0.06" stroke="#EE6C4D" stroke-width="2"/>
+    <circle cx="600" cy="300" r="34" fill="#EE6C4D"/><text x="600" y="312" text-anchor="middle" font-size="30" font-weight="900" fill="#FFFFFF">2</text>
+    <text x="600" y="380" text-anchor="middle" font-size="23" font-weight="bold" fill="#FFFFFF">Choose Options</text>
+    <text x="600" y="412" text-anchor="middle" font-size="16" fill="#94A3B8">Set order, size &amp; quality</text>
+
+    <line x1="750" y1="340" x2="820" y2="340" stroke="#EE6C4D" stroke-width="5" marker-end="url(#ar2)"/>
+
+    <rect x="830" y="230" width="280" height="220" rx="22" fill="#FFFFFF" fill-opacity="0.06" stroke="#34D399" stroke-width="2"/>
+    <circle cx="970" cy="300" r="34" fill="#34D399"/><text x="970" y="312" text-anchor="middle" font-size="30" font-weight="900" fill="#FFFFFF">3</text>
+    <text x="970" y="380" text-anchor="middle" font-size="23" font-weight="bold" fill="#FFFFFF">Download Instantly</text>
+    <text x="970" y="412" text-anchor="middle" font-size="16" fill="#94A3B8">Saved straight to your device</text>
+  </g>
+  <text x="600" y="580" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#64748B">mypdftools.in — free PDF tools that respect your privacy</text>
+</svg>

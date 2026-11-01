@@ -14,6 +14,10 @@ export interface ToolSeoPageProps {
   category?: string
   howToUseSteps: string[]
   aboutContent: string
+  aboutParagraphs?: string[]
+  useCases?: { title: string; description: string }[]
+  tips?: string[]
+  relatedTools?: { name: string; href: string }[]
   faqItems: FaqItem[]
   children: React.ReactNode
 }
@@ -25,6 +29,10 @@ export default function ToolSeoPage({
   category = 'PDF Tools',
   howToUseSteps,
   aboutContent,
+  aboutParagraphs,
+  useCases,
+  tips,
+  relatedTools,
   faqItems,
   children,
 }: ToolSeoPageProps) {
@@ -158,7 +166,44 @@ export default function ToolSeoPage({
             </h2>
             <div className="prose prose-slate dark:prose-invert max-w-none text-sm text-muted-foreground leading-relaxed">
               <p>{aboutContent}</p>
+              {aboutParagraphs && aboutParagraphs.map((p, i) => <p key={i}>{p}</p>)}
             </div>
+          </section>
+        )}
+
+        {/* Use Cases Section (Server-Rendered HTML) */}
+        {useCases && useCases.length > 0 && (
+          <section className="space-y-4 pt-6 border-t">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
+              <CheckCircle2 className="h-5 w-5 text-primary" />
+              Who Uses This Tool?
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {useCases.map((uc, i) => (
+                <div key={i} className="p-4 rounded-xl border bg-card">
+                  <h3 className="font-semibold text-sm text-foreground mb-1">{uc.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{uc.description}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Tips Section (Server-Rendered HTML) */}
+        {tips && tips.length > 0 && (
+          <section className="space-y-4 pt-6 border-t">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-primary" />
+              Tips &amp; Best Practices
+            </h2>
+            <ul className="space-y-3">
+              {tips.map((tip, i) => (
+                <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground leading-relaxed">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0 mt-0.5" />
+                  <span>{tip}</span>
+                </li>
+              ))}
+            </ul>
           </section>
         )}
 
@@ -180,6 +225,24 @@ export default function ToolSeoPage({
                     {faq.answer}
                   </p>
                 </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Related Tools Section (Internal Linking) */}
+        {relatedTools && relatedTools.length > 0 && (
+          <section className="space-y-4 pt-6 border-t">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground">Related PDF Tools</h2>
+            <div className="flex flex-wrap gap-2">
+              {relatedTools.map((tool) => (
+                <Link
+                  key={tool.href}
+                  href={tool.href}
+                  className="px-3 py-1.5 rounded-full border text-xs font-medium hover:bg-accent transition-colors text-muted-foreground"
+                >
+                  {tool.name}
+                </Link>
               ))}
             </div>
           </section>
