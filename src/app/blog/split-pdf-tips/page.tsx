@@ -20,7 +20,7 @@ export default function SplitPdfTips() {
     headline: "How to Split PDF Files: Extract Pages & Custom Ranges (2026 Guide)",
     description: "Learn how to extract specific pages, split multi-page PDF documents by custom ranges, or burst all pages into individual files.",
     url: "https://mypdftools.in/blog/split-pdf-tips/",
-    datePublished: "2026-08-05T08:00:00Z",
+    datePublished: "2026-05-26T07:45:00Z",
     dateModified: "2026-11-02T09:00:00Z",
     author: {
       "@type": "Person",
@@ -60,6 +60,22 @@ export default function SplitPdfTips() {
         acceptedAnswer: {
           "@type": "Answer",
           text: "Yes. Our client-side WebAssembly parser streams page dictionaries efficiently in memory, allowing instant splitting of heavy multi-hundred-page documents."
+        }
+},
+      {
+        "@type": "Question",
+        name: "Can I split a PDF without losing highlights and comments?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "In most cases yes: annotations are attached to the page they were drawn on and move with it. Always open one of the output files and check, because some annotation types behave differently and verifying takes seconds."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "How do I extract just one page as its own PDF?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Use single-page extraction in the split tool: select the page you need and download it as a standalone file. This is the cleanest way to share one certificate or receipt from a large scanned bundle."
         }
       }
     ]
@@ -131,7 +147,9 @@ export default function SplitPdfTips() {
                 <li><a href="#troubleshooting" className="text-primary hover:underline">5. Troubleshooting Missing Links or Bookmarks</a></li>
                 <li><a href="#mistakes" className="text-primary hover:underline">6. Choosing Where to Split: Three Practical Strategies</a></li>
                 <li><a href="#pro-tips" className="text-primary hover:underline">7. Naming and Managing Files After Splitting</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">8. Frequently Asked Questions</a></li>
+                <li><a href="#split-strategies" className="text-primary hover:underline">8. Splitting Strategies: Ranges, Every-N Pages, and Single Pages</a></li>
+                <li><a href="#split-scanned" className="text-primary hover:underline">9. Splitting Scanned Documents Without Breaking Continuity</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">10. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -270,8 +288,34 @@ export default function SplitPdfTips() {
               For documents that will be reassembled or referenced later, keep the original alongside the parts — the original is the master record, and the parts are working copies. If different people receive different parts, say so in your email rather than attaching everything to everyone, because the most common split-related mistake is simply sending all parts to all recipients and undoing the care you took to separate them.
             </p>
 
+
+            <h2 id="split-strategies" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Split className="h-5 w-5 text-primary" /> 8. Splitting Strategies: Ranges, Every-N Pages, and Single Pages
+            </h2>
+            <p>
+              Most splitting jobs fall into three patterns, and choosing the right one saves real time. Range splits pull out a specific block, like pages 12 to 18 of a report, and are perfect for sending one section to a colleague. Every-N splits divide a document into equal chunks, which suits batch processing such as sending five pages to each reviewer.
+            </p>
+            <p>
+              Single-page extraction is the third pattern and the most underrated: extracting one certificate, one receipt, or one signature page as its own file. Instead of describing a range, you simply pick the page you need. This is the cleanest way to build a collection of standalone documents from one big scan.
+            </p>
+            <p>
+              Whatever strategy you choose, name outputs deliberately before you start. Splitting a 200-page manual produces many files, and default names like document-part-3.pdf get confusing fast. A quick convention such as manual_pages_101-120.pdf keeps the result self-documenting, which matters most weeks later when someone asks where a specific section came from.
+            </p>
+
+            <h2 id="split-scanned" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Split className="h-5 w-5 text-primary" /> 9. Splitting Scanned Documents Without Breaking Continuity
+            </h2>
+            <p>
+              Scanned documents add a complication that digital PDFs do not have: scan boundaries rarely match content boundaries. A single scan might contain three invoices, or one invoice might be spread across two scan batches. Before splitting, scroll through the file and mark where each logical document actually starts, rather than trusting scan batch boundaries.
+            </p>
+            <p>
+              Watch for rotated pages too, since scanners often mix orientations mid-document. Splitting first and rotating later means repeating the rotation for every output file. Rotating the problematic pages inside the source PDF before splitting is faster and keeps every result consistent.
+            </p>
+            <p>
+              Annotations deserve a final check. Stamps, highlights, and comments added on top of scanned pages generally travel with their page during a split, but it is worth opening one output file to confirm. Since browser-based splitting keeps everything on your device, a quick verification pass costs nothing in upload time, which encourages exactly this kind of careful habit.
+            </p>
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 8. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 10. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">
@@ -286,8 +330,29 @@ export default function SplitPdfTips() {
                 <h4 className="font-semibold text-sm text-foreground">Can I split a large 1,000-page book in my browser?</h4>
                 <p className="text-xs sm:text-sm text-muted-foreground">Yes. Our client-side WebAssembly parser streams page dictionaries efficiently in memory, allowing instant splitting of heavy multi-hundred-page documents.</p>
               </div>
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <h4 className="font-semibold text-sm text-foreground">Can I split a PDF without losing highlights and comments?</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground">In most cases yes: annotations are attached to the page they were drawn on and move with it. Always open one of the output files and check, because some annotation types behave differently and verifying takes seconds.</p>
+              </div>
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <h4 className="font-semibold text-sm text-foreground">How do I extract just one page as its own PDF?</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground">Use single-page extraction in the split tool: select the page you need and download it as a standalone file. This is the cleanest way to share one certificate or receipt from a large scanned bundle.</p>
+              </div>
             </div>
 
+
+            <h2 id="related-guides" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Split className="h-5 w-5 text-primary" /> Related Guides &amp; Tools
+            </h2>
+            <p>
+              Continue with these hand-picked guides and tools from around the site:
+            </p>
+            <ul className="space-y-2 list-disc pl-6">
+              <li><a href="/blog/merge-pdf-guide/" className="text-primary hover:underline">How to Merge PDF Files</a> — put pages back together when splitting is done.</li>
+              <li><a href="/blog/rotate-pdf-guide/" className="text-primary hover:underline">Fixing Page Rotation in PDFs</a> — straighten crooked scans before or after splitting.</li>
+              <li><a href="/split-pdf/" className="text-primary hover:underline">Split PDF tool</a> — extract ranges, chunks, or single pages.</li>
+              <li><a href="/organize-pdf/" className="text-primary hover:underline">Organize Pages tool</a> — clean up page order in the source first.</li>
+            </ul>
             {/* Author Bio Box */}
             <div className="border-t pt-8 mt-12">
               <div className="p-6 rounded-2xl bg-muted/40 border flex flex-col sm:flex-row items-start sm:items-center gap-4">

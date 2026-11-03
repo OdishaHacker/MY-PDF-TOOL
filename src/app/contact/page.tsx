@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, ArrowLeft, Clock, MessageCircle, HelpCircle, Send, User, Tag, FileText } from "lucide-react";
+import { Mail, ArrowLeft, Clock, MessageCircle, HelpCircle, Send, User, Tag, FileText, MapPin } from "lucide-react";
 
 export const metadata = {
   title: "Contact Us — mypdftools",
@@ -82,6 +82,19 @@ export default function ContactPage() {
                   >
                     support@mypdftools.in
                   </a>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 mt-4 pt-4 border-t">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">
+                  <MapPin className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">Business Location</p>
+                  <p className="text-sm text-muted-foreground">
+                    mypdftools is operated by a fully remote team based in India. As a
+                    browser-based service, we serve users in every timezone and respond
+                    by email regardless of where you write from.
+                  </p>
                 </div>
               </div>
             </div>

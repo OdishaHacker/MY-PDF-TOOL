@@ -20,7 +20,7 @@ export default function PdfPageNumbers() {
     headline: "How to Add Page Numbers to PDF Files (Bates & Custom Formats)",
     description: "Learn how to insert clean page numbers, Roman numerals, and legal Bates numbering into PDF documents with custom start pages.",
     url: "https://mypdftools.in/blog/pdf-page-numbers/",
-    datePublished: "2026-08-12T08:00:00Z",
+    datePublished: "2026-08-13T08:20:00Z",
     dateModified: "2026-11-02T09:00:00Z",
     author: {
       "@type": "Person",
@@ -60,6 +60,22 @@ export default function PdfPageNumbers() {
         acceptedAnswer: {
           "@type": "Answer",
           text: "Our tool lets you customize margin offsets (in points/millimeters) and choose between top-right, bottom-center, or bottom-right placement to prevent overlapping existing footnotes."
+        }
+},
+      {
+        "@type": "Question",
+        name: "Can page numbers skip the cover page?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Yes. Configure numbering to start from the second page, either labeling it page 1 or page 2, and leave the cover clean. This is the standard convention for reports, proposals, and any document with a title page."
+        }
+      },
+      {
+        "@type": "Question",
+        name: "Will adding page numbers change my document's content?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "No. Page numbers are stamped as a new overlay layer on top of the existing page content. Your text, images, and formatting are untouched, and you can re-stamp with different settings anytime if you change your mind."
         }
       }
     ]
@@ -130,7 +146,9 @@ export default function PdfPageNumbers() {
                 <li><a href="#custom-offsets" className="text-primary hover:underline">4. Skipping Cover Pages &amp; Setting Starting Offsets</a></li>
                 <li><a href="#mistakes" className="text-primary hover:underline">5. Placement and Typography for Professional Numbering</a></li>
                 <li><a href="#pro-tips" className="text-primary hover:underline">6. Troubleshooting Overlapping or Missing Numbers</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">7. Frequently Asked Questions</a></li>
+                <li><a href="#numbering-styles" className="text-primary hover:underline">7. Numbering Styles: 1-2-3, i-ii-iii, and Section-Based</a></li>
+                <li><a href="#placement-rules" className="text-primary hover:underline">8. Placement, Margins, and Skip-the-Cover Rules</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">9. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -237,8 +255,34 @@ export default function PdfPageNumbers() {
               Missing numbers have two usual causes: an offset set higher than the page count, which makes the stamper start beyond the final page, or a starting number typed with extra characters. If page one seems to have no number when its neighbors do, check whether a cover page is being skipped by an offset setting — that is normally intended behavior. Previewing the first, middle, and last page before downloading catches every one of these in seconds.
             </p>
 
+
+            <h2 id="numbering-styles" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Hash className="h-5 w-5 text-primary" /> 7. Numbering Styles: 1-2-3, i-ii-iii, and Section-Based
+            </h2>
+            <p>
+              Professional documents rarely number every page the same way. Front matter, cover pages, and tables of contents traditionally use lowercase Roman numerals so the body can start cleanly at page 1. Reports assembled from multiple sources, meeting packs, and legal bundles all read better when the numbering reflects document structure instead of raw page count.
+            </p>
+            <p>
+              Section-based numbering takes this further, using formats like 2.1, 2.2 within chapters, which helps navigation in long technical documents because a page number itself hints at location. The cost is a little more setup: you decide the scheme before stamping rather than accepting a default sequence.
+            </p>
+            <p>
+              Whatever scheme you choose, consistency is what readers actually notice. Mixed conventions in one document, some pages unnumbered, others restart counting without explanation, signal a file assembled carelessly. Five minutes spent choosing a scheme that matches the document’s structure makes the result feel professionally produced, and it costs nothing because stamping is non-destructive and repeatable.
+            </p>
+
+            <h2 id="placement-rules" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Hash className="h-5 w-5 text-primary" /> 8. Placement, Margins, and Skip-the-Cover Rules
+            </h2>
+            <p>
+              Placement follows convention for good reasons. Bottom-center is the neutral default that works with every binding; bottom-right suits documents read on screen where the page corner is visible; top-right is common in legal filings. The one placement to avoid is wherever content already lives, so check your document’s footer before stamping anything onto it.
+            </p>
+            <p>
+              Margins interact with placement more than people expect. A number placed too close to the page edge can be cut off by printers, which cannot usually print to the very edge of the sheet. Keeping page numbers a sensible distance inside the printable area guarantees they survive both screen viewing and paper output.
+            </p>
+            <p>
+              The skip-the-cover rule is the most requested behavior: the title page stays unnumbered, and counting starts from the second page, either as page 2 or as page 1. Both are acceptable; pick one and apply it consistently. Since adding numbers is an overlay operation, your content is untouched, and a wrong choice costs one re-stamp, not a rebuild.
+            </p>
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 7. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 9. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">
@@ -253,8 +297,29 @@ export default function PdfPageNumbers() {
                 <h4 className="font-semibold text-sm text-foreground">Will adding page numbers overwrite existing text at the bottom of the page?</h4>
                 <p className="text-xs sm:text-sm text-muted-foreground">Our tool lets you customize margin offsets (in points/millimeters) and choose between top-right, bottom-center, or bottom-right placement to prevent overlapping existing footnotes.</p>
               </div>
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <h4 className="font-semibold text-sm text-foreground">Can page numbers skip the cover page?</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground">Yes. Configure numbering to start from the second page, either labeling it page 1 or page 2, and leave the cover clean. This is the standard convention for reports, proposals, and any document with a title page.</p>
+              </div>
+              <div className="p-4 rounded-xl border bg-card space-y-1">
+                <h4 className="font-semibold text-sm text-foreground">Will adding page numbers change my document’s content?</h4>
+                <p className="text-xs sm:text-sm text-muted-foreground">No. Page numbers are stamped as a new overlay layer on top of the existing page content. Your text, images, and formatting are untouched, and you can re-stamp with different settings anytime if you change your mind.</p>
+              </div>
             </div>
 
+
+            <h2 id="related-guides" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Hash className="h-5 w-5 text-primary" /> Related Guides &amp; Tools
+            </h2>
+            <p>
+              Continue with these hand-picked guides and tools from around the site:
+            </p>
+            <ul className="space-y-2 list-disc pl-6">
+              <li><a href="/blog/organize-pdf-pages/" className="text-primary hover:underline">Organizing PDF Pages Like a Pro</a> — finalize page order before stamping numbers.</li>
+              <li><a href="/blog/crop-pdf-guide/" className="text-primary hover:underline">Cropping PDF Pages Precisely</a> — set final margins first so numbers sit inside them.</li>
+              <li><a href="/page-numbers/" className="text-primary hover:underline">Page Numbers tool</a> — stamp custom numbers in your browser.</li>
+              <li><a href="/organize-pdf/" className="text-primary hover:underline">Organize Pages tool</a> — get the sequence right, then number it.</li>
+            </ul>
             {/* Author Bio Box */}
             <div className="border-t pt-8 mt-12">
               <div className="p-6 rounded-2xl bg-muted/40 border flex flex-col sm:flex-row items-start sm:items-center gap-4">
