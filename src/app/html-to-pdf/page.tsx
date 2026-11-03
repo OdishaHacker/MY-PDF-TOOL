@@ -62,6 +62,21 @@ export default function Page() {
     "For receipts and confirmations, capture the page right after loading — session pages often expire later.",
     "White backgrounds print better; if the page has a dark theme, switch it to light before converting."
   ]}
+      relatedGuides={[
+    {
+      "name": "How to Convert HTML to PDF",
+      "href": "/blog/html-to-pdf-guide"
+    },
+    {
+      "name": "How to Convert Plain Text to PDF",
+      "href": "/blog/text-to-pdf-guide"
+    },
+    {
+      "name": "How to Edit PDF Files Online",
+      "href": "/blog/edit-pdf-online"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "Text to PDF",

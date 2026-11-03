@@ -62,6 +62,21 @@ export default function Page() {
     "Skip watermarking conflicts: watermarks sit mid-page, numbers at the edge, so they coexist cleanly.",
     "Margins matter — numbers sit inside the standard margin, so avoid extreme margin settings first."
   ]}
+      relatedGuides={[
+    {
+      "name": "How to Add Page Numbers to PDF",
+      "href": "/blog/pdf-page-numbers"
+    },
+    {
+      "name": "How to Organize & Reorder PDF Pages",
+      "href": "/blog/organize-pdf-pages"
+    },
+    {
+      "name": "How to Merge PDF Files: Step-by-Step",
+      "href": "/blog/merge-pdf-guide"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "Organize PDF",

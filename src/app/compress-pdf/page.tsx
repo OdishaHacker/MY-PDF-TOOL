@@ -62,6 +62,21 @@ export default function Page() {
     "Text stays sharp at every level; quality changes affect embedded images first.",
     "Compress after merging, not before — merge your separate files first, then compress once for a cleaner result."
   ]}
+      relatedGuides={[
+    {
+      "name": "Reduce PDF File Size Without Losing Quality",
+      "href": "/blog/compress-pdf-guide"
+    },
+    {
+      "name": "Why You Should Stop Paying for PDF Software",
+      "href": "/blog/free-pdf-tools-online"
+    },
+    {
+      "name": "How to Convert PDF to Word (DOCX)",
+      "href": "/blog/pdf-to-word-conversion"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "Merge PDF",

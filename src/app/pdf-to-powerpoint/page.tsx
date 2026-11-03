@@ -62,6 +62,21 @@ export default function Page() {
     "Need one page only? Split the PDF first and convert just the page you need.",
     "Insert the exported slides into an existing deck via Insert > Reuse Slides in PowerPoint."
   ]}
+      relatedGuides={[
+    {
+      "name": "How to Convert PDF to Word (DOCX)",
+      "href": "/blog/pdf-to-word-conversion"
+    },
+    {
+      "name": "How to Convert PDF to Excel",
+      "href": "/blog/pdf-to-excel-guide"
+    },
+    {
+      "name": "How to Edit PDF Files Online",
+      "href": "/blog/edit-pdf-online"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "PDF to JPG",

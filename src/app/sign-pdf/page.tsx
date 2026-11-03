@@ -62,6 +62,21 @@ export default function Page() {
     "Add the date beside your signature with the Edit PDF tool when the form has no date field.",
     "Keep the signed copy and, for important contracts, ask the other party for a countersigned version."
   ]}
+      relatedGuides={[
+    {
+      "name": "Sign PDF Documents Online (Legal Guide)",
+      "href": "/blog/sign-pdf-electronically"
+    },
+    {
+      "name": "Password Protect PDF with AES-256",
+      "href": "/blog/protect-pdf-password"
+    },
+    {
+      "name": "How to Edit PDF Files Online",
+      "href": "/blog/edit-pdf-online"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "Edit PDF",

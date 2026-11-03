@@ -62,6 +62,21 @@ export default function Page() {
     "Use short text; one strong word reads better across a page than a full sentence.",
     "For ownership on leaked files, combine a watermark with document metadata via Protect PDF for stronger control."
   ]}
+      relatedGuides={[
+    {
+      "name": "How to Add Watermarks to PDF Files",
+      "href": "/blog/watermark-pdf-guide"
+    },
+    {
+      "name": "7 Essential PDF Security Tips",
+      "href": "/blog/pdf-security-tips"
+    },
+    {
+      "name": "Password Protect PDF with AES-256",
+      "href": "/blog/protect-pdf-password"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "Edit PDF",

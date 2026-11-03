@@ -62,6 +62,21 @@ export default function Page() {
     "Duplicated pages are perfect for fillable templates; duplicate, then export and fill each copy separately.",
     "Rotated thumbnails show exactly how the page will print, so use rotation here instead of rotating in the printer dialog."
   ]}
+      relatedGuides={[
+    {
+      "name": "How to Organize & Reorder PDF Pages",
+      "href": "/blog/organize-pdf-pages"
+    },
+    {
+      "name": "How to Merge PDF Files: Step-by-Step",
+      "href": "/blog/merge-pdf-guide"
+    },
+    {
+      "name": "How to Split PDF Files & Extract Pages",
+      "href": "/blog/split-pdf-tips"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "Merge PDF",

@@ -62,6 +62,21 @@ export default function Page() {
     "Rotated pages keep full text quality; if text still looks soft after rotation, the original scan itself was low quality.",
     "Check the preview thumbnails before saving — it is the fastest way to confirm the whole document is now upright."
   ]}
+      relatedGuides={[
+    {
+      "name": "How to Rotate PDF Pages Permanently",
+      "href": "/blog/rotate-pdf-guide"
+    },
+    {
+      "name": "How to Organize & Reorder PDF Pages",
+      "href": "/blog/organize-pdf-pages"
+    },
+    {
+      "name": "How to Merge PDF Files: Step-by-Step",
+      "href": "/blog/merge-pdf-guide"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "Organize PDF",

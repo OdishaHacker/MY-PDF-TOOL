@@ -62,6 +62,21 @@ export default function Page() {
     "Add page numbers afterward with the Page Numbers tool for multi-page documents.",
     "Proofread before converting — the PDF freezes your text exactly as pasted, typos included."
   ]}
+      relatedGuides={[
+    {
+      "name": "How to Convert Plain Text to PDF",
+      "href": "/blog/text-to-pdf-guide"
+    },
+    {
+      "name": "How to Convert HTML to PDF",
+      "href": "/blog/html-to-pdf-guide"
+    },
+    {
+      "name": "Convert JPG Images to PDF",
+      "href": "/blog/jpg-to-pdf-conversion"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "Word to PDF",

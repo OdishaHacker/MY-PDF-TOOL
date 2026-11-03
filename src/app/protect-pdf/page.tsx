@@ -62,6 +62,21 @@ export default function Page() {
     "Protect after all other edits: compress, merge, and number first, then lock the final version.",
     "Need to remove protection later? Unlock PDF does it when you know the password."
   ]}
+      relatedGuides={[
+    {
+      "name": "Password Protect PDF with AES-256",
+      "href": "/blog/protect-pdf-password"
+    },
+    {
+      "name": "7 Essential PDF Security Tips",
+      "href": "/blog/pdf-security-tips"
+    },
+    {
+      "name": "PDF Metadata: Hidden Info in Your Files",
+      "href": "/blog/pdf-metadata-hidden-info"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "Unlock PDF",

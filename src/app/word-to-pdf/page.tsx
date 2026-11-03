@@ -62,6 +62,21 @@ export default function Page() {
     "Very old .doc files should be re-saved as .docx in Word first for reliable conversion.",
     "Need the reverse direction? PDF to Word extracts text from PDFs into an editable DOCX."
   ]}
+      relatedGuides={[
+    {
+      "name": "How to Convert Plain Text to PDF",
+      "href": "/blog/text-to-pdf-guide"
+    },
+    {
+      "name": "How to Convert HTML to PDF",
+      "href": "/blog/html-to-pdf-guide"
+    },
+    {
+      "name": "Why You Should Stop Paying for PDF Software",
+      "href": "/blog/free-pdf-tools-online"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "PDF to Word",

@@ -62,6 +62,21 @@ export default function Page() {
     "Use the downloaded .txt for bulk work, and clipboard copy for quick single-page grabs.",
     "For exact visual references, pair extraction with PDF to JPG so you keep images of the original pages."
   ]}
+      relatedGuides={[
+    {
+      "name": "How to Convert PDF to Word (DOCX)",
+      "href": "/blog/pdf-to-word-conversion"
+    },
+    {
+      "name": "How to Convert PDF to Excel",
+      "href": "/blog/pdf-to-excel-guide"
+    },
+    {
+      "name": "How to Edit PDF Files Online",
+      "href": "/blog/edit-pdf-online"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "PDF to Word",

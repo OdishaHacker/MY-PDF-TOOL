@@ -62,6 +62,21 @@ export default function Page() {
     "Draw signatures with a mouse, trackpad, or finger — or use the dedicated Sign PDF tool for reusable signatures.",
     "For permanent redaction of sensitive text, use the Redact PDF tool instead of drawn black boxes."
   ]}
+      relatedGuides={[
+    {
+      "name": "How to Edit PDF Files Online",
+      "href": "/blog/edit-pdf-online"
+    },
+    {
+      "name": "Sign PDF Documents Online (Legal Guide)",
+      "href": "/blog/sign-pdf-electronically"
+    },
+    {
+      "name": "How to Convert Plain Text to PDF",
+      "href": "/blog/text-to-pdf-guide"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "Sign PDF",

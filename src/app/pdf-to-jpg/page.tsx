@@ -62,6 +62,21 @@ export default function Page() {
     "Text pages stay readable in JPG form at medium-high resolution, but remain images — they are not searchable.",
     "Need the images back as a PDF later? The JPG-to-PDF tool rebuilds a document from them in seconds."
   ]}
+      relatedGuides={[
+    {
+      "name": "How to Convert PDF to JPG Images",
+      "href": "/blog/pdf-to-jpg-guide"
+    },
+    {
+      "name": "Convert JPG Images to PDF",
+      "href": "/blog/jpg-to-pdf-conversion"
+    },
+    {
+      "name": "Reduce PDF File Size Without Losing Quality",
+      "href": "/blog/compress-pdf-guide"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "JPG to PDF",

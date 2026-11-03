@@ -62,6 +62,21 @@ export default function Page() {
     "For very large combined files (hundreds of pages), close other heavy browser tabs so more memory is available.",
     "Need only part of a document inside the bundle? Split it first with the Split PDF tool, then merge just the pages you need."
   ]}
+      relatedGuides={[
+    {
+      "name": "How to Merge PDF Files: Step-by-Step",
+      "href": "/blog/merge-pdf-guide"
+    },
+    {
+      "name": "How to Split PDF Files & Extract Pages",
+      "href": "/blog/split-pdf-tips"
+    },
+    {
+      "name": "How to Organize & Reorder PDF Pages",
+      "href": "/blog/organize-pdf-pages"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "Split PDF",

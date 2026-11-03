@@ -18,6 +18,7 @@ export interface ToolSeoPageProps {
   useCases?: { title: string; description: string }[]
   tips?: string[]
   relatedTools?: { name: string; href: string }[]
+  relatedGuides?: { name: string; href: string }[]
   faqItems: FaqItem[]
   children: React.ReactNode
 }
@@ -33,6 +34,7 @@ export default function ToolSeoPage({
   useCases,
   tips,
   relatedTools,
+  relatedGuides,
   faqItems,
   children,
 }: ToolSeoPageProps) {
@@ -242,6 +244,30 @@ export default function ToolSeoPage({
                   className="px-3 py-1.5 rounded-full border text-xs font-medium hover:bg-accent transition-colors text-muted-foreground"
                 >
                   {tool.name}
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Related Guides Section (Blog Internal Linking) */}
+        {relatedGuides && relatedGuides.length > 0 && (
+          <section className="space-y-4 pt-6 border-t">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
+              <BookOpen className="h-5 w-5 text-primary" />
+              Related Guides &amp; Tutorials
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {relatedGuides.map((guide) => (
+                <Link
+                  key={guide.href}
+                  href={guide.href}
+                  className="p-4 rounded-xl border bg-card hover:bg-accent transition-colors group"
+                >
+                  <span className="block text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                    {guide.name}
+                  </span>
+                  <span className="mt-1 block text-xs text-muted-foreground">Read the full guide →</span>
                 </Link>
               ))}
             </div>

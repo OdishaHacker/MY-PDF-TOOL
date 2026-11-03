@@ -62,6 +62,21 @@ export default function Page() {
     "After unlocking, protect the new copy again before any future sharing.",
     "Forgotten the password entirely? No tool can honestly recover it — check your password manager and old emails instead."
   ]}
+      relatedGuides={[
+    {
+      "name": "7 Essential PDF Security Tips",
+      "href": "/blog/pdf-security-tips"
+    },
+    {
+      "name": "Password Protect PDF with AES-256",
+      "href": "/blog/protect-pdf-password"
+    },
+    {
+      "name": "PDF Metadata: Hidden Info in Your Files",
+      "href": "/blog/pdf-metadata-hidden-info"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "Protect PDF",

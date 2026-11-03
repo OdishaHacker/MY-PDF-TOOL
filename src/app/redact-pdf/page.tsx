@@ -62,6 +62,21 @@ export default function Page() {
     "Keep the original unredacted file separately; redaction is for the copy you share.",
     "Metadata can carry names too — for highly sensitive releases, re-create the document rather than only redacting."
   ]}
+      relatedGuides={[
+    {
+      "name": "PDF Metadata: Hidden Info in Your Files",
+      "href": "/blog/pdf-metadata-hidden-info"
+    },
+    {
+      "name": "7 Essential PDF Security Tips",
+      "href": "/blog/pdf-security-tips"
+    },
+    {
+      "name": "Password Protect PDF with AES-256",
+      "href": "/blog/protect-pdf-password"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "Protect PDF",

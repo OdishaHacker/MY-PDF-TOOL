@@ -62,6 +62,21 @@ export default function Page() {
     "Combine with Rotate PDF when scans are both tilted and over-margined: rotate straight, then crop.",
     "Check the last page too — final pages often hold footnotes that a uniform crop could trim away."
   ]}
+      relatedGuides={[
+    {
+      "name": "How to Crop PDF Pages & Trim Margins",
+      "href": "/blog/crop-pdf-guide"
+    },
+    {
+      "name": "How to Organize & Reorder PDF Pages",
+      "href": "/blog/organize-pdf-pages"
+    },
+    {
+      "name": "How to Split PDF Files & Extract Pages",
+      "href": "/blog/split-pdf-tips"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "Rotate PDF",

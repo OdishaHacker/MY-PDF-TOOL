@@ -62,6 +62,21 @@ export default function Page() {
     "Scanned tables need OCR first — the tool reads text layers, not photos of tables.",
     "Verify a few sample rows against the PDF before trusting the whole sheet — a 30-second check prevents bad analysis."
   ]}
+      relatedGuides={[
+    {
+      "name": "How to Convert PDF to Excel",
+      "href": "/blog/pdf-to-excel-guide"
+    },
+    {
+      "name": "How to Convert PDF to Word (DOCX)",
+      "href": "/blog/pdf-to-word-conversion"
+    },
+    {
+      "name": "How to Edit PDF Files Online",
+      "href": "/blog/edit-pdf-online"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "Excel to PDF",

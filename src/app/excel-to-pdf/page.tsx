@@ -62,6 +62,21 @@ export default function Page() {
     "Check the last page of the PDF for orphan rows, then adjust if a stray table fragment needs cleaning up.",
     "For multi-sheet workbooks, the PDF follows sheet order — rename sheets so the order reads naturally."
   ]}
+      relatedGuides={[
+    {
+      "name": "How to Convert Plain Text to PDF",
+      "href": "/blog/text-to-pdf-guide"
+    },
+    {
+      "name": "How to Convert PDF to Excel",
+      "href": "/blog/pdf-to-excel-guide"
+    },
+    {
+      "name": "Why You Should Stop Paying for PDF Software",
+      "href": "/blog/free-pdf-tools-online"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "PDF to Excel",

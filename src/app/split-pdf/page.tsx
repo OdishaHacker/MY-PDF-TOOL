@@ -62,6 +62,21 @@ export default function Page() {
     "After splitting a big report, use the Merge PDF tool later if you ever need to stitch selected parts back together.",
     "Want to delete just a few pages instead? Organize PDF lets you remove pages visually, which is often faster than splitting."
   ]}
+      relatedGuides={[
+    {
+      "name": "How to Split PDF Files & Extract Pages",
+      "href": "/blog/split-pdf-tips"
+    },
+    {
+      "name": "How to Merge PDF Files: Step-by-Step",
+      "href": "/blog/merge-pdf-guide"
+    },
+    {
+      "name": "How to Organize & Reorder PDF Pages",
+      "href": "/blog/organize-pdf-pages"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "Merge PDF",

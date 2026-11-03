@@ -295,6 +295,77 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ===== FROM THE BLOG SECTION (Internal Linking) ===== */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+        <div className="text-center max-w-3xl mx-auto space-y-2">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground flex items-center justify-center gap-2">
+            <BookOpen className="h-6 w-6 text-primary" />
+            From the mypdftools Blog
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            In-depth guides, tutorials, and best practices to help you work with PDFs smarter.
+          </p>
+        </div>
+
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[
+            {
+              title: "How to Merge PDF Files: Complete Step-by-Step Tutorial",
+              desc: "Combine multiple PDFs into one seamless document — instructions, pro tips, and common mistakes to avoid.",
+              href: "/blog/merge-pdf-guide",
+            },
+            {
+              title: "How to Reduce PDF File Size Without Losing Quality",
+              desc: "Master PDF compression: shrink file sizes while keeping crisp text and sharp images intact.",
+              href: "/blog/compress-pdf-guide",
+            },
+            {
+              title: "How to Convert PDF to Word (DOCX) Without Losing Formatting",
+              desc: "Transform static PDFs into editable Word documents — compare methods and pick the right one.",
+              href: "/blog/pdf-to-word-conversion",
+            },
+            {
+              title: "How to Password Protect PDF Files with AES-256 Encryption",
+              desc: "Keep sensitive documents safe: a complete walkthrough on encrypting and securing your files.",
+              href: "/blog/protect-pdf-password",
+            },
+            {
+              title: "How to Split PDF Files: Extract Pages & Custom Ranges",
+              desc: "Split large PDFs into smaller files with precision, from single pages to custom page ranges.",
+              href: "/blog/split-pdf-tips",
+            },
+            {
+              title: "How to Sign PDF Documents Online (Legally Binding)",
+              desc: "Ditch the printer and scanner — add legally binding electronic signatures to contracts and forms.",
+              href: "/blog/sign-pdf-electronically",
+            },
+          ].map((post) => (
+            <Link
+              key={post.href}
+              href={post.href}
+              className="group p-5 rounded-2xl border bg-card hover:bg-accent/50 transition-colors space-y-2"
+            >
+              <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors leading-snug">
+                {post.title}
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">{post.desc}</p>
+              <span className="inline-flex items-center gap-1 text-xs font-medium text-primary">
+                Read the guide <ArrowRight className="h-3 w-3" />
+              </span>
+            </Link>
+          ))}
+        </div>
+
+        <div className="mt-6 text-center">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+          >
+            View all blog posts <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </section>
+
       {/* ===== FREQUENTLY ASKED QUESTIONS SECTION ===== */}
       <section className="bg-muted/30 border-t py-16">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 space-y-8">

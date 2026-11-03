@@ -62,6 +62,21 @@ export default function Page() {
     "Tables and figures may need attention after conversion — verify important data against the original PDF.",
     "Convert, edit, then export back with Word to PDF when the revision is done."
   ]}
+      relatedGuides={[
+    {
+      "name": "How to Convert PDF to Word (DOCX)",
+      "href": "/blog/pdf-to-word-conversion"
+    },
+    {
+      "name": "How to Edit PDF Files Online",
+      "href": "/blog/edit-pdf-online"
+    },
+    {
+      "name": "Reduce PDF File Size Without Losing Quality",
+      "href": "/blog/compress-pdf-guide"
+    }
+  ]}
+
       relatedTools={[
     {
       "name": "Word to PDF",
