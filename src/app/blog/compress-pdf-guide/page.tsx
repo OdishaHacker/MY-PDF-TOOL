@@ -129,7 +129,9 @@ export default function CompressPdfGuide() {
                 <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Guide to Compressing PDFs</a></li>
                 <li><a href="#compression-levels" className="text-primary hover:underline">4. Compression Level Comparison Matrix</a></li>
                 <li><a href="#special-cases" className="text-primary hover:underline">5. Optimizing for Government &amp; College Upload Portals</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">6. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">6. Matching Compression Level to Document Purpose</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">7. What to Expect When Compressing Already-Small PDFs</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">8. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -254,8 +256,30 @@ export default function CompressPdfGuide() {
               <li><strong>Split Multi-Page Bundles:</strong> Separate attachments into individual single-page documents with our <Link href="/split-pdf" className="text-primary underline">Split PDF tool</Link>.</li>
             </ul>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 6. Matching Compression Level to Document Purpose
+            </h2>
+            <p>
+              The right compression level depends entirely on where the file is going, and choosing by destination beats choosing by habit. For email attachments, target 1–5 MB — comfortably under every mail server's limit. For government and university portals, check the stated cap and stay 10–20% below it, because portal checks are sometimes stricter than the published number. For documents that will be printed professionally, compress lightly or not at all: press-quality output needs every bit of the original data.
+            </p>
+
+            <p>
+              Text documents compress dramatically because their content is simple — a 50 MB scanned contract often shrinks to 3 MB with no visible change. Photo-heavy portfolios compress less, because photographs carry genuinely complex data. If a file refuses to shrink, the size is living in the images, and the effective lever is reducing image resolution rather than pressing harder on general compression.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 7. What to Expect When Compressing Already-Small PDFs
+            </h2>
+            <p>
+              A file that has already been compressed once rarely shrinks much a second time, and aggressive re-compression is where visible damage begins. Each pass discards detail permanently — text edges soften slightly, gradients band, faint colors drift. If you compressed a file last month and need it smaller again today, going back to the original and compressing once at a stronger setting produces a better result than stacking two medium passes.
+            </p>
+
+            <p>
+              Sometimes a small file simply cannot shrink because there is nothing wasteful left: the fonts are subsetted, the images are already modest, and the pages are pure text. A 400 KB one-pager that will not go below 380 KB is not a failure — it is already efficient. If the size is genuinely critical, the remaining levers are structural: remove embedded fonts you do not need, drop unused pages before compressing, or re-create the page as plain text instead of a scan. Compression optimizes what exists; it cannot invent space that is not there.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 6. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 8. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

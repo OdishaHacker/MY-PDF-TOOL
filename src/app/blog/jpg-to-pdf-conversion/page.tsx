@@ -129,7 +129,9 @@ export default function JpgToPdfConversion() {
                 <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Multi-Image Conversion Guide</a></li>
                 <li><a href="#exif-rotation" className="text-primary hover:underline">4. Handling Smartphone EXIF Orientation Metadata</a></li>
                 <li><a href="#use-cases" className="text-primary hover:underline">5. Best Practices for Receipts, IDs, and Portfolios</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">6. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">5. Image Quality and File Size Trade-offs</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">6. Working With Multi-Page Scans After Conversion</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">7. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -212,8 +214,30 @@ export default function JpgToPdfConversion() {
               Our engine reads EXIF tags (Orientation 1 through 8) automatically and applies corresponding matrix transforms so your photos always display right-side up.
             </p>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 5. Image Quality and File Size Trade-offs
+            </h2>
+            <p>
+              Every JPEG carries a quality setting decided when it was saved, and that choice echoes through your PDF. High-quality photos at 90+ look crisp but can run several megabytes each; a scanned receipt at 60–75 stays sharp for reading while keeping the final PDF small enough to email. Converting never improves an image — a photo saved at 40% quality will look blurry inside your PDF no matter what the converter does — so always start from the best source file you have.
+            </p>
+
+            <p>
+              A practical rule for mixed documents: text-heavy scans at 150–200 DPI, photographs at full resolution, and screenshots as-is. If the finished PDF lands above 10–15 MB, downscale the largest images before converting rather than compressing the PDF afterwards, because shrinking images at the source preserves far more detail than a second round of compression.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 6. Working With Multi-Page Scans After Conversion
+            </h2>
+            <p>
+              A stack of photos or scans converts best when you think about the final document before you start. Sort your images into the exact order you want the pages to appear — receipts chronologically, certificate pages face-up, portfolio pieces by project — because reordering after conversion is an extra step you can avoid entirely. Give the files numbered names (01_menu.jpg, 02_receipt.jpg) and most converters, including ours, will hold that sequence when you select them all at once.
+            </p>
+
+            <p>
+              Check orientation before converting: a landscape photo placed on a portrait page either shrinks to fit with big white margins or sticks out past the edge. Rotating the source image in advance keeps every page consistent. Finally, convert one test page first when you are using new settings — thirty seconds of checking saves re-uploading an entire batch that came out cropped or rotated.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 5. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 7. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

@@ -128,7 +128,9 @@ export default function PdfToJpgGuide() {
                 <li><a href="#dpi-settings" className="text-primary hover:underline">2. Selecting the Optimal Resolution (150 vs. 300 DPI)</a></li>
                 <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Guide to Converting PDF to JPG</a></li>
                 <li><a href="#color-management" className="text-primary hover:underline">4. Solving CMYK Print Color Distortion</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">5. Choosing the Right Format for the Job: JPG vs. PNG</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">6. Managing Batches of Extracted Page Images</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">7. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -209,8 +211,30 @@ export default function PdfToJpgGuide() {
               Our conversion pipeline applies a calibrated 4-channel to 3-channel color lookup transform, ensuring that bright blues, company branding greens, and skin tones render authentically without muddy discoloration.
             </p>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 5. Choosing the Right Format for the Job: JPG vs. PNG
+            </h2>
+            <p>
+              JPG and PNG solve different problems, and picking correctly saves both quality and storage. JPG excels for photographs and colorful scans: its compression is built for continuous tones and produces small files that look natural. PNG excels for screenshots, line art, and anything with sharp edges or text: its lossless compression keeps text perfectly crisp where JPG would add faint fuzz around every letter.
+            </p>
+
+            <p>
+              A page of plain text converted to JPG at moderate quality still reads fine at full size, but zoom in and you will see softening around the characters — at 300 DPI that hardly matters, at 96 DPI it does. As a rule of thumb: photographs and heavily illustrated pages go to JPG; contracts, forms, and anything you might re-print or OCR later should stay in PNG or remain PDF. If you are unsure, convert one sample page both ways at your target resolution and compare the text edges — the difference is immediately visible.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 6. Managing Batches of Extracted Page Images
+            </h2>
+            <p>
+              Converting a long PDF produces many images, and an organized folder structure turns that pile into a usable asset library. Name files by source and page — invoice_2026-10_page03.jpg — so any image identifies its origin without opening it. Keep the resolution in the filename too when you work at multiple settings, because the 300 DPI version for print and the 150 DPI version for web will otherwise be impossible to tell apart in a grid of thumbnails.
+            </p>
+
+            <p>
+              For slides and handouts destined for presentations, convert at the aspect ratio that matches the destination: a 16:9 slide deck extracts cleanly into images that drop onto new slides without distortion. When images are headed for the web, downscale to the actual display size instead of embedding 300 DPI originals — a page image shown at 800 pixels wide does not benefit from being 3000 pixels wide, and visitors pay the difference in load time.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 5. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 7. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

@@ -128,7 +128,9 @@ export default function FreePdfToolsOnline() {
                 <li><a href="#cost-comparison" className="text-primary hover:underline">2. Cost &amp; Feature Comparison Matrix</a></li>
                 <li><a href="#why-free" className="text-primary hover:underline">3. How mypdftools Stays 100% Free Forever</a></li>
                 <li><a href="#suite-overview" className="text-primary hover:underline">4. Exploring the 24+ Free Tools on mypdftools.in</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">5. Matching the Right Free Tool to Your Task</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">6. Browser and Device Compatibility Explained</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">7. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -212,8 +214,30 @@ export default function FreePdfToolsOnline() {
               </Link>
             </div>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 5. Matching the Right Free Tool to Your Task
+            </h2>
+            <p>
+              With more than twenty tools available, the fastest way to work is to start from what you need rather than browsing the whole list. Need to combine monthly statements into one file? Merge PDF does it in seconds. Scanner output too heavy to email? Compress PDF reduces the size without visibly degrading text. Contract pages in the wrong order? Organize PDF lets you drag pages into place. Each tool page on mypdftools.in opens with a one-line description of exactly what it does, so you can confirm you are in the right place before touching your file.
+            </p>
+
+            <p>
+              A useful habit is to think in workflows instead of single actions. A typical job application, for example, might need JPG-to-PDF for your certificates, Merge to combine them with your resume, then Compress to keep the final upload under a portal's size limit. Because every tool lives on the same site and works the same way, chaining three operations takes less time than opening one desktop application and finding the right menu.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 6. Browser and Device Compatibility Explained
+            </h2>
+            <p>
+              The tools run on any modern browser: Chrome, Edge, Firefox, Safari, and Brave, on Windows, macOS, Linux, Android, and iOS. There is nothing to install, no browser extension to trust, and no account to create. Because the processing engine is downloaded into your browser as compact code the first time you use a tool, subsequent runs feel instant even on modest hardware.
+            </p>
+
+            <p>
+              On phones and tablets the layout adapts to the smaller screen, so you can sign a document or reorder pages from a train as easily as at a desk. Older browsers that lack WebAssembly support will show a notice asking you to update, which is worth doing anyway for security. If a particular tool misbehaves, a hard refresh (Ctrl+Shift+R) clears the cached engine and resolves most glitches in seconds.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 5. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 7. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

@@ -128,7 +128,9 @@ export default function TextToPdfGuide() {
                 <li><a href="#typography" className="text-primary hover:underline">2. Proportional vs. Monospaced Typography</a></li>
                 <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Guide to Converting Text to PDF</a></li>
                 <li><a href="#formatting-tips" className="text-primary hover:underline">4. Line Spacing, Margins &amp; Page Headers</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">5. Preparing Your Text File for the Best Results</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">6. Common Conversion Problems and How to Fix Them</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">7. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -206,8 +208,30 @@ export default function TextToPdfGuide() {
               <li><strong>Automated Page Numbering:</strong> Generates running footers (e.g. <em>Page 1 of 6</em>) automatically across multi-page text exports.</li>
             </ul>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 5. Preparing Your Text File for the Best Results
+            </h2>
+            <p>
+              A few minutes of preparation makes the difference between a rough draft and a polished PDF. Start by checking the encoding: files saved as UTF-8 preserve every character, while older Windows encodings can turn quotes and accented letters into strange symbols. Next, scan for hard line breaks left over from email forwards or copied text — a manual break in the middle of a sentence will survive into the PDF as an unwanted short line.
+            </p>
+
+            <p>
+              Standardize your paragraphs with a blank line between them rather than tabs or repeated spaces, which render inconsistently. If your document mixes languages, such as English with Hindi or Arabic text, test the first page before converting everything, because right-to-left scripts and non-Latin alphabets depend on the fonts available in the converter. A clean, consistently formatted .txt file converts predictably every single time.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 6. Common Conversion Problems and How to Fix Them
+            </h2>
+            <p>
+              The problem people report most often is garbled characters — boxes, question marks, or accented letters that have turned into gibberish. This is almost always an encoding mismatch: re-save the source file as UTF-8 without BOM and convert again. The second classic issue is broken paragraph flow, where every visual line becomes its own paragraph; this happens when the text file contains a carriage return at the end of each display line, a habit from old email formatting.
+            </p>
+
+            <p>
+              If your PDF pages overflow awkwardly, with one or two words stranded on a final line, reduce the font size one step or widen the margins slightly — small changes rebalance the text across pages. Missing indentation is usually caused by tabs, which converters may ignore or render at unpredictable widths; replace them with spaces before converting. And if special symbols such as ₹ or € appear correctly in your editor but vanish in the PDF, the converter's font is missing that glyph — substituting a standard font for those characters solves it.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 5. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 7. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

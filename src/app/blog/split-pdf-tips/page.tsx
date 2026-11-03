@@ -129,7 +129,9 @@ export default function SplitPdfTips() {
                 <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Guide to Splitting PDFs</a></li>
                 <li><a href="#use-cases" className="text-primary hover:underline">4. Real-World Business &amp; Academic Use Cases</a></li>
                 <li><a href="#troubleshooting" className="text-primary hover:underline">5. Troubleshooting Missing Links or Bookmarks</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">6. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">6. Choosing Where to Split: Three Practical Strategies</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">7. Naming and Managing Files After Splitting</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">8. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -246,8 +248,30 @@ export default function SplitPdfTips() {
               </div>
             </div>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 6. Choosing Where to Split: Three Practical Strategies
+            </h2>
+            <p>
+              The first splitting strategy is by logical unit — chapters, months, or clients. Open the document, note the page where each unit begins, and extract ranges around those boundaries. This produces files people can navigate without opening six attachments to find the right month. The second strategy is by size: if a portal rejects files over 5 MB, split at the largest range that stays under the limit rather than cutting at arbitrary intervals, so each piece remains a meaningful chunk.
+            </p>
+
+            <p>
+              The third strategy is separating audiences — extract the pages each recipient actually needs. A tender response split into technical and commercial halves reaches reviewers without exposing pricing to engineers. Whatever the strategy, write the ranges down before you start; a split done from memory across a 200-page document usually needs a redo, while one done from a note on paper is right the first time.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 7. Naming and Managing Files After Splitting
+            </h2>
+            <p>
+              Splitting multiplies files, and naming decides whether you can find anything a week later. Carry the source document's name into every part — annual-report_part1.pdf through annual-report_part6.pdf sorts correctly in every file browser and tells recipients exactly what they are holding. Adding a content hint beats adding a date when the parts themselves are the point: annual-report_2025-financials.pdf is instantly identifiable in an inbox.
+            </p>
+
+            <p>
+              For documents that will be reassembled or referenced later, keep the original alongside the parts — the original is the master record, and the parts are working copies. If different people receive different parts, say so in your email rather than attaching everything to everyone, because the most common split-related mistake is simply sending all parts to all recipients and undoing the care you took to separate them.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 6. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 8. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

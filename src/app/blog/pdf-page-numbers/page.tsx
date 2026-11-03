@@ -128,7 +128,9 @@ export default function PdfPageNumbers() {
                 <li><a href="#bates-stamping" className="text-primary hover:underline">2. What is Bates Numbering in Legal Practice?</a></li>
                 <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Guide to Numbering PDFs</a></li>
                 <li><a href="#custom-offsets" className="text-primary hover:underline">4. Skipping Cover Pages &amp; Setting Starting Offsets</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">5. Placement and Typography for Professional Numbering</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">6. Troubleshooting Overlapping or Missing Numbers</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">7. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -213,8 +215,30 @@ export default function PdfPageNumbers() {
               <li>This ensures pages 1 and 2 remain clean and unnumbered, while page 3 displays as &quot;Page 1.&quot;</li>
             </ul>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 5. Placement and Typography for Professional Numbering
+            </h2>
+            <p>
+              Number placement is a small decision that changes how finished documents feel. Bottom-center is the classic choice for reports, manuscripts, and academic work; bottom-right suits business documents where stapling or binding on the left edge is expected; top-right is traditional for legal filings. Whichever you pick, consistency matters more than the specific position — a document where numbers jump from corner to corner looks unfinished.
+            </p>
+
+            <p>
+              Typography deserves the same care. Match the numbering font to your document's body font at a size two to three points smaller, in a grey or black tone rather than bright color. Numbers that shout distract from content; numbers that whisper guide the reader. Keep at least half an inch of clearance from the page edge so nothing is lost when printing on equipment with narrow margins.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 6. Troubleshooting Overlapping or Missing Numbers
+            </h2>
+            <p>
+              When stamped numbers collide with existing content, the fix is usually positional rather than aesthetic. Footers that already contain document titles or dates leave little free space — try bottom-center at a slightly higher offset, or move to top-right where headers tend to be emptier. If a number lands on top of text, increasing the vertical offset by 10–20 points typically clears the collision without pushing the number off the page.
+            </p>
+
+            <p>
+              Missing numbers have two usual causes: an offset set higher than the page count, which makes the stamper start beyond the final page, or a starting number typed with extra characters. If page one seems to have no number when its neighbors do, check whether a cover page is being skipped by an offset setting — that is normally intended behavior. Previewing the first, middle, and last page before downloading catches every one of these in seconds.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 5. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 7. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

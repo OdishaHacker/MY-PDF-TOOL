@@ -131,7 +131,9 @@ export default function PdfSecurityTips() {
                 <li><a href="#pillar-5" className="text-primary hover:underline">5. Restricting Document Permissions (Print/Copy Locking)</a></li>
                 <li><a href="#pillar-6" className="text-primary hover:underline">6. Neutralizing Malicious PDF JavaScript Macros</a></li>
                 <li><a href="#pillar-7" className="text-primary hover:underline">7. Applying Legal Electronic Signatures with Audit Trails</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">8. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">8. Building a Practical Document Security Checklist</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">9. Common Security Failures and How They Happen</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">10. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -204,8 +206,30 @@ export default function PdfSecurityTips() {
               </Link>
             </div>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 8. Building a Practical Document Security Checklist
+            </h2>
+            <p>
+              Good document security is a habit, not a single action. Before any sensitive PDF leaves your hands, run through a short checklist: Does the file contain information that should not travel, such as hidden pages, internal notes, or prior versions of clauses? Have redactions been applied with a true removal tool rather than black boxes drawn over text? Is the metadata clean — author name, file path, and editing history stripped when the recipient should not see them?
+            </p>
+
+            <p>
+              Then decide on access controls: does this document need a password, or restricted printing and copying? Documents going to strangers — support tickets, contest entries, public filings — deserve stricter treatment than files between colleagues who already share a workplace trust boundary. Keep the checklist literally written down and taped near your desk or pinned in your team chat; security applied from memory is security that eventually gets skipped.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 9. Common Security Failures and How They Happen
+            </h2>
+            <p>
+              The most damaging failures are rarely sophisticated attacks — they are small oversights. Redacting with an opaque rectangle is the classic: the text is still under the box, selectable and searchable by anyone, and it has leaked data in thousands of real incidents. Forwarding an attachment thread is the second: the third reply down contains an earlier version of the document with the figures someone wanted hidden.
+            </p>
+
+            <p>
+              Metadata leaks happen because nobody looks for them — a resume that quietly reveals the candidate's legal name, or a tender response whose file path shows a competitor's name from a template. Password-protected files shared in the same email as the password protect nothing at all; send the password through a different channel. Each of these failures takes seconds to commit and seconds to prevent, which is exactly why it is worth building the checklist habit above.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 8. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 10. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

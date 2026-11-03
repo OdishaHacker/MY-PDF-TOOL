@@ -128,7 +128,9 @@ export default function RotatePdfGuide() {
                 <li><a href="#common-causes" className="text-primary hover:underline">2. Why Scanners Produce Inverted Documents</a></li>
                 <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Guide to Rotating PDFs</a></li>
                 <li><a href="#selective-rotation" className="text-primary hover:underline">4. Managing Mixed Landscape &amp; Portrait Pages</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">5. Handling Mixed-Orientation Documents</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">6. Fixing Landscape Pages That Print Incorrectly</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">7. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -204,8 +206,30 @@ export default function RotatePdfGuide() {
               When combining technical drawings with narrative text, you often want narrative pages in portrait (0°) and schematic diagrams in landscape (90°). Our visual thumbnail grid displays real-time previews for every page so you can verify each page&apos;s angle prior to exporting.
             </p>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 5. Handling Mixed-Orientation Documents
+            </h2>
+            <p>
+              Real-world PDFs are rarely uniform: a report might hold portrait text pages with a landscape chart dropped in the middle, and a scanner often feeds some sheets straight while others turn sideways. The right approach is to rotate for reading, not for tidiness. Permanent rotation should fix pages that are genuinely wrong — a scan that saved sideways — while pages that were designed landscape, like wide tables, should keep their orientation so the content stays as the author built it.
+            </p>
+
+            <p>
+              When preparing such a file for print, think about how the printer handles the landscape pages: most viewers print them rotated onto portrait paper with the content turned, which is usually what you want. Flip through the whole document after rotating and confirm each page reads naturally in sequence — mixed files are exactly where a page that went 90 degrees the wrong way hides.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 6. Fixing Landscape Pages That Print Incorrectly
+            </h2>
+            <p>
+              The classic print complaint is a landscape page that emerges squashed into a portrait corner or cropped at both ends. The cause is almost always a mismatch between the page's stored rotation and the print dialog's fit setting. Fixing it takes three steps: make sure the page displays correctly on screen first, choose 'Fit to printable area' in the print dialog rather than 'Actual size', and let the driver handle orientation instead of forcing portrait or landscape manually.
+            </p>
+
+            <p>
+              If a document rotates fine on your screen but wrong on a colleague's printer, the file's per-page rotation flags are the usual suspect — some tools save visual rotation as a display hint that printers ignore. Re-applying the rotation in a dedicated tool writes it into the page description itself, which printers respect. Test with a single page before printing the whole batch; paper is cheaper than an afternoon of re-collating.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 5. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 7. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

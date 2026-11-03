@@ -128,7 +128,9 @@ export default function SignPdfElectronically() {
                 <li><a href="#signature-types" className="text-primary hover:underline">2. The 3 Methods of Creating a Digital Signature</a></li>
                 <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Guide to Signing a PDF</a></li>
                 <li><a href="#security-considerations" className="text-primary hover:underline">4. Protecting Your Biometric Signature Privacy</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">5. Signing Etiquette That Builds Trust</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">6. Managing Signed Documents After the Ink Dries</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">7. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -219,8 +221,30 @@ export default function SignPdfElectronically() {
               At <strong>mypdftools.in</strong>, all signature rendering is performed strictly in local client memory. Neither your signature stroke vectors nor your contract ever leave your device.
             </p>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 5. Signing Etiquette That Builds Trust
+            </h2>
+            <p>
+              How you sign communicates professionalism before anyone reads the signature itself. Sign in full rather than initialing where a signature is expected — initials are for amendments and confirmations, signatures for agreements. Place your signature at the actual signature line rather than floating it near the bottom of the page; reviewers looking for it should find it exactly where convention says it lives. Date every signature unless the document explicitly carries its date elsewhere, because undated agreements create disputes later.
+            </p>
+
+            <p>
+              If you are countersigning or approving on someone's behalf, add your role under the signature — 'Approved by', your name, and title — so the document explains itself to anyone who reads it years later. And keep your signature image clean: a black-ink signature scanned at 300 DPI on white paper, cropped tight, looks crisp inside any PDF. A wobbly phone photo with grey shadows in the background, by contrast, reads as careless even when the underlying agreement is thorough.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 6. Managing Signed Documents After the Ink Dries
+            </h2>
+            <p>
+              A signature completes an agreement; storing it well protects the agreement. Save the fully signed PDF — every party's signature included — as a single file, rather than leaving the final version buried in an email thread where an earlier draft can be mistaken for it. Name it consistently, for example 'signed_lease_2026-11-03_sharma.pdf', so the signed status, date, and subject are visible in a file listing years later.
+            </p>
+
+            <p>
+              Send yourself a copy by email or keep the file in a second location: a signed contract that exists only on a laptop that fails next month is a contract you will be re-collecting awkwardly. For recurring agreements, keep a folder per client or per property, and drop both the signed original and any later amendments together. When amendments arrive, sign the amendment and file it attached to the master — the pair then tells the whole story without archaeology.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 5. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 7. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

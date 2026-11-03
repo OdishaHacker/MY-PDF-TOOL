@@ -128,7 +128,9 @@ export default function EditPdfOnline() {
                 <li><a href="#editor-tools" className="text-primary hover:underline">2. Essential Editing Capabilities</a></li>
                 <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Guide to Editing a PDF</a></li>
                 <li><a href="#filling-forms" className="text-primary hover:underline">4. Filling Out Non-Interactive PDF Forms</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">5. Choosing the Right Annotation for the Job</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">6. Keeping Your Edited PDFs Organized</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">7. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -217,8 +219,30 @@ export default function EditPdfOnline() {
               <li>Combine with our <Link href="/sign-pdf" className="text-primary underline">Sign PDF Tool</Link> to add legally binding signatures to the final signature block.</li>
             </ul>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 5. Choosing the Right Annotation for the Job
+            </h2>
+            <p>
+              Each annotation type exists for a reason, and picking the right one keeps documents clean and readable. Use the text tool for inserting new content — a name in a blank field, a date, a short note — because it sits on a fixed baseline and prints crisply. Use highlighting only on existing text you want to draw attention to, never as a substitute for writing something new; highlight over blank space looks like a smudge on a printout.
+            </p>
+
+            <p>
+              Freehand drawing suits signatures, circled figures, and quick sketches, while shapes are better when you need a tidy rectangle around a clause or an arrow pointing at a specific figure. Sticky-note style comments are ideal for internal review because they do not cover the underlying text at all. If you find yourself typing a paragraph into a text box, that is a signal the edit belongs in the source document instead — annotations are for marks, not for rewrites.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 6. Keeping Your Edited PDFs Organized
+            </h2>
+            <p>
+              Editing often produces several versions of the same document, and version confusion causes more trouble than any editing mistake. Adopt a naming pattern that sorts naturally: contract_draft2_2026-11-03.pdf tells you what, which revision, and when at a glance. Keep annotations and the final version separate — many people save a working copy with all their marks and a clean copy with only the changes the recipient needs to see.
+            </p>
+
+            <p>
+              It also helps to flatten before sharing. Flattening bakes annotations into the page so they cannot be accidentally moved, deleted, or edited by whoever receives the file. Before emailing a signed or reviewed document, open it once and flip through the pages: check that nothing sits on top of important text, that every mark landed where you aimed, and that no note meant for a colleague survived into the external copy.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 5. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 7. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

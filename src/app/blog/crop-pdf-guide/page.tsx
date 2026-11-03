@@ -128,7 +128,9 @@ export default function CropPdfGuide() {
                 <li><a href="#common-reasons" className="text-primary hover:underline">2. Practical Reasons to Crop Margins</a></li>
                 <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Guide to Cropping PDFs</a></li>
                 <li><a href="#ebook-optimization" className="text-primary hover:underline">4. Optimizing PDFs for E-Readers (Kindle, Kobo, iPad)</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">5. Common Cropping Mistakes That Ruin Documents</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">6. Cropping Workflows for Repeated Tasks</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">7. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -214,8 +216,30 @@ export default function CropPdfGuide() {
               By trimming the outer margins tightly against the text columns, your e-reader scales the actual typography to fill 100% of the screen, dramatically boosting legibility without requiring continuous manual zooming.
             </p>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 5. Common Cropping Mistakes That Ruin Documents
+            </h2>
+            <p>
+              The most common mistake is cropping too aggressively and slicing into the content itself. Text that sits close to the edge — headers, page numbers, footnotes — disappears silently, and the loss often goes unnoticed until the document is printed or read on a different screen. Always crop in small steps and preview the result at 100% zoom before saving; if a margin looks tight, leave an extra quarter inch rather than shaving it to the pixel.
+            </p>
+
+            <p>
+              The second error is cropping a document that other people will print. Your screen shows the cropped page perfectly, but a printer's unprintable border can swallow the remaining margin, and borderless printing is rarely enabled by default. For anything destined for paper, keep at least half an inch on every side. Finally, remember that cropping changes the visual page box, not the underlying content — someone with a tool can restore the hidden areas, so never rely on cropping to remove sensitive information.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 6. Cropping Workflows for Repeated Tasks
+            </h2>
+            <p>
+              If you regularly process documents with identical dimensions — exam papers, presentation exports, journal offprints — set the crop once, note the numbers, and reuse them. Applying the same margin settings to every file in a series keeps page sizes uniform, which matters more than people expect: mixed page dimensions make documents look sloppy in print and cause zoom-jumps when scrolling on screen.
+            </p>
+
+            <p>
+              For e-readers and phones, pair cropping with rotation in a single pass: crop the wide margins first, then set the orientation to match how the file will be held. Book scans benefit from cropping toward the text block on each page, which enlarges the effective font size on a Kindle or phone screen without any reflow. A consistent crop-and-rotate routine turns a pile of awkward scans into a library that reads comfortably everywhere.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 5. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 7. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

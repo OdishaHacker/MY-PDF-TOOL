@@ -128,7 +128,9 @@ export default function OrganizePdfPages() {
                 <li><a href="#features" className="text-primary hover:underline">2. Reorder, Delete &amp; Rotate in One Step</a></li>
                 <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Guide to Organizing PDFs</a></li>
                 <li><a href="#use-cases" className="text-primary hover:underline">4. High-Volume Workflow Applications</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">5. Organizing Scanned Documents Efficiently</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">6. Common Mistakes When Rearranging PDF Pages</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">7. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -210,8 +212,30 @@ export default function OrganizePdfPages() {
               <li><strong>Corporate Annual Reports:</strong> Place executive letters and financial audits in front of technical operational appendices.</li>
             </ul>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 5. Organizing Scanned Documents Efficiently
+            </h2>
+            <p>
+              Scanned paperwork is where page organization really earns its keep. A typical stack — bank statements, ID proofs, utility bills — arrives from the scanner as one long PDF with pages in whatever order the feeder grabbed them. Open it in the organizer, work through it page by page, and move everything into a logical order: identification first, then income proofs, then address proofs, then supporting documents. Rename the download with a clear convention such as '2026-11_loanchcovery_Sharma' so the file identifies itself months later.
+            </p>
+
+            <p>
+              For large scans, a two-pass approach saves time. In the first pass, delete blanks and obvious duplicates — scanners frequently produce empty pages between sheets. In the second pass, rotate the pages that were fed sideways and reorder the rest. Doing cleanup and ordering separately is faster than trying to perfect every page in a single pass, and it also makes it easy to spot the one misplaced page in a forty-page scan.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 6. Common Mistakes When Rearranging PDF Pages
+            </h2>
+            <p>
+              The classic error is losing track of the original order. Before you start dragging, glance through the document and note what the first three and last three pages should be; that gives you fixed anchor points. Another frequent slip is deleting a page thinking it is a duplicate when it actually contains the back side of a two-sided document — double-sided scans are the number one victim of over-eager deletion.
+            </p>
+
+            <p>
+              People also forget that page order is not the same as page labels. A scanned book may show 'page 12' printed on the twentieth PDF page, so sorting by printed number means trusting your eyes, not the file order. Finally, always open the downloaded file and page through it once before sending it onward: five seconds of checking catches reversed sections, forgotten rotations, and accidental deletions that are embarrassing to discover after the recipient does.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 5. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 7. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

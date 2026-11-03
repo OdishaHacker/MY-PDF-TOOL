@@ -128,7 +128,9 @@ export default function RepairPdfGuide() {
                 <li><a href="#how-repair-works" className="text-primary hover:underline">2. How XREF &amp; EOF Stream Reconstruction Works</a></li>
                 <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Guide to Repairing PDFs</a></li>
                 <li><a href="#prevention" className="text-primary hover:underline">4. Preventing Future Document Corruption</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">5. What Happens to Data in a Repaired PDF</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">6. Recovering Files From Common Failure Scenarios</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">7. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -210,8 +212,30 @@ export default function RepairPdfGuide() {
               <li><strong>Store Redundant Backups:</strong> Keep important master documents in version-controlled local storage.</li>
             </ul>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 5. What Happens to Data in a Repaired PDF
+            </h2>
+            <p>
+              A fair question about any repair tool is what actually comes back. Repair rebuilds the file's structure — the index tables and markers that tell a reader where every page and image lives. Content that was intact when corruption hit usually comes back fully: text, images, fonts, and formatting survive because they were never damaged, only unreachable. What repair cannot recover is data the corruption physically destroyed — pages that were only half-written during a failed save, for example, may return short or blank.
+            </p>
+
+            <p>
+              This is why the first move after any repair is a page-by-page flip through the result. Check the page count against what you expected, open a few images, and search for a phrase from the middle of the document. If everything checks out, save a fresh copy immediately and treat the repaired file as the new original. If pages are missing, the remainder is still worth keeping — partial recovery of a 200-page report beats starting from zero.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 6. Recovering Files From Common Failure Scenarios
+            </h2>
+            <p>
+              Different failures leave different fingerprints, and matching the recovery approach to the scenario saves time. A download that stopped mid-transfer produces a truncated file — redownload first, because repair can rebuild structure but not the missing tail that never arrived. A file that will not open after a power cut is often intact with a damaged cross-reference table, which is exactly the case repair handles best: the tool rebuilds the index and the document opens normally.
+            </p>
+
+            <p>
+              Files from old optical media or failing drives sometimes open but show scattered errors — repair those too, then move the fixed copy to healthy storage; the original medium is telling you it is dying. Email attachments that arrive as .dat or .bin fragments happen when mail systems mangle encoding; asking the sender to zip the PDF first sidesteps the whole problem. In every scenario, one principle holds: never keep working from the only copy of a damaged file — repair a duplicate, so a failed attempt does not make things worse.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 5. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 7. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

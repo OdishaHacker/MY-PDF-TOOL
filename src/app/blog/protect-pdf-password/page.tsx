@@ -129,7 +129,9 @@ export default function ProtectPdfPassword() {
                 <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Guide to Locking a PDF</a></li>
                 <li><a href="#security-comparison" className="text-primary hover:underline">4. Encryption Protocol Comparison Table</a></li>
                 <li><a href="#password-hygiene" className="text-primary hover:underline">5. Creating Uncrackable Passwords</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">6. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">6. Choosing Passwords That Are Strong and Shareable</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">7. What Password Protection Does Not Do</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">8. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -254,8 +256,30 @@ export default function ProtectPdfPassword() {
               <li><strong>Share Keys Securely:</strong> Send the password through an encrypted side channel (like Signal or SMS) rather than in the same email as the attached PDF.</li>
             </ul>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 6. Choosing Passwords That Are Strong and Shareable
+            </h2>
+            <p>
+              A password nobody can use safely is almost as bad as no password. Document passwords get spoken over phone calls, typed into text messages, and forwarded to colleagues' assistants — so they must survive real-world sharing. Length beats complexity for both strength and usability: a four-word passphrase such as 'harbour-copper-tide-29' is far stronger than 'Pr0d#2026!' and dramatically easier to dictate without errors. Avoid anything tied to the document itself — company name, invoice number, or the recipient's name are the first three guesses anyone tries.
+            </p>
+
+            <p>
+              Set a rule for how the password travels: never in the same email as the file. A text message, a phone call, or a separate channel breaks the pair that an intercepted mailbox would otherwise hand over completely. And decide upfront what happens when sharing ends — for documents protecting something genuinely sensitive, plan to send an updated, re-protected version rather than trusting that recipients deleted the old one.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 7. What Password Protection Does Not Do
+            </h2>
+            <p>
+              Password protection is often expected to do more than it actually does, and knowing the boundaries prevents expensive mistakes. A password restricts opening the file; it does not stop a legitimate recipient from forwarding the unlocked copy to someone else, printing it, or photographing the screen. Once a person you trusted has the file open, the password has done its entire job — control after that point is social, not technical.
+            </p>
+
+            <p>
+              Permission restrictions such as 'no printing' or 'no copying' are enforced by the viewing software, and several popular viewers offer ways around them; treat those flags as a speed bump for honest users, not a wall. What protection genuinely delivers is confidentiality in transit and at rest — a locked file in a shared drive, an emailed attachment, a USB stick in a drawer stays unreadable without the key. For material where even that is not enough, the answer is not a stronger password but a decision about whether the file should travel at all.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 6. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 8. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

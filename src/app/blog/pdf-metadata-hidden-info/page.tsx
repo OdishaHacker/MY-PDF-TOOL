@@ -128,7 +128,9 @@ export default function PdfMetadataHiddenInfo() {
                 <li><a href="#what-is-leaked" className="text-primary hover:underline">2. The 6 Most Common Metadata Leaks</a></li>
                 <li><a href="#real-world-leaks" className="text-primary hover:underline">3. High-Profile Corporate &amp; Legal Scandals</a></li>
                 <li><a href="#how-to-sanitize" className="text-primary hover:underline">4. How to Inspect &amp; Scrub Metadata Safely</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">5. Metadata in Everyday Documents You Already Send</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">6. What Metadata Cleaning Cannot Fix</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">7. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -205,8 +207,30 @@ export default function PdfMetadataHiddenInfo() {
               </Link>
             </div>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 5. Metadata in Everyday Documents You Already Send
+            </h2>
+            <p>
+              Metadata risks are not limited to court filings and corporate deals — they sit inside the documents ordinary people send every week. The resume attached to a job application typically carries the author name from whoever last saved it, which is awkward if a recruitment agency rebranded the file before forwarding it. Scanned ID documents record the scanner model and sometimes the computer name in their software fields. School assignments, invoices built from templates, and property documents all routinely carry template histories that reveal more than the sender intended.
+            </p>
+
+            <p>
+              The habit to build is simple: before sending anything important, check what the file says about itself. Our free PDF metadata viewer shows every field in seconds, right in your browser. Most people who look for the first time are surprised by at least one field — a company name, a file path with a personal folder, an editing application with a version — and that surprise is exactly why the check belongs in your routine.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 6. What Metadata Cleaning Cannot Fix
+            </h2>
+            <p>
+              Sanitizing metadata is powerful, but it has honest limits, and knowing them prevents false confidence. Cleaning removes document properties — names, dates, software trails — but it does not remove content that is physically present: redacted-look text under black boxes, comments in the margin, embedded attachments, or the revision history some editors store inside the file body. A file can be metadata-spotless and still leak through its visible or recoverable content.
+            </p>
+
+            <p>
+              Track-changes documents deserve special mention: converting a Word file to PDF freezes the visible page, but comments and tracked edits sometimes survive the export depending on the settings used. The safe sequence is to accept or reject every change and delete all comments in the source application first, then export, then verify the PDF contains none of them. For genuinely sensitive material, flatten the final PDF — flattening merges every layer into a single fixed page image or content stream, taking hidden extras with it.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 5. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 7. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

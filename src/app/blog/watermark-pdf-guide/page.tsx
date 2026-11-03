@@ -128,7 +128,9 @@ export default function WatermarkPdfGuide() {
                 <li><a href="#text-vs-image" className="text-primary hover:underline">2. Text Watermarks vs. Transparent Image Logos</a></li>
                 <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Guide to Watermarking PDFs</a></li>
                 <li><a href="#opacity-angle" className="text-primary hover:underline">4. Perfecting Opacity, Angles &amp; Layering</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">5. Common Watermarking Mistakes to Avoid</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">6. Watermark Strategies for Different Document Types</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">7. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -211,8 +213,30 @@ export default function WatermarkPdfGuide() {
               <li><strong>Subdued Gray / Red Tones:</strong> Use light slate gray (<code>#888888</code>) or muted crimson for high contrast without visual clutter.</li>
             </ul>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 5. Common Watermarking Mistakes to Avoid
+            </h2>
+            <p>
+              The most frequent error is setting the opacity too high. A watermark at 70–80% visibility fights with the text for the reader's attention and makes the underlying content genuinely hard to read on a printed copy. For most business documents, 10–25% opacity is the sweet spot: obvious enough to identify the document, subtle enough that the body text stays perfectly legible. The second common mistake is placing the mark only in a bottom corner, where it can be covered with a sticky note or cropped out in seconds.
+            </p>
+
+            <p>
+              Another pitfall is watermarking the wrong version of a file. Teams often stamp a draft, make edits, and forget to re-stamp, or worse, send a stamped final to the client. Decide on a rule — for example, every PDF leaving the review stage gets stamped at export time — and stick to it. Also avoid red or bright orange text at low opacity: it disappears almost entirely when photocopied in black and white, which defeats the purpose.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 6. Watermark Strategies for Different Document Types
+            </h2>
+            <p>
+              Different documents call for different watermark text and placement. Internal drafts benefit from a large diagonal 'DRAFT' at 15–20% opacity across the page center — unmistakable at a glance. Financial statements and invoices that leave your company are better served by a small, repeated logo tiled across the page, which survives partial cropping. Confidential legal material usually carries a single centered 'CONFIDENTIAL' line plus the recipient's name, which makes unauthorized forwarding traceable.
+            </p>
+
+            <p>
+              For educational material such as course notes or sample chapters, a footer stamp with your website address works better than a diagonal overlay, because students need to read diagrams and equations cleanly. Photographers and designers should combine both: a tiled light overlay for the preview file and a clean, high-resolution original reserved for paying clients. Whichever pattern you choose, keep the font simple — Arial or Helvetica at 40–60pt reads cleanly at low opacity, while decorative fonts turn to mush.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 5. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 7. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

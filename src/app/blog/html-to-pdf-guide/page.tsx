@@ -128,7 +128,9 @@ export default function HtmlToPdfGuide() {
                 <li><a href="#page-breaks" className="text-primary hover:underline">2. Eliminating Broken Table Rows with CSS Page Breaks</a></li>
                 <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step HTML to PDF Conversion</a></li>
                 <li><a href="#vector-vs-raster" className="text-primary hover:underline">4. Vector Text Rendering vs. Pixel Screenshots</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">5. Debugging Print Layout Issues Step by Step</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">6. Responsive Design Rules That Apply to Print</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">7. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -215,8 +217,30 @@ export default function HtmlToPdfGuide() {
               Our engine emits true PDF vector instructions (<code>Tj</code>, <code>TJ</code>, <code>Do</code>), ensuring all fonts remain razor-sharp at 1200 DPI zoom levels and all <code>&lt;a href&gt;</code> links remain clickable in PDF readers.
             </p>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 5. Debugging Print Layout Issues Step by Step
+            </h2>
+            <p>
+              When a page that looks perfect on screen prints badly, resist the urge to change everything at once. Open the browser's print preview first — it uses the same rendering engine as the converter, so it shows you exactly what will happen. Then work through the usual suspects in order: an element with a fixed pixel width wider than an A4 sheet, a background image that is set to repeat, or a wrapper div with an overflow rule that slices content at page boundaries.
+            </p>
+
+            <p>
+              Disable sections of your CSS one block at a time until the problem disappears, and you will find the offending rule in minutes instead of hours. Position absolute elements are a particularly common cause of trouble: they are placed relative to the page, so content that flows onto a second sheet leaves them stranded. Converting them to normal document flow almost always fixes multi-page layouts.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 6. Responsive Design Rules That Apply to Print
+            </h2>
+            <p>
+              Web design and print design follow different physics, and mixing them up is the root of most bad PDF output. Screens are measured in pixels and stretch to fit; paper is measured in points and never resizes. When preparing HTML for PDF conversion, set your container to a fixed width — 794px for A4 at 96 DPI is the reliable standard — and let content flow inside it, instead of using percentage widths that assume a browser window.
+            </p>
+
+            <p>
+              Font sizes should move to points for print: 11–12pt body text reads like a professionally typeset document, while the 14–16px common on the web looks oversized on paper. Hiding navigation bars, cookie banners, and floating buttons behind a media print rule is not optional — they are meaningless on paper and confuse readers. Get these three things right and the rest of the layout usually falls into place on its own.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 5. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 7. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

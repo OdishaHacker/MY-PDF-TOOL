@@ -129,7 +129,9 @@ export default function MergePdfGuide() {
                 <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Guide to Merging PDFs</a></li>
                 <li><a href="#comparison" className="text-primary hover:underline">4. Comparison: Free Browser Tools vs. Desktop Software</a></li>
                 <li><a href="#troubleshooting" className="text-primary hover:underline">5. Common Errors &amp; Troubleshooting</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">6. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">6. Merging Scanned and Digital Pages Cleanly</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">7. Planning Page Order Before You Merge</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">8. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -263,8 +265,30 @@ export default function MergePdfGuide() {
               </div>
             </div>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 6. Merging Scanned and Digital Pages Cleanly
+            </h2>
+            <p>
+              Combining scanned pages with born-digital PDFs creates a file of two visibly different halves — crisp typed pages followed by slightly grey, slightly crooked scans. That contrast is normal, but you can minimize it: scan at 200–300 DPI in color or grayscale consistently, straighten crooked pages before merging, and let the scanner's auto-crop trim the dark edges photocopiers love to add. The result reads as one document rather than a stapled patchwork.
+            </p>
+
+            <p>
+              Page size mismatches are the other common seam: a scanned letter often arrives a millimeter or two larger than a digital A4 page. Viewers handle this gracefully, but printing can shift content between pages. If the mixed file looks uneven, normalize the scan page size to match the digital pages before merging — it is a single extra step that makes the finished document feel professionally assembled rather than concatenated.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 7. Planning Page Order Before You Merge
+            </h2>
+            <p>
+              The fastest merges are the ones planned before the first file is selected. List the documents in the order they should appear — cover letter, main document, annexures, forms — and check each file's page count against the list. It takes two minutes and prevents the classic outcome: a 40-page packet with the annexure before the main body, discovered by the recipient rather than by you.
+            </p>
+
+            <p>
+              When merging many files, name them with a numeric prefix in the intended order (01_cover.pdf, 02_agreement.pdf, 03_annexure-a.pdf) and add them to the merger in one selection — the tool preserves that order and the whole job becomes a single verification pass instead of a drag-and-drop juggling act. For recurring packets such as monthly invoice bundles, keeping a standard folder structure means next month's merge is a template you fill, not a puzzle you solve.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 6. Frequently Asked Questions (FAQ)
+              <HelpCircle className="h-5 w-5 text-primary" /> 8. Frequently Asked Questions (FAQ)
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

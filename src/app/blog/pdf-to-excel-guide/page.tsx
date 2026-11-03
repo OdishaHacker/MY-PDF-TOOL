@@ -127,7 +127,9 @@ export default function PdfToExcelGuide() {
                 <li><a href="#bordered-vs-borderless" className="text-primary hover:underline">2. Bordered Tables vs. Borderless White Space Columns</a></li>
                 <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Guide to Converting PDF to Excel</a></li>
                 <li><a href="#financial-tips" className="text-primary hover:underline">4. Best Practices for Bank Statements &amp; Invoices</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">5. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">5. Cleaning Up Extracted Data in Excel</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">6. When Conversion Is the Wrong Tool for the Job</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">7. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -210,8 +212,30 @@ export default function PdfToExcelGuide() {
               <li><strong>Client-Side Privacy:</strong> Because financial statements contain account numbers and balances, processing 100% in browser memory guarantees zero compliance risk.</li>
             </ul>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 5. Cleaning Up Extracted Data in Excel
+            </h2>
+            <p>
+              Conversion gets the table into Excel; a short cleanup pass makes it genuinely usable. Start by checking number formats — figures extracted from PDFs often arrive as text, and you will notice because they left-align and refuse to sum. Excel's error indicator offers a one-click convert-to-number for a whole column. Dates are the second suspect: regional formats such as 03/11/2026 can be read as March 11 or November 3, so verify a few rows against the source PDF before trusting the sheet.
+            </p>
+
+            <p>
+              Watch for the classics: bank reference numbers losing leading zeros (format the column as text immediately), merged-looking rows split across two lines (unwrap them with a filter for blanks), and totals that disagree with the source by a rounding margin. Ten minutes of validation — sort a column, eyeball the outliers, spot-check three rows against the original — turns an extracted sheet into one you can safely build formulas on.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 6. When Conversion Is the Wrong Tool for the Job
+            </h2>
+            <p>
+              PDF-to-Excel conversion is powerful, but some content simply is not tabular underneath. Multi-page narrative reports with the occasional embedded figure convert as a jumble of merged cells; in that case, copying the text and rebuilding a small summary table by hand is faster than fixing the extraction. Heavily designed layouts — brochures, infographics, magazine spreads — place numbers visually rather than structurally, and no converter can reliably reconstruct what a designer drew.
+            </p>
+
+            <p>
+              The deciding question is whether the PDF's underlying structure matches the visual grid. Scanned financial tables with clean rows and columns convert beautifully. Tables that span pages with repeated headers convert well too, provided you check the header rows did not become data. If a table is genuinely hopeless, exporting it to CSV of just that page, or even typing the twenty rows manually, may genuinely be the quicker route — knowing when to switch tools is part of working efficiently.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 5. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 7. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">

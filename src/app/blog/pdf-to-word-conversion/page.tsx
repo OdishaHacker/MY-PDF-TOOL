@@ -129,7 +129,9 @@ export default function PdfToWordConversion() {
                 <li><a href="#step-by-step" className="text-primary hover:underline">3. Step-by-Step Conversion Walkthrough</a></li>
                 <li><a href="#preserving-tables" className="text-primary hover:underline">4. Best Practices for Preserving Tables &amp; Columns</a></li>
                 <li><a href="#troubleshooting" className="text-primary hover:underline">5. Fixing Common Formatting Glitches in Word</a></li>
-                <li><a href="#faq" className="text-primary hover:underline">6. Frequently Asked Questions</a></li>
+                <li><a href="#mistakes" className="text-primary hover:underline">6. Understanding Small Layout Shifts After Conversion</a></li>
+                <li><a href="#pro-tips" className="text-primary hover:underline">7. Editing Converted Documents Without Breaking Them</a></li>
+                <li><a href="#faq" className="text-primary hover:underline">8. Frequently Asked Questions</a></li>
               </ul>
             </div>
 
@@ -231,8 +233,30 @@ export default function PdfToWordConversion() {
               </div>
             </div>
 
+            <h2 id="mistakes" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-primary" /> 6. Understanding Small Layout Shifts After Conversion
+            </h2>
+            <p>
+              Even an excellent conversion rarely reproduces a PDF pixel-for-pixel, and knowing which changes are normal saves unnecessary worry. Line breaks may fall in slightly different places because Word re-flows text using its own spacing engine. Fonts may substitute a near-identical face if the original font is not installed on your machine. Images usually keep their position but can shift a few points relative to surrounding text. These shifts are the difference between two typesetting engines, not a conversion failure.
+            </p>
+
+            <p>
+              What deserves attention is anything structural: a two-column section that became one long column, a table that collapsed into loose text, or a bulleted list that lost its bullets. Those signals mean the PDF's structure was complex — scanned text, layered design, or a form — and the converted file needs a cleanup pass. A quick scan through headings and page breaks right after converting tells you within a minute whether you have a ready-to-edit document or a rebuilding job.
+            </p>
+
+            <h2 id="pro-tips" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
+              <Lightbulb className="h-5 w-5 text-primary" /> 7. Editing Converted Documents Without Breaking Them
+            </h2>
+            <p>
+              The most valuable editing habit after conversion is restraint with styles. It is tempting to fix spacing by hammering the enter key and the spacebar, but that creates documents that fall apart the moment anything upstream changes. Instead, select the paragraph and adjust its paragraph settings — spacing before and after, line spacing — so the fix survives future edits. Use Word's built-in heading styles for section titles, which makes the navigation pane work and any later table of contents generate automatically.
+            </p>
+
+            <p>
+              For converted tables, turn on the gridline view immediately: borders converted from PDF sometimes look complete while the actual table structure is inconsistent, and gridlines expose which cells are real. Resist reformatting the entire document before you have read it end to end — converted files occasionally carry a stray empty page or a duplicated header that is easier to fix before styling work begins. Ten minutes of structural review first, styling second, always pays off.
+            </p>
+
             <h2 id="faq" className="text-2xl font-bold tracking-tight text-foreground pt-4 flex items-center gap-2">
-              <HelpCircle className="h-5 w-5 text-primary" /> 6. Frequently Asked Questions
+              <HelpCircle className="h-5 w-5 text-primary" /> 8. Frequently Asked Questions
             </h2>
             <div className="space-y-4 my-6">
               <div className="p-4 rounded-xl border bg-card space-y-1">
