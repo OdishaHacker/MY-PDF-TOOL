@@ -86,14 +86,14 @@ export default function RootLayout({
           <Toaster richColors position="bottom-center" />
           {/* Google Analytics 4 (GA4) */}
           <Script
-            src="https://www.googletagmanager.com/gtag/js?id=G-16365572820"
+            src="https://www.googletagmanager.com/gtag/js?id=G-HVZSW8TMHP"
             strategy="afterInteractive"
           />
           <Script id="ga4-init" strategy="afterInteractive">
             {`window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', 'G-16365572820');`}
+              gtag('config', 'G-HVZSW8TMHP');`}
           </Script>
         </ThemeProvider>
       </body>
